@@ -8,8 +8,8 @@ import Plutus.V2.Ledger.Api
   , TxInfo(..)
   , TxInInfo(..)
   , TxOut(..)
-  , Address
-  , Credential
+  , Address(..)
+  , Credential(..)
   , POSIXTime
   , POSIXTimeRange
   , Value
@@ -18,7 +18,22 @@ import Plutus.V2.Ledger.Api
 -- We'll need Prelude-like stuff from PlutusTx.Prelude when we start writing
 -- actual on-chain logic (traceIfFalse, etc.). For now we only document.
 -- We'll import PlutusTx.Prelude later when we actually implement.
--- import PlutusTx.Prelude (...)
+-- import PlutusTx.Prelude (...) 
+
+import qualified Plutus.V2.Ledger.Api as V2 
+import qualified Plutus.V1.Ledger.Interval as I 
+
+-- on-chain-ish Prelude
+import PlutusTx.Prelude
+  ( Bool(..)
+  , (==)
+  , traceIfFalse
+  , traceError
+  , elem
+  , mconcat
+  )
+
+import Prelude (Maybe(..))
 
 import AtomicSwap.Types
   ( SwapParams(..)
@@ -29,7 +44,56 @@ import AtomicSwap.Types
   , Flags(..)
   )
 
-  
+-- [CXL1] tx must be at/after sdDeadline 
+validAfterDeadline :: POSIXTime -> TxInfo -> Bool
+validAfterDeadline deadline info =
+  I.contains (I.from deadline) (V2.txInfoValidRange info) 
+
+-- [CXL2] only the seller (PubKeyCredential) may cancel
+sellerSigned :: Credential -> TxInfo -> Bool
+sellerSigned cred info = 
+       case cred of
+         PubKeyCredential pkh -> pkh `elem` V2.txInfoSignatories info 
+         _                   -> False -- script credentials can't "sign"
+
+-- [CXL3] full refund back to seller, no leakage
+refundIsExact :: Credential -> Value -> TxInfo -> Bool
+refundIsExact sellerCred offer info =
+  let outs = V2.txInfoOutputs info
+
+      toSeller =
+        [ txOutValue o
+        | o <- outs
+        , let addr = txOutAddress o
+        , addrCredential addr == sellerCred
+        ]
+
+      paidToSeller = mconcat toSeller
+  in  paidToSeller == offer
+  where
+    addrCredential (Address cred _stake) = cred
+
+-- actual cancel rule 
+validateCancel :: SwapDatum -> TxInfo -> Bool 
+validateCancel SwapDatum{sdSeller, sdOffer, sdDeadline} info =
+     traceIfFalse "Cancel: too early" (validAfterDeadline sdDeadline info) &&
+     traceIfFalse "Cancel: not seller" (sellerSigned sdSeller info) && 
+     traceIfFalse "Cancel: bad refund" (refundIsExact sdSeller sdOffer info)
+
+-- Buy stub (to be done later)
+validateBuy :: SwapDatum -> SwapRedeemer -> TxInfo -> Bool
+validateBuy _ _ _ = 
+       traceError "Buy path not implemented"
+
+-- Top-level validator
+mkSwapValidator :: SwapParams -> SwapDatum -> SwapRedeemer -> ScriptContext -> Bool
+mkSwapValidator _params datum redeemer ScriptContext{scriptContextTxInfo=info} =
+     case redeemer of
+       Cancel      -> validateCancel datum info
+       Buy -> validateBuy datum redeemer info 
+       ClaimWithPreimage _ -> traceError "HTLC path not implemented"
+
+
 {-|
 Validator logic (high-level, to be implemented):
 
