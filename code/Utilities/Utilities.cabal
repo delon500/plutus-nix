@@ -8,10 +8,11 @@ build-type:         Simple
 
 library
     hs-source-dirs:   src
-    exposed-modules:  Utilities
-    other-modules:    Utilities.Conversions
-                      Utilities.PlutusTx
-                      Utilities.Serialise
+    exposed-modules:
+        Utilities
+        Utilities.Conversions
+        Utilities.PlutusTx
+        Utilities.Serialise
     build-depends:    aeson
                     , base ^>=4.14.3.0
                     , base16-bytestring

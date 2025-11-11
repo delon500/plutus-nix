@@ -12,6 +12,8 @@ repository cardano-haskell-packages
 -- See CONTRIBUTING.adoc for how to update index-state
 index-state: 2022-11-14T00:20:02Z
 
+with-compiler: ghc-8.10.7
+
 -- See CONTRIBUTING.adoc for how to update index-state
 index-state:
   , hackage.haskell.org 2022-11-14T00:20:02Z
