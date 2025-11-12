@@ -9,6 +9,7 @@ import ParameterizedVestingSpec qualified as ParameterizedVestingSpec
 import VestingSpec             qualified as VestingSpec
 import DemoSpec                qualified as DemoSpec
 import AtomicSwapSpec         qualified as AtomicSwapSpec
+import AtomicSwapHTLCSpec     qualified as AtomicSwapHTLCSpec
 
 
 main :: IO ()
@@ -22,5 +23,6 @@ allTests =
     , CGTimeSpec.tests
     , CGPlutusUtilsSpec.tests
     , DemoSpec.tests
-    , AtomicSwapSpec.tests          
+    , AtomicSwapSpec.tests 
+    , AtomicSwapHTLCSpec.tests        
     ]
