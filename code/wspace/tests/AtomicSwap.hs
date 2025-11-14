@@ -12,7 +12,6 @@
 
 module Main where
 
--- we still want normal IO / FilePath / putStrLn
 import Prelude (IO, FilePath, (.))
 import qualified Prelude as P
 
@@ -36,7 +35,7 @@ import qualified Plutus.V1.Ledger.Value    as Value
 
 import Codec.Serialise (serialise)
 
--- NEW imports for pretty JSON .plutus
+-- imports for pretty JSON .plutus
 import qualified Data.Aeson               as Aeson
 import qualified Data.ByteString.Base16   as B16
 import qualified Data.ByteString.Lazy     as LBS
