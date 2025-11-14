@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AtomicSwap.hs Tutorial</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/haskell.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+
+    <style>
+        /* --- Global Styles --- */
+        :root {
+            --primary-color: #007acc;
+            --text-color: #333;
+            --bg-color: #ffffff;
+            --sidebar-bg: #f7f7f7;
+            --border-color: #eee;
+            --code-bg: #2d2d2d;
+            --code-color: #f1f1f1;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 20px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5em;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.3em;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.9em;
+            background-color: #f0f0f0;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 1.25em;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        blockquote {
+            margin: 1.5em 0;
+            padding: 1em;
+            background-color: #f9f9f9;
+            border-left: 5px solid var(--primary-color);
+            font-style: italic;
+        }
+
+        ul, ol {
+            padding-left: 1.5em;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        /* --- Layout --- */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            background-color: var(--sidebar-bg);
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            overflow-y: auto;
+            padding: 2em;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 2em 4em;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .content section {
+            margin-bottom: 3em;
+        }
+
+        /* --- Sidebar Navigation --- */
+        .sidebar h3 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #555;
+            margin-top: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 0.25em;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 0.3em 0.5em;
+            border-radius: 4px;
+            color: #444;
+            transition: background-color 0.2s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: #e9e9e9;
+            text-decoration: none;
+        }
+
+        .sidebar ul ul {
+            padding-left: 1em;
+            margin-top: 0.25em;
+            font-size: 0.9em;
+        }
+
+        .sidebar a.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        /* --- Glossary Definition List --- */
+        dl {
+            margin-top: 1.5em;
+        }
+        dt {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-top: 1em;
+        }
+        dd {
+            margin-left: 1.5em;
+            margin-bottom: 0.5em;
+            color: #555;
+        }
+
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .content {
+                padding: 2em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <h3>Navigation</h3>
+        <ul>
+            <li><a href="#overview">1. Overview 📖</a></li>
+            <li><a href="#problem">2. What Problem It Solves 💡</a></li>
+            <li><a href="#flow">3. High-Level Flow 🌊</a></li>
+            <li>
+                <a href="#data-types">4. On-Chain Data Types 🧬</a>
+                <ul>
+                    <li><a href="#data-params">4.1 SwapParams</a></li>
+                    <li><a href="#data-datum">4.2 SwapDatum</a></li>
+                    <li><a href="#data-redeemer">4.3 SwapRedeemer</a></li>
+                    <li><a href="#data-payout">4.4 Payout</a></li>
+                    <li><a href="#data-flags">4.5 Flags</a></li>
+                    <li><a href="#data-expectation">4.6 Expectation</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#extensions">5. Language Extensions 🔧</a>
+                <ul>
+                    <li><a href="#ext-datakinds">5.1 DataKinds</a></li>
+                    <li><a href="#ext-anyclass">5.2 DeriveAnyClass</a></li>
+                    <li><a href="#ext-generic">5.3 DeriveGeneric</a></li>
+                    <li><a href="#ext-lambda">5.4 LambdaCase</a></li>
+                    <li><a href="#ext-puns">5.5 NamedFieldPuns</a></li>
+                    <li><a href="#ext-strings">5.6 OverloadedStrings</a></li>
+                    <li><a href="#ext-scoped">5.7 ScopedTypeVariables</a></li>
+                    <li><a href="#ext-th">5.8 TemplateHaskell</a></li>
+                    <li><a href="#ext-prelude">5.9 NoImplicitPrelude</a></li>
+                    <li><a href="#ext-multi">5.10 MultiParamTypeClasses</a></li>
+                    <li><a href="#ext-flexible">5.11 FlexibleInstances</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#imports">6. Imports 📦</a>
+                <ul>
+                    <li><a href="#import-main">6.1 module Main</a></li>
+                    <li><a href="#import-prelude">6.2 Prelude</a></li>
+                    <li><a href="#import-plutustx">6.3 PlutusTx</a></li>
+                    <li><a href="#import-api">6.4 Ledger.Api V2</a></li>
+                    <li><a href="#import-interval">6.5 Ledger.Interval V1</a></li>
+                    <li><a href="#import-value">6.6 Ledger.Value V1</a></li>
+                    <li><a href="#import-serialise">6.7 Codec.Serialise</a></li>
+                    <li><a href="#import-json">6.8 JSON & ByteString</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#validation">7. Validation Logic ✅</a>
+                <ul>
+                    <li><a href="#validation-cancel">7.1 Cancel branch</a></li>
+                    <li><a href="#validation-buy">7.2 Buy branch</a></li>
+                    <li><a href="#validation-beacon">7.3 Beacon burn</a></li>
+                </ul>
+            </li>
+            <li><a href="#producing">8. Producing the .plutus file 📦</a></li>
+            <li>
+                <a href="#testing">9. Testing the Contract 🧪</a>
+                <ul>
+                    <li><a href="#testing-structure">9.1 Test structure</a></li>
+                    <li><a href="#testing-scenarios">9.2 Key scenarios</a></li>
+                    <li><a href="#testing-running">9.3 Running tests</a></li>
+                    <li><a href="#testing-why">9.4 Why testing matters</a></li>
+                </ul>
+            </li>
+            <li><a href="#glossary">10. Glossary of Terms 📚</a></li>
+        </ul>
+    </nav>
+
+    <main class="content">
+        <header>
+            <h1>AtomicSwap.hs – Beginner Tutorial / Documentation</h1>
+        </header>
+
+        <section id="overview">
+            <h2>1. 📖 Overview</h2>
+            <p><code>AtomicSwap.hs</code> is a Plutus V2 validator that acts like a <strong>Cardano marketplace-style listing</strong>.</p>
+            <ul>
+                <li>A <strong>seller</strong> locks some value (ADA or multi-asset) at the script.</li>
+                <li>A <strong>buyer</strong> later builds a transaction that:
+                    <ol>
+                        <li>pays the seller (and whoever else is in the payouts),</li>
+                        <li>and takes the offered value out of the script.</li>
+                    </ol>
+                </li>
+                <li>If nobody buys before the <strong>deadline</strong>, the seller can <strong>cancel</strong> and get their funds back.</li>
+                <li>There’s also an optional “<strong>single fill</strong>” rule so that once it’s bought, the script can’t just recreate itself.</li>
+            </ul>
+            <p>So it’s “atomic” in the sense that <strong>either all the required payments and the delivery happen in one transaction, or the transaction is invalid</strong>.</p>
+        </section>
+
+        <section id="problem">
+            <h2>2. 💡 What Problem This Contract Solves</h2>
+            <p>On UTXO blockchains (like Cardano), you can’t easily say:</p>
+            <blockquote>“If someone pays me exactly X, at these addresses, before time T, then they can have the funds I locked.”</blockquote>
+            <p>You need a script to <strong>enforce</strong>:</p>
+            <ul>
+                <li>the right person can cancel,</li>
+                <li>the right amounts are paid,</li>
+                <li>the deadline is respected,</li>
+                <li>no one underpays.</li>
+            </ul>
+            <p><code>AtomicSwap.hs</code> is that script.</p>
+            <p>It’s not a cross-chain HTLC — it’s a “sell this UTXO under these conditions” script.</p>
+        </section>
+
+        <section id="flow">
+            <h2>3. 🌊 High-Level Flow (Cancel vs Buy)</h2>
+            <p>There are two real paths in the validator:</p>
+            <ol>
+                <li><strong>Cancel</strong> (seller path)</li>
+                <li><strong>Buy</strong> (buyer path)</li>
+            </ol>
+            <p>The choice is made by the <strong>redeemer</strong>.</p>
+            
+            <h3>A) Cancel</h3>
+            <p>Used when: nobody bought in time.</p>
+            <p>Checks:</p>
+            <ol>
+                <li><strong>After deadline</strong>: transaction’s time range must be after <code>sdDeadline</code>.</li>
+                <li><strong>Seller signed</strong>: the credential in <code>sdSeller</code> must be among the tx signatories.</li>
+                <li><strong>Exact refund</strong>: the seller must receive <strong>exactly</strong> the value that was originally locked (<code>sdOffer</code>).</li>
+                <li><strong>If there was a beacon</strong> (<code>sdSwapId</code>), it must be <strong>burned</strong>.</li>
+            </ol>
+            <p>If any of those fail → script fails.</p>
+
+            <h3>B) Buy</h3>
+            <p>Used when: a buyer wants to take the offer.</p>
+            <p>Checks:</p>
+            <ol>
+                <li><strong>Before deadline</strong>.</li>
+                <li><strong>Payouts match expectation</strong> (the <code>sdPayouts</code> must add up to what <code>sdExpect</code> says).</li>
+                <li><strong>Those payouts are actually paid</strong> in the outputs.</li>
+                <li><strong>The offer is actually delivered</strong> somewhere in the outputs (the thing the seller locked is leaving the script).</li>
+                <li><strong>Single fill</strong>: if <code>fSingleFill = True</code>, the transaction must <strong>not</strong> create another script output.</li>
+                <li><strong>If there was a beacon</strong>, it must be burned.</li>
+            </ol>
+            <p>If all good → buy succeeds.</p>
+        </section>
+
+        <section id="data-types">
+            <h2>4. 🧬 On-Chain Data Types</h2>
+            <p>These are the Haskell types file.</p>
+            
+            <h3 id="data-params">4.1 <code>SwapParams</code></h3>
+<pre><code class="language-haskell">data SwapParams = SwapParams
+  { spOperator       :: Maybe V2.Credential
+  , spBeaconPolicyId :: Maybe V2.CurrencySymbol
+  , spVersionTag     :: BuiltinByteString
+  }
+</code></pre>
+            <p>In your validator you basically hardcode <code>defaultSwapParams</code>, so this isn’t what the user puts on-chain — it’s more like script config.</p>
+            
+            <h3 id="data-datum">4.2 <code>SwapDatum</code></h3>
+<pre><code class="language-haskell">data SwapDatum = SwapDatum
+  { sdSeller   :: V2.Credential
+  , sdOffer    :: V2.Value
+  , sdExpect   :: Expectation
+  , sdPayouts  :: [Payout]
+  , sdDeadline :: V2.POSIXTime
+  , sdFlags    :: Flags
+  , sdSwapId   :: Maybe (V2.CurrencySymbol, V2.TokenName)
+  }
+</code></pre>
+            <p>This is the <strong>main thing</strong> your script stores.</p>
+            <ul>
+                <li><code>sdSeller</code>: who is allowed to cancel.</li>
+                <li><code>sdOffer</code>: what the script is holding and will deliver on buy.</li>
+                <li><code>sdExpect</code>: what must be paid in total.</li>
+                <li><code>sdPayouts</code>: who must get paid and how much.</li>
+                <li><code>sdDeadline</code>: time limit.</li>
+                <li><code>sdFlags</code>: extra behavior (right now just single-fill).</li>
+                <li><code>sdSwapId</code>: optional beacon that must be burned when spending.</li>
+            </ul>
+
+            <h3 id="data-redeemer">4.3 <code>SwapRedeemer</code></h3>
+<pre><code class="language-haskell">data SwapRedeemer
+  = Cancel
+  | Buy
+  | ClaimWithPreimage BuiltinByteString
+</code></pre>
+            <p>You currently use <strong>Cancel</strong> and <strong>Buy</strong>. <code>ClaimWithPreimage</code> is stubbed out in your file (<code>traceError "HTLC path not implemented"</code>), so it’s effectively disabled.</p>
+
+            <h3 id="data-payout">4.4 <code>Payout</code></h3>
+<pre><code class="language-haskell">data Payout = Payout
+  { pAddress :: V2.Address
+  , pValue   :: V2.Value
+  }
+</code></pre>
+            <p>Each of these must be exactly present in the transaction outputs when buying.</p>
+
+            <h3 id="data-flags">4.5 <code>Flags</code></h3>
+<pre><code class="language-haskell">data Flags = Flags
+  { fSingleFill :: Bool
+  }
+</code></pre>
+            <p>If <code>True</code>, the buy transaction may <strong>not</strong> leave another script UTXO (so one-and-done).</p>
+
+            <h3 id="data-expectation">4.6 <code>Expectation</code></h3>
+<pre><code class="language-haskell">data Expectation
+  = ExpectExact V2.Value
+</code></pre>
+            <p>Right now, it only supports “the payouts must add up to exactly this value”.</p>
+        </section>
+
+        <section id="extensions">
+            <h2>5. Language Extensions (Why they’re here) 🔧</h2>
+<pre><code class="language-haskell">{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE FlexibleInstances #-}
+</code></pre>
+            <h3 id="ext-datakinds">5.1 <code>DataKinds</code> 🧱</h3>
+            <ul>
+                <li><strong>What it does:</strong> Promotes values (constructors, strings, etc.) to the type level.</li>
+                <li><strong>Why here:</strong> Commonly used with Plutus/TH-generated code and typed builtin machinery. Safe default in Plutus projects.</li>
+                <li><strong>If removed:</strong> Some advanced or generated types can stop typechecking in more complex setups.</li>
+            </ul>
+
+            <h3 id="ext-anyclass">5.2 <code>DeriveAnyClass</code> 🧬</h3>
+            <ul>
+                <li><strong>What it does:</strong> Enables <code>deriving anyclass (C1, C2, ...)</code>.</li>
+                <li><strong>Why here:</strong> Handy when you want to auto-derive instances (e.g., JSON or serialisation helpers) alongside <code>Generic</code>.</li>
+                <li><strong>If removed:</strong> You’ll need to write instances manually (only matters if you use such deriving).</li>
+            </ul>
+
+            <h3 id="ext-generic">5.3 <code>DeriveGeneric</code> 🧠</h3>
+            <ul>
+                <li><strong>What it does:</strong> Lets you <code>deriving (Generic)</code>, which many libraries use (e.g., Aeson).</li>
+                <li><strong>Why here:</strong> Useful if you later add generic-based deriving for your data types.</li>
+                <li><strong>If removed:</strong> Any generic-based auto-derivations won’t compile (only if you add them).</li>
+            </ul>
+
+            <h3 id="ext-lambda">5.4 <code>LambdaCase</code> 🧪</h3>
+            <ul>
+                <li><strong>What it does:</strong> Allows anonymous <code>\case</code> pattern-matching.</li>
+                <li><strong>Why here:</strong> Convenient stylistically; <strong>not strictly used</strong> in the snippet.</li>
+                <li><strong>If removed:</strong> No effect unless you introduce <code>\case</code> expressions.</li>
+            </ul>
+
+            <h3 id="ext-puns">5.5 <code>NamedFieldPuns</code> 🧩</h3>
+            <ul>
+                <li><strong>What it does:</strong> Lets you pattern-match with <code>SwapDatum{sdSeller, sdOffer, ...}</code> instead of <code>sdSeller=sdSeller</code>.</li>
+                <li><strong>Why here:</strong> Cleaner record usage across <code>validateBuy</code>, <code>validateCancel</code>, etc.</li>
+                <li><strong>If removed:</strong> You must write full <code>field = local</code> assignments.</li>
+            </ul>
+
+            <h3 id="ext-strings">5.6 <code>OverloadedStrings</code> 🔤</h3>
+            <ul>
+                <li><strong>What it does:</strong> Makes string literals polymorphic (<code>Text</code>, <code>ByteString</code>, <code>BuiltinByteString</code>, …).</li>
+                <li><strong>Why here:</strong> You use string literals for <code>BuiltinByteString</code> (e.g., <code>"v1"</code>) and for JSON fields without manual packing.</li>
+                <li><strong>If removed:</strong> You’ll need explicit conversions like <code>BSC.pack</code> / <code>toBuiltin</code>.</li>
+            </ul>
+
+            <h3 id="ext-scoped">5.7 <code>ScopedTypeVariables</code> 🔭</h3>
+            <ul>
+                <li><strong>What it does:</strong> Keeps explicit type variables in scope across a definition.</li>
+                <li><strong>Why here:</strong> Helpful around TH and <code>unsafeFromBuiltinData</code> patterns when you want precise type control.</li>
+                <li><strong>If removed:</strong> You might hit ambiguous type errors or need more explicit annotations.</li>
+            </ul>
+
+            <h3 id="ext-th">5.8 <code>TemplateHaskell</code> 🧱🧪</h3>
+            <ul>
+                <li><strong>What it does:</strong> Compile-time metaprogramming (splices like <code>$$(...)</code>).</li>
+                <li><strong>Why here:</strong>
+                    <ul>
+                        <li><code>PlutusTx.unstableMakeIsData ''Type</code> / <code>PlutusTx.makeLift ''Type</code> derive on-chain instances.</li>
+                        <li><code>PlutusTx.compile [|| mkUnted wrapValidator ||]</code> compiles the validator to Plutus Core.</li>
+                    </ul>
+                </li>
+                <li><strong>If removed:</strong> You can’t generate on-chain <code>IsData</code>/<code>Lift</code> or the compiled script.</li>
+            </ul>
+
+            <h3 id="ext-prelude">5.9 <code>NoImplicitPrelude</code> 🚫📚</h3>
+            <ul>
+                <li><strong>What it does:</strong> Disables automatic import of base <code>Prelude</code>.</li>
+                <li><strong>Why here:</strong> On-chain code must use <strong><code>PlutusTx.Prelude</code></strong> (deterministic). Off-chain bits (<code>IO</code>, strings) are imported from base <code>Prelude</code> explicitly/qualified.</li>
+                <li><strong>If removed:</strong> You risk pulling non-deterministic functions into on-chain code.</li>
+            </ul>
+
+            <h3 id="ext-multi">5.10 <code>MultiParamTypeClasses</code> 👥</h3>
+            <ul>
+                <li><strong>What it does:</strong> Allows typeclasses with multiple parameters.</li>
+                <li><strong>Why here:</strong> Common in Plutus ecosystems/derivations; sometimes required by library internals.</li>
+                <li><strong>If removed:</strong> Some instances/macros could fail to compile (context-dependent).</li>
+            </ul>
+
+            <h3 id="ext-flexible">5.11 <code>FlexibleInstances</code> 🧷</h3>
+            <ul>
+                <li><strong>What it does:</strong> Relaxes Haskell 2010 rules on instance heads.</li>
+                <li><strong>Why here:</strong> Often needed with TH-derived or non-trivial instances in Plutus projects.</li>
+                <li><strong>If removed:</strong> Instance generation/derivation might fail in certain shapes.</li>
+            </ul>
+            <blockquote>🧹 <strong>Trimmable (if not actually used in your build):</strong> <code>LambdaCase</code>, <code>DeriveAnyClass</code>, <code>DeriveGeneric</code>, sometimes <code>ScopedTypeVariables</code>, <code>MultiParamTypeClasses</code>, <code>FlexibleInstances</code>. Keep the rest.</blockquote>
+        </section>
+
+        <section id="imports">
+            <h2>6. Imports (What each one is for) 📦</h2>
+<pre><code class="language-haskell">module Main where
+
+import Prelude (IO, FilePath, (.))
+import qualified Prelude as P
+
+import qualified PlutusTx
+import PlutusTx.Prelude
+  ( Bool(..)
+  , (==)
+  , (&&)
+  , not
+  , traceIfFalse
+  , traceError
+  , elem
+  , mconcat
+  , Maybe(..)
+  , BuiltinByteString
+  )
+
+import qualified Plutus.V2.Ledger.Api as V2
+import qualified Plutus.V1.Ledger.Interval as I
+import qualified Plutus.V1.Ledger.Value     as Value
+
+import Codec.Serialise (serialise)
+
+-- imports for pretty JSON .plutus
+import qualified Data.Aeson               as Aeson
+import qualified Data.ByteString.Base16   as B16
+import qualified Data.ByteString.Lazy     as LBS
+import qualified Data.ByteString          as BS
+import qualified Data.ByteString.Char8    as BSC
+</code></pre>
+            <h3 id="import-main">6.1 <code>module Main where</code> ▶️</h3>
+            <p>This file is an <strong>executable</strong>: it builds the validator and writes <code>atomic-swap.plutus</code> in <code>main :: IO ()</code>.</p>
+            
+            <h3 id="import-prelude">6.2 <code>Prelude (IO, FilePath, (.))</code> & <code>qualified Prelude as P</code> 🔌</h3>
+            <ul>
+                <li>You disabled the default Prelude, but you still need <strong>off-chain</strong> bits: <code>IO</code>, <code>FilePath</code>, <code>(.)</code>, <code>P.putStrLn</code>, <code>P.String</code>, etc.</li>
+                <li>Pattern: <strong>on-chain</strong> → <code>PlutusTx.Prelude</code>; <strong>off-chain</strong> → base <code>Prelude</code> (qualified as <code>P</code> to avoid mixing).</li>
+            </ul>
+
+            <h3 id="import-plutustx">6.3 <code>PlutusTx</code> & <code>PlutusTx.Prelude</code> 🧠</h3>
+            <ul>
+                <li><code>PlutusTx</code>: Template Haskell utilities—<code>compile</code>, <code>unstableMakeIsData</code>, <code>makeLift</code>, <code>unsafeFromBuiltinData</code>.</li>
+                <li><code>PlutusTx.Prelude</code>: deterministic <strong>on-chain</strong> Prelude providing <code>Bool</code>, <code>(==)</code>, <code>(&&)</code>, <code>not</code>, <code>elem</code>, <code>mconcat</code>, <code>traceIfFalse</code>, <code>traceError</code>, <code>Maybe</code>, and <code>BuiltinByteString</code>.</li>
+                <li>Why: on-chain code <strong>must</strong> use these to compile to Plutus Core and remain deterministic.</li>
+            </ul>
+
+            <h3 id="import-api">6.4 <code>Plutus.V2.Ledger.Api as V2</code> 📜</h3>
+            <p>Ledger V2 types & accessors used throughout your validator:</p>
+            <ul>
+                <li><strong>Core types:</strong> <code>ScriptContext</code>, <code>TxInfo</code>, <code>Address</code>, <code>Credential</code>, <code>POSIXTime</code>, <code>Value</code>, <code>CurrencySymbol</code>, <code>TokenName</code>, <code>BuiltinData</code>, <code>Validator</code>.</li>
+                <li><strong>Accessors:</strong> <code>txInfoValidRange</code>, <code>txInfoSignatories</code>, <code>txInfoOutputs</code>, <code>txOutAddress</code>, <code>txOutValue</code>, <code>mkValidatorScript</code>.</li>
+                <li>Why: Your validator is <strong>Plutus V2</strong>.</li>
+            </ul>
+
+            <h3 id="import-interval">6.5 <code>Plutus.V1.Ledger.Interval as I</code> ⏱️</h3>
+            <ul>
+                <li>Interval helpers <code>I.to</code>, <code>I.from</code>, <code>I.contains</code> used in time checks:
+                    <ul>
+                        <li><strong>Before deadline:</strong> <code>I.contains (I.to deadline) (txInfoValidRange info)</code></li>
+                        <li><strong>After deadline:</strong> <code>I.contains (I.from deadline) (txInfoValidRange info)</code></li>
+                    </ul>
+                </li>
+                <li>Using V1 interval utils with V2 API is standard—they’re shared and stable.</li>
+            </ul>
+
+            <h3 id="import-value">6.6 <code>Plutus.V1.Ledger.Value as Value</code> 💰</h3>
+            <ul>
+                <li>Utilities for <code>Value</code>, especially <code>flattenValue</code> (used in <code>mustBurnBeacon</code> to assert the mint field equals exactly one negative beacon <code>(-1)</code>).</li>
+                <li>Why: Makes beacon-burn checks precise and easy to reason about.</li>
+            </ul>
+
+            <h3 id="import-serialise">6.7 <code>Codec.Serialise (serialise)</code> 🔐</h3>
+            <ul>
+                <li>Converts your compiled <code>Validator</code> into <strong>CBOR</strong> bytes so it can be packed into the <code>.plutus</code> file.</li>
+            </ul>
+
+            <h3 id="import-json">6.8 JSON & ByteString stack for output 🗂️</h3>
+            <ul>
+                <li><code>Data.Aeson</code> → Build the JSON envelope:
+<pre><code class="language-json">{"type":"PlutusScriptV2","description":"Atomic swap validator","cborHex":"..."}
+</code></pre>
+                </li>
+                <li><code>Data.ByteString.Base16</code> → Hex-encode the CBOR (<code>cborHex</code>) expected by wallets/CLI.</li>
+                <li><code>Data.ByteString.Lazy</code> → Write the JSON file (<code>LBS.writeFile</code>).</li>
+                <li><code>Data.ByteString</code> / <code>Data.ByteString.Char8</code> → Strict bytes and simple string conversions (<code>BSC.unpack</code>) for JSON fields.</li>
+            </ul>
+            <blockquote><strong>Why this exact combo?</strong> It’s the standard Cardano pipeline: <strong>serialize → base16 encode → JSON</strong> so your script is consumable by tooling.</blockquote>
+        </section>
+
+        <section id="validation">
+            <h2>7. ✅ Validation Logic</h2>
+            <p>This is where your script actually <strong>enforces</strong> all that.</p>
+            
+            <h3 id="validation-cancel">7.1 Cancel branch</h3>
+            <p>Your function:</p>
+<pre><code class="language-haskell">validateCancel :: SwapDatum -> V2.TxInfo -> Bool
+</code></pre>
+            <p>Checks:</p>
+            <ul>
+                <li><code>validAfterDeadline sdDeadline info</code></li>
+                <li><code>sellerSigned sdSeller info</code></li>
+                <li><code>refundIsExact sdSeller sdOffer info</code></li>
+                <li>if <code>sdSwapId = Just beacon</code>, then <code>mustBurnBeacon beacon info</code></li>
+            </ul>
+            <p>So: <strong>after time, correct signer, exact refund, optional beacon burn</strong>.</p>
+
+            <h3 id="validation-buy">7.2 Buy branch</h3>
+            <p>Your function:</p>
+<pre><code class="language-haskell">validateBuy :: SwapDatum -> V2.ScriptContext -> Bool
+</code></pre>
+            <p>Checks:</p>
+            <ul>
+                <li>before deadline</li>
+                <li>payouts match expectation</li>
+                <li>payouts actually paid</li>
+                <li>offer actually delivered out</li>
+                <li>if single-fill → no script outputs</li>
+                <li>if beacon → beacon burned</li>
+            </ul>
+            <p>This is what makes it atomic: <strong>either all payouts and delivery happen, or the tx is rejected.</strong></p>
+
+            <h3 id="validation-beacon">7.3 Beacon burn (optional)</h3>
+            <p>You added:</p>
+<pre><code class="language-haskell">mustBurnBeacon :: (V2.CurrencySymbol, V2.TokenName) -> V2.TxInfo -> Bool
+</code></pre>
+            <p>This ensures that if the datum said “this listing has this beacon”, then the spending tx must <strong>mint -1 of that token</strong> → i.e. burn it. That’s a pattern to prevent reusing a listing.</p>
+        </section>
+
+        <section id="producing">
+            <h2>8. 📦 Producing the <code>atomic-swap.plutus</code> file</h2>
+            <p>At the bottom of your file you:</p>
+            <ol>
+                <li>Compile the validator with <code>PlutusTx.compile</code>.</li>
+                <li>Serialise to CBOR.</li>
+                <li>Hex-encode it.</li>
+                <li>Wrap it in JSON:
+<pre><code class="language-json">{
+  "type": "PlutusScriptV2",
+  "description": "Atomic swap validator",
+  "cborHex": "<hex here>"
+}
+</code></pre>
+                </li>
+                <li>Write it as <code>atomic-swap.plutus</code>.</li>
+            </ol>
+            <p>That’s the file your off-chain code / CLI will actually use.</p>
+        </section>
+
+        <section id="testing">
+            <h2>9. 🧪 Testing the Contract</h2>
+            <p>This project already has a Haskell test suite (<code>cabal test wspace-tests</code>) and we added a dedicated test module for this script (<code>tests/AtomicSwapSpec.hs</code>). The goal of these tests is to simulate the two validator branches (Cancel and Buy) without having to build full Cardano transactions on-chain.</p>
+            
+            <h3 id="testing-structure">9.1 How the tests are structured</h3>
+            <ul>
+                <li>Each test:
+                    <ol>
+                        <li>builds a <strong>fake datum</strong> (what was stored at the script),</li>
+                        <li>builds a <strong>fake transaction context</strong> (outputs, signers, time range),</li>
+                        <li>calls the on-chain validator function directly in Haskell,</li>
+                        <li>asserts that it returns <code>True</code> (should pass) or <code>False</code> (should fail).</li>
+                    </ol>
+                </li>
+            </ul>
+            <p>So you’re unit-testing the on-chain logic in normal Haskell.</p>
+
+            <h3 id="testing-scenarios">9.2 Key scenarios we test</h3>
+            <ol>
+                <li><strong>Cancel succeeds after deadline with seller signature and full refund</strong></li>
+                <li><strong>Cancel fails before deadline</strong></li>
+                <li><strong>Cancel fails without seller signature</strong></li>
+                <li><strong>Cancel fails if refund amount != full offer</strong></li>
+                <li><strong>Buy succeeds before deadline with correct payouts and offer delivery</strong></li>
+                <li><strong>Buy fails if payout amount doesn’t match expectation</strong></li>
+                <li><strong>Buy fails after deadline</strong></li>
+                <li><strong>Buy fails when single-fill is on but the tx recreates the script output</strong></li>
+                <li><strong>Cancel with beacon present but not burned → fail</strong></li>
+                <li><strong>Cancel with beacon present and burned → pass</strong></li>
+            </ol>
+            <p>These map directly to the conditions in sections <strong>7.1</strong> and <strong>7.2</strong>.</p>
+
+            <h3 id="testing-running">9.3 Running the tests</h3>
+            <p>From the project root:</p>
+<pre><code class="language-bash">cabal test wspace-tests
+</code></pre>
+            <p>Cabal will:</p>
+            <ol>
+                <li>build the library (which contains your lecture code and validator),</li>
+                <li>build the test suite,</li>
+                <li>run <code>Spec.hs</code>, which group all tests, including <code>AtomicSwapSpec</code>.</li>
+            </ol>
+            <p>If all logic is still in sync with the validator, you’ll see all the AtomicSwap tests passing in the output.</p>
+
+            <h3 id="testing-why">9.4 Why testing matters here</h3>
+            <ul>
+                <li>The validator is quite <strong>strict</strong> (exact value checks, time checks, signatory checks), so a small change in the datum or outputs can make the script fail.</li>
+                <li>By unit-testing in Haskell, you can change the validator and immediately confirm you didn’t break:
+                    <ul>
+                        <li>cancellation rules,</li>
+                        <li>payout rules,</li>
+                        <li>single-fill behavior,</li>
+                        <li>optional beacon burn.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>That way, when you export <code>atomic-swap.plutus</code>, you already know the core logic is correct.</p>
+        </section>
+
+        <section id="glossary">
+            <h2>10. 📚 Glossary of Terms</h2>
+            <dl>
+                <dt>Validator</dt>
+                <dd>The Plutus on-chain script that decides if a UTXO can be spent.</dd>
+                
+                <dt>Script UTXO</dt>
+                <dd>A UTXO locked by a Plutus script instead of a normal public key. To spend it, you must please the script.</dd>
+                
+                <dt>Datum</dt>
+                <dd>Extra data stored with a script UTXO. Here it describes the listing (seller, offer, deadline, payouts).</dd>
+                
+                <dt>Redeemer</dt>
+                <dd>Data provided by the spending transaction to tell the validator which path to follow (Cancel vs Buy).</dd>
+                
+                <dt>Credential</dt>
+                <dd>How an address is secured (pubkey or script). You used it for <code>sdSeller</code>.</dd>
+                
+                <dt>Value</dt>
+                <dd>Cardano’s multi-asset bundle (can include ADA and tokens).</dd>
+                
+                <dt>Payout</dt>
+                <dd>A pair of (address, value) the buyer must pay when buying.</dd>
+                
+                <dt>Deadline / POSIX time</dt>
+                <dd>A time (in ms since 1970) used to say “cancel only after this” or “buy only before this.” The script checks the tx’s validity range against this.</dd>
+                
+                <dt>Single fill</dt>
+                <dd>A flag to stop the script from recreating itself after a successful buy.</dd>
+                
+                <dt>Beacon</dt>
+                <dd>Optional identifying token. Your script can require it to be burned when the swap UTXO is consumed.</dd>
+                
+                <dt>Atomic</dt>
+                <dd>All-or-nothing: either every required payment + delivery is in the transaction, or the validator rejects the transaction.</dd>
+            </dl>
+        </section>
+    </main>
+
+    <script>
+        // Initialize Highlighter.js
+        hljs.highlightAll();
+
+        // Scrollspy Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.content section');
+            const navLinks = document.querySelectorAll('.sidebar nav a');
+
+            if (!sections.length || !navLinks.length) {
+                return;
+            }
+
+            const onScroll = () => {
+                let currentSection = '';
+                
+                // Find the current section
+                // We add a 100px offset to trigger the highlight a bit earlier
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (window.scrollY >= sectionTop - 100) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                // Update navigation links
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    
+                    // Check if the link's href matches the current section
+                    // We use link.getAttribute('href') to get the raw "#id"
+                    if (link.getAttribute('href') === `#${currentSection}`) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+
+            // Listen for scroll events
+            window.addEventListener('scroll', onScroll);
+            
+            // Run once on load to set the initial state
+            onScroll();
+        });
+    </script>
+</body>
+</html>
