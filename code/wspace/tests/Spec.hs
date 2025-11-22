@@ -10,6 +10,7 @@ import VestingSpec             qualified as VestingSpec
 import DemoSpec                qualified as DemoSpec
 import AtomicSwapSpec         qualified as AtomicSwapSpec
 import AtomicSwapHTLCSpec     qualified as AtomicSwapHTLCSpec
+import SealedBidSpec          qualified as SealedBidSpec
 
 
 main :: IO ()
@@ -24,5 +25,6 @@ allTests =
     , CGPlutusUtilsSpec.tests
     , DemoSpec.tests
     , AtomicSwapSpec.tests 
-    , AtomicSwapHTLCSpec.tests        
+    , AtomicSwapHTLCSpec.tests    
+    , SealedBidSpec.tests    
     ]
