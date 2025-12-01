@@ -1,0 +1,5115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportsTickets Tutorial</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/haskell.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/plaintext.min.js"></script>
+
+    <style>
+        /* --- Global Styles --- */
+        :root {
+            --primary-color: #007acc;
+            --text-color: #333;
+            --bg-color: #ffffff;
+            --sidebar-bg: #f7f7f7;
+            --border-color: #eee;
+            --code-bg: #2d2d2d;
+            --code-color: #f1f1f1;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 20px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5em;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.3em;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: #444;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #555;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.9em;
+            background-color: #f0f0f0;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 1.25em;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        blockquote {
+            margin: 1.5em 0;
+            padding: 1em;
+            background-color: #f9f9f9;
+            border-left: 5px solid var(--primary-color);
+            font-style: italic;
+        }
+
+        ul, ol {
+            padding-left: 1.5em;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        /* --- Layout --- */
+        .sidebar {
+            width: 300px;
+            flex-shrink: 0;
+            background-color: var(--sidebar-bg);
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            overflow-y: auto;
+            padding: 2em;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 2em 4em;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .content section {
+            margin-bottom: 3em;
+        }
+
+        /* --- Sidebar Navigation --- */
+        .sidebar h3 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #555;
+            margin-top: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 0.25em;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 0.3em 0.5em;
+            border-radius: 4px;
+            color: #444;
+            transition: background-color 0.2s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: #e9e9e9;
+            text-decoration: none;
+        }
+
+        .sidebar ul ul {
+            padding-left: 1em;
+            margin-top: 0.25em;
+            font-size: 0.9em;
+        }
+
+        .sidebar a.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        /* --- Glossary / Definition Lists --- */
+        dl { margin-top: 1.5em; }
+        dt { font-weight: 600; color: var(--text-color); margin-top: 1em; }
+        dd { margin-left: 1.5em; margin-bottom: 0.5em; color: #555; }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .content { padding: 2em; }
+        }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+    <h3>Sports Tickets 🎟️</h3>
+    <ul>
+        <li>
+            <a href="#tutorial-sports-tickets--beginner-tutorial--documentation">
+                Tutorial-Sports-Tickets – Beginner Tutorial / Documentation
+            </a>
+        </li>
+        <li><a href="#table-of-contents">Table of Contents</a></li>
+
+        <li><a href="#1-overview">1. Overview 📖</a></li>
+
+        <li>
+            <a href="#2-what-problem-this-contract-solves">2. What Problem This Contract Solves 💡</a>
+        </li>
+
+        <li>
+            <a href="#3-high-level-flow-mint--sellresell--gate-use">
+                3. High-Level Flow (Mint → Sell/Resell → Gate Use) 🌊
+            </a>
+            <ul>
+                <li>
+                    <a href="#31-mint--primary-sale-off-chain-pattern">
+                        3.1 Mint &amp; primary sale (off-chain pattern)
+                    </a>
+                </li>
+                <li>
+                    <a href="#32-resaletransfer-branch-on-chain">
+                        3.2 Resale/Transfer branch (On-chain)
+                    </a>
+                </li>
+                <li>
+                    <a href="#33-useatgate-branch-on-chain-entry-scan">
+                        3.3 UseAtGate branch (on-chain entry scan)
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#4-on-chain-data-types">4. On-Chain Data Types 🧬</a>
+            <ul>
+                <li><a href="#41-ticketdatum">4.1 <code>TicketDatum</code></a></li>
+                <li>
+                    <a href="#42-ticketredeemer">4.2 <code>TicketRedeemer</code></a>
+                    <ul>
+                        <li>
+                            <a href="#transfer-pubkeyhash-integer">
+                                <code>Transfer PubKeyHash Integer</code>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#useatgate">
+                                <code>UseAtGate</code>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="#43-ticketmintparams">4.3 <code>TicketMintParams</code></a></li>
+                <li>
+                    <a href="#44-ticketmintredeemer">4.4 <code>TicketMintRedeemer</code></a>
+                    <ul>
+                        <li>
+                            <a href="#mintticket-builtinbytestring">
+                                <code>MintTicket BuiltinByteString</code>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#burnticket-builtinbytestring">
+                                <code>BurnTicket BuiltinByteString</code>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#5-language-extensions-why-theyre-here">
+                5. Language Extensions (Why they’re here) 🔧
+            </a>
+            <ul>
+                <li><a href="#51-datakinds">5.1 <code>DataKinds</code></a></li>
+                <li><a href="#52-noimplicitprelude">5.2 <code>NoImplicitPrelude</code></a></li>
+                <li><a href="#53-templatehaskell">5.3 <code>TemplateHaskell</code></a></li>
+                <li><a href="#54-scopedtypevariables">5.4 <code>ScopedTypeVariables</code></a></li>
+                <li><a href="#55-overloadedstrings">5.5 <code>OverloadedStrings</code></a></li>
+                <li><a href="#56-typeapplications">5.6 <code>TypeApplications</code></a></li>
+                <li>
+                    <a href="#57-imports-in-sportsticketscontracths-validator">
+                        5.7 Imports in <code>SportsTicketsContract.hs</code> (validator)
+                    </a>
+                </li>
+                <li>
+                    <a href="#58-imports-in-sportsticketspolicyhs-minting-policy">
+                        5.8 Imports in <code>SportsTicketsPolicy.hs</code> (minting policy)
+                    </a>
+                </li>
+                <li>
+                    <a href="#59-imports-in-sportsticketshs-validator-generator--writer">
+                        5.9 Imports in <code>SportsTickets.hs</code> (validator generator / writer)
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#6-imports-what-each-one-is-for">6. Imports (What each one is for) 📦</a>
+            <ul>
+                <li>
+                    <a href="#61-module-structure-sportsticketscontract-sportsticketspolicy-sportstickets">
+                        6.1 Module structure (<code>SportsTicketsContract</code>, <code>SportsTicketsPolicy</code>, <code>SportsTickets</code>)
+                    </a>
+                </li>
+                <li>
+                    <a href="#62-prelude-and-qualified-prelude-as-p">
+                        6.2 <code>Prelude</code> and <code>qualified Prelude as P</code>
+                    </a>
+                </li>
+                <li>
+                    <a href="#63-plutus-core-imports">6.3 Plutus core imports</a>
+                    <ul>
+                        <li><a href="#sportsticketscontracths"><code>SportsTicketsContract.hs</code></a></li>
+                        <li><a href="#sportsticketspolicyhs"><code>SportsTicketsPolicy.hs</code></a></li>
+                    </ul>
+                </li>
+                <li><a href="#64-serialization-stack">6.4 Serialization stack</a></li>
+                <li><a href="#65-cardano-api-imports">6.5 Cardano API imports</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#7-ticket-validator-logic-sportsticketscontract">
+                7. Ticket Validator Logic (SportsTicketsContract) 🛡️
+            </a>
+            <ul>
+                <li>
+                    <a href="#71-shared-helpers">7.1 Shared helpers</a>
+                    <ul>
+                        <li>
+                            <a href="#info-txrange-ticketnftbound">
+                                <code>info</code>, <code>txRange</code>, <code>ticketNftBound</code>
+                            </a>
+                            <ul>
+                                <li><a href="#ticketnftbound"><code>ticketNftBound</code></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#getcontinuingoutput-and-datumfromoutput">
+                                <code>getContinuingOutput</code> and <code>datumFromOutput</code>
+                            </a>
+                            <ul>
+                                <li><a href="#getcontinuingoutput"><code>getContinuingOutput</code></a></li>
+                                <li><a href="#datumfromoutput"><code>datumFromOutput</code></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#ticketstaticfieldsequal-and-nocontinuingoutput">
+                                <code>ticketStaticFieldsEqual</code> and <code>noContinuingOutput</code>
+                            </a>
+                            <ul>
+                                <li><a href="#ticketstaticfieldsequal"><code>ticketStaticFieldsEqual</code></a></li>
+                                <li><a href="#nocontinuingoutput"><code>noContinuingOutput</code></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#72-transfer-branch-transfer-newowner-price">
+                        7.2 Transfer branch (<code>Transfer newOwner price</code>)
+                    </a>
+                    <ul>
+                        <li><a href="#1-ticket-nft-must-be-present-and-correct">1. Ticket NFT must be present and correct</a></li>
+                        <li><a href="#2-ticket-must-be-unused">2. Ticket must be unused</a></li>
+                        <li><a href="#3-owner-must-sign-and-kyc-authority-if-any">3. Owner must sign, and KYC authority if any</a></li>
+                        <li><a href="#4-price-must-respect-the-cap-owner-must-change">4. Price must respect the cap, owner must change</a></li>
+                        <li><a href="#5-owner-must-be-paid-exactly-the-declared-price">5. Owner must be paid exactly the declared price</a></li>
+                        <li>
+                            <a href="#6-ticket-state-transition-must-be-correct-ticketstatetransitionok">
+                                6. Ticket state transition must be correct (<code>ticketStateTransitionOk</code>)
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#73-useatgate-branch-useatgate">
+                        7.3 UseAtGate branch (<code>UseAtGate</code>)
+                    </a>
+                    <ul>
+                        <li><a href="#1-ticket-existence--unused-status">1. Ticket existence + unused status</a></li>
+                        <li><a href="#2-time-restriction-on-or-before-tdeventtime">2. Time restriction: on or before <code>tdEventTime</code></a></li>
+                        <li>
+                            <a href="#3-mintburn-keys-usedtokenname-mintedamountof-valuepaidof">
+                                3. Mint/burn keys: <code>usedTokenName</code>, <code>mintedAmountOf</code>, <code>valuePaidOf</code>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#4-burn-exactly-one-ticket-mint-exactly-one-used-souvenir">
+                                4. Burn exactly one ticket, mint exactly one USED souvenir
+                            </a>
+                        </li>
+                        <li><a href="#5-no-extra-minting">5. No extra minting</a></li>
+                        <li><a href="#6-used-souvenir-goes-to-the-owner">6. USED souvenir goes to the owner</a></li>
+                        <li>
+                            <a href="#7-no-continuing-script-output-nocontinuingoutput">
+                                7. No continuing script output (<code>noContinuingOutput</code>)
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#8-minting-policy-logic-sportsticketspolicy">
+                8. Minting Policy Logic (<code>SportsTicketsPolicy</code>) 🏭
+            </a>
+            <ul>
+                <li>
+                    <a href="#81-parameters-ticketmintparams-and-organiser-role">
+                        8.1 Parameters (<code>TicketMintParams</code> and organiser role)
+                    </a>
+                </li>
+                <li><a href="#82-mintticket-seat-branch">8.2 <code>MintTicket seat</code> branch</a></li>
+                <li><a href="#83-burnticket-seat-branch">8.3 <code>BurnTicket seat</code> branch</a></li>
+                <li>
+                    <a href="#84-preventing-extra-tokens-under-the-same-policy">
+                        8.4 Preventing extra tokens under the same policy
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#9-producing-sports-ticketsplutus-and-sports-tickets-policyplutus">
+                9. Producing <code>sports-tickets.plutus</code> and <code>sports-tickets-policy.plutus</code> 📝
+            </a>
+            <ul>
+                <li>
+                    <a href="#91-sports-tickets-exe-validator-writer">
+                        9.1 <code>sports-tickets-exe</code> (validator writer)
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="#911-computing-the-plutus-validator-hash">
+                                9.1.1 Computing the Plutus validator hash
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#912-computing-the-plutus-script-address">
+                                9.1.2 Computing the Plutus script address
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#913-bech32-script-address-via-cardano-api">
+                                9.1.3 Bech32 script address via cardano-api
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#914-writing-sports-ticketsplutus">
+                                9.1.4 Writing <code>sports-tickets.plutus</code>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#915-what-main-prints">
+                                9.1.5 What <code>main</code> prints
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#92-sports-tickets-policy-exe-minting-policy-writer">
+                        9.2 <code>sports-tickets-policy-exe</code> (minting policy writer)
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="#921-building-ticketmintparams-organiser--event-id">
+                                9.2.1 Building <code>TicketMintParams</code> (organiser + event id)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#922-serialising-the-policy-and-computing-the-policy-id">
+                                9.2.2 Serialising the policy and computing the policy id
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#923-writing-sports-tickets-policyplutus">
+                                9.2.3 Writing <code>sports-tickets-policy.plutus</code>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#924-why-you-need-both-plutus-files">
+                                9.2.4 Why you need both <code>.plutus</code> files
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#10-testing-the-contracts">10. Testing the Contracts 🧪</a>
+            <ul>
+                <li>
+                    <a href="#101-what-sportsticketsspec-tests-validator">
+                        10.1 What <code>SportsTicketsSpec</code> tests (validator)
+                    </a>
+                    <ul>
+                        <li><a href="#1011-transfer-tests">10.1.1 Transfer tests</a></li>
+                        <li><a href="#1012-useatgate-tests">10.1.2 UseAtGate tests</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#102-what-sportsticketspolicyspec-tests-minting-policy">
+                        10.2 What <code>SportsTicketsPolicySpec</code> tests (minting policy)
+                    </a>
+                </li>
+                <li><a href="#103-running-the-tests">10.3 Running the tests</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#11-glossary-of-terms">11. Glossary of Terms 📚</a>
+            <ul>
+                <li><a href="#111-nft-ticket">11.1 NFT ticket</a></li>
+                <li><a href="#112-primary-sale--face-value">11.2 Primary sale / face value</a></li>
+                <li>
+                    <a href="#113-resale-cap-tdmaxprice">
+                        11.3 Resale cap (<code>tdMaxPrice</code>)
+                    </a>
+                </li>
+                <li>
+                    <a href="#114-kyc-authority-tdkycauthority">
+                        11.4 KYC authority (<code>tdKycAuthority</code>)
+                    </a>
+                </li>
+                <li>
+                    <a href="#115-used-souvenir-token-tdusedpolicyid--usedtokenname">
+                        11.5 USED souvenir token (<code>tdUsedPolicyId</code> + <code>usedTokenName</code>)
+                    </a>
+                </li>
+                <li>
+                    <a href="#116-gate--entry-scan-useatgate">
+                        11.6 Gate / entry scan (<code>UseAtGate</code>)
+                    </a>
+                </li>
+                <li><a href="#117-datum-ticketdatum">11.7 Datum (<code>TicketDatum</code>)</a></li>
+                <li><a href="#118-redeemer-ticketredeemer">11.8 Redeemer (<code>TicketRedeemer</code>)</a></li>
+                <li><a href="#119-minting-policy">11.9 Minting policy</a></li>
+                <li><a href="#1110-validator">11.10 Validator</a></li>
+                <li><a href="#1111-script-address">11.11 Script address</a></li>
+                <li><a href="#1112-policy-id">11.12 Policy ID</a></li>
+                <li>
+                    <a href="#1113-text-envelope-plutus-file">
+                        11.13 Text envelope (<code>.plutus</code> file)
+                    </a>
+                </li>
+                <li>
+                    <a href="#1114-how-these-concepts-connect-ticket-lifecycle-diagram">
+                        11.14 How these concepts connect (ticket lifecycle diagram)
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+
+    <main class="content">
+        <!-- 0. Title Section -->
+        <section id="tutorial-sports-tickets--beginner-tutorial--documentation">
+            <h1>Tutorial-Sports-Tickets – Beginner Tutorial / Documentation</h1>
+        </section>
+
+<section id="1-overview">
+    <h2>1. Overview</h2>
+
+    <p>
+        <code>SportsTicketsContract</code> and <code>SportsTicketsPolicy</code> together implement an
+        <strong>NFT-based ticketing system</strong> for sports &amp; entertainment events on Cardano.
+    </p>
+
+    <p>At a high level:</p>
+    <ul>
+        <li><strong>Each ticket is an NFT</strong> under a specific minting policy.</li>
+        <li>
+            That NFT is <strong>bound to a script UTxO</strong> whose datum (<code>TicketDatum</code>) describes:
+            <ul>
+                <li>which <strong>event</strong> and <strong>seat</strong> it represents,</li>
+                <li>who currently <strong>owns</strong> it,</li>
+                <li>whether it is already <strong>used</strong>,</li>
+                <li>the <strong>face value</strong> and <strong>maximum allowed resale price</strong>,</li>
+                <li>an optional <strong>KYC authority</strong> who must co-sign transfers,</li>
+                <li>which <strong>NFT policy + token name</strong> represent this ticket,</li>
+                <li>which <strong>“USED souvenir” policy</strong> will be used at the gate.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p>The system is split into two on-chain pieces:</p>
+
+    <ol>
+        <li>
+            <strong>Ticket validator (<code>SportsTicketsContract</code>)</strong>
+            <ul>
+                <li>Controls the <strong>life cycle of a single ticket UTxO</strong>.</li>
+                <li>
+                    Supports two actions via <code>TicketRedeemer</code>:
+                    <ul>
+                        <li><code>Transfer newOwner price</code> – controlled resale / transfer.</li>
+                        <li><code>UseAtGate</code> – gate entry: burn the ticket, mint a USED souvenir.</li>
+                    </ul>
+                </li>
+                <li>Enforces:
+                    <ul>
+                        <li>Ticket NFT is present and preserved correctly on transfer.</li>
+                        <li>
+                            Static ticket fields (event, seat, face value, cap, policies)
+                            <strong>never change</strong>.
+                        </li>
+                        <li>Resale price <strong>cannot exceed</strong> the configured cap.</li>
+                        <li>Current owner must sign; optional KYC signer may be required.</li>
+                        <li>Gate usage happens <strong>before or at</strong> event time.</li>
+                        <li>Gate usage burns exactly 1 ticket NFT and mints exactly 1 USED token.</li>
+                        <li>USED token is sent to the <strong>current owner</strong>, no continuing script UTxO.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <strong>Minting policy (<code>SportsTicketsPolicy</code>)</strong>
+            <ul>
+                <li>Controls <strong>which NFT tickets can be minted/burned</strong>, and by whom.</li>
+                <li>
+                    Parameters (<code>TicketMintParams</code>) bake in:
+                    <ul>
+                        <li><code>tmpOrganizer</code> – organizer’s <code>PubKeyHash</code>.</li>
+                        <li><code>tmpEventId</code> – event identifier (mostly for off-chain grouping).</li>
+                    </ul>
+                </li>
+                <li>
+                    Redeemer (<code>TicketMintRedeemer</code>) distinguishes:
+                    <ul>
+                        <li><code>MintTicket seat</code> – mint 1 NFT for a given seat.</li>
+                        <li><code>BurnTicket seat</code> – burn 1 NFT for a given seat.</li>
+                    </ul>
+                </li>
+                <li>Enforces:
+                    <ul>
+                        <li>Only the <strong>organizer</strong> (<code>tmpOrganizer</code>) can mint/burn.</li>
+                        <li>Exactly <strong>one</strong> token per seat is minted/burned in each tx.</li>
+                        <li>No extra tokens under the same policy.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ol>
+
+    <p>
+        The executable <code>SportsTickets.hs</code> ties this together for deployment:
+    </p>
+    <ul>
+        <li>Compiles the validator to a <strong>text-envelope <code>.plutus</code> file</strong> (<code>sports-tickets.plutus</code>).</li>
+        <li>
+            Prints the <strong>validator hash</strong> and <strong>script address</strong> (including a Bech32 address)
+            for use with <code>cardano-cli</code> and wallets.
+        </li>
+    </ul>
+</section>
+
+<section id="2-what-problem-this-contract-solves">
+    <h2>2. What Problem This Contract Solves</h2>
+
+    <p>
+        Traditional ticketing systems — even when “digital” — suffer from several recurring problems:
+    </p>
+
+    <ol>
+        <li>
+            <strong>Scalping and price gouging</strong>
+            <ul>
+                <li>Tickets are resold on secondary markets at <strong>huge markups</strong>.</li>
+                <li>Organizers have little on-chain control over resale prices.</li>
+                <li>Fans who arrive late to the sale face inflated secondary prices.</li>
+            </ul>
+        </li>
+
+        <li>
+            <strong>Fake or duplicated tickets</strong>
+            <ul>
+                <li>Screenshots, PDFs, or simple QR codes can be <strong>copied</strong> and resold.</li>
+                <li>Event staff must rely on off-chain systems to detect duplicates.</li>
+                <li>It’s not obvious, on-chain, whether a ticket has already been used.</li>
+            </ul>
+        </li>
+
+        <li>
+            <strong>Messy gate operations</strong>
+            <ul>
+                <li>Verifying that each ticket is <strong>valid, unused, and unique</strong> at the gate is tricky.</li>
+                <li>It’s hard to get a clean on-chain audit trail of <strong>who actually entered</strong>.</li>
+            </ul>
+        </li>
+
+        <li>
+            <strong>Regulatory / KYC requirements for certain events</strong>
+            <ul>
+                <li>
+                    Some events (VIP, age-restricted, high-value) may require that
+                    <strong>only KYC’d users</strong> can hold or resell tickets.
+                </li>
+                <li>Most simple NFT-based ticket systems don’t provide an on-chain hook for this.</li>
+            </ul>
+        </li>
+    </ol>
+
+    <hr>
+
+    <p>The Sports Tickets contracts address these issues as follows:</p>
+
+    <h3>Anti-scalping via <code>tdMaxPrice</code></h3>
+    <p>
+        Each ticket carries a <strong>maximum resale price</strong> in its datum (<code>tdMaxPrice</code>).
+        The <code>Transfer</code> branch checks that the actual ADA paid to the current owner
+        <strong>equals the declared price</strong> and that <code>price &lt;= tdMaxPrice</code>.
+        This limits price gouging while still allowing a controlled secondary market.
+    </p>
+
+    <h3>Uniqueness and authenticity via NFT binding</h3>
+    <p>
+        Each ticket is <strong>tightly bound</strong> to a specific NFT:
+        <code>tdPolicyId</code> + <code>tdTokenName</code> identify the ticket token.
+        The validator enforces that:
+    </p>
+    <ul>
+        <li>The input UTxO must contain <strong>exactly 1</strong> of that NFT.</li>
+        <li>The continuing output must keep <strong>exactly 1</strong> of that NFT, with no extra non-ADA tokens.</li>
+    </ul>
+    <p>Fake copies or duplicated tokens under other policies <strong>won’t pass</strong> the validator.</p>
+
+    <h3>On-chain “used” semantics at the gate</h3>
+    <p>
+        Gate usage (<code>UseAtGate</code>) enforces:
+    </p>
+    <ul>
+        <li>The transaction is valid <strong>before or at</strong> <code>tdEventTime</code>.</li>
+        <li>One ticket NFT is <strong>burned</strong> (under <code>tdPolicyId</code>).</li>
+        <li>
+            One <strong>USED souvenir NFT</strong> is <strong>minted</strong>
+            (under <code>tdUsedPolicyId</code>, name like <code>USED-…</code>).
+        </li>
+        <li>The USED token is paid to the ticket owner; <strong>no continuing script output</strong> remains.</li>
+    </ul>
+    <p>
+        This gives a clean invariant:
+    </p>
+    <ul>
+        <li><strong>Before gate</strong>: exactly one ticket NFT exists.</li>
+        <li><strong>After gate</strong>: no ticket NFT; exactly one USED souvenir NFT for that holder.</li>
+    </ul>
+    <p>
+        You get a tamper-resistant, on-chain record of <strong>who actually entered</strong>.
+    </p>
+
+    <h3>Optional KYC control</h3>
+    <p>
+        <code>tdKycAuthority :: Maybe PubKeyHash</code> in the datum:
+    </p>
+    <ul>
+        <li>If <code>Nothing</code>, transfers only require the owner’s signature.</li>
+        <li>If <code>Just pk</code>, any <code>Transfer</code> must also be signed by this KYC authority.</li>
+    </ul>
+    <p>
+        That lets organizers enforce compliance for certain events (e.g. age/ID-checked) and maintain a clean on-chain
+        separation between normal events with no KYC and controlled events with KYC co-sign.
+    </p>
+
+    <h3>Organizer control over ticket supply</h3>
+    <p>
+        The minting policy (<code>SportsTicketsPolicy</code>) ensures:
+    </p>
+    <ul>
+        <li>Only the organizer can <strong>mint</strong> or <strong>burn</strong> tickets for a given event.</li>
+        <li>Each seat NFT is minted/burned in isolation (no hidden extra tokens).</li>
+    </ul>
+    <p>
+        This prevents:
+    </p>
+    <ul>
+        <li>Unauthorized duplication of seat tickets.</li>
+        <li>Silent over-selling under the same policy.</li>
+    </ul>
+
+    <blockquote>
+        In short, these contracts model a <strong>full ticket lifecycle</strong> on-chain:
+        <br>
+        <em>Mint once → sell/resell with caps and (optional) KYC → scan at gate → burn ticket &amp; mint souvenir.</em>
+        <br><br>
+        All of this is encoded as <strong>validator rules and a minting policy</strong>, giving both organizers and fans
+        stronger guarantees than a traditional off-chain-only ticket system.
+    </blockquote>
+</section>
+
+
+        <!-- 3. Flow -->
+         <section id="3-high-level-flow-mint--sellresell--gate-use">
+    <h2>3. High-Level Flow (Mint → Sell/Resell → Gate Use)</h2>
+
+    <p>The full lifecycle of a ticket in this system looks like:</p>
+
+    <ol>
+        <li>
+            <strong>Mint</strong> – organizer mints NFT tickets for each seat using the minting policy.
+        </li>
+        <li>
+            <strong>Sell / Resell</strong> – tickets move between wallets via the <strong>validator</strong>:
+            <ul>
+                <li>primary sale (organizer → first buyer), or</li>
+                <li>secondary resale (buyer → buyer), with price caps and optional KYC.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Gate use</strong> – at the event gate, the ticket is <strong>consumed</strong>:
+            <ul>
+                <li>the original ticket NFT is <strong>burned</strong>,</li>
+                <li>a “USED” souvenir NFT is <strong>minted</strong> to the attendee.</li>
+            </ul>
+        </li>
+    </ol>
+
+    <p>The validator itself only sees <strong>two branches</strong> via <code>TicketRedeemer</code>:</p>
+    <ul>
+        <li><code>Transfer newOwner price</code></li>
+        <li><code>UseAtGate</code></li>
+    </ul>
+
+    <p>Minting is handled by the <strong>minting policy</strong>, not the validator.</p>
+
+    <hr>
+
+    <h3 id="31-mint--primary-sale-off-chain-pattern">3.1 Mint &amp; primary sale (off-chain pattern)</h3>
+
+    <p>Off-chain, for each event, the organizer:</p>
+
+    <ol>
+        <li>
+            <strong>Instantiate the minting policy</strong><br>
+            Choose parameters:
+<pre><code class="language-haskell">TicketMintParams
+  { tmpOrganizer = organiserPkh
+  , tmpEventId   = "EVENT-001"
+  }
+</code></pre>
+            <p>This is baked into <code>ticketPolicy</code> params.</p>
+        </li>
+
+        <li>
+            <strong>Mint ticket NFT per seat</strong><br>
+            For each seat (e.g. <code>"BLOCK-A-ROW-1-SEAT-10"</code>), the organizer submits a transaction:
+            <ul>
+                <li>Uses <code>ticketPolicy params</code>.</li>
+                <li>Redeemer: <code>MintTicket seatByte</code>.</li>
+                <li>
+                    Mints exactly 1 NFT under that policy, with token name = seat (or seat ID).
+                </li>
+            </ul>
+            <p>The policy enforces:</p>
+            <ul>
+                <li>Only <code>tmpOrganizer</code> can mint.</li>
+                <li>Exactly one token for that seat, no extras under this policy.</li>
+            </ul>
+        </li>
+
+        <li>
+            <strong>Wrap the NFT in a script UTxO with <code>TicketDatum</code></strong><br>
+            To make the ticket <strong>governed by the validator</strong>, the off-chain code creates a UTxO at the
+            <strong>SportsTickets script address</strong>:
+<pre><code class="language-haskell">TicketDatum
+  { tdEventId      = "EVENT-001"
+  , tdSeat         = "BLOCK-A-ROW-1-SEAT-10"
+  , tdOwner        = firstBuyerPkh
+  , tdUsed         = False
+  , tdFaceValue    = faceValueLovelace
+  , tdMaxPrice     = maxResaleLovelace
+  , tdEventTime    = eventTime
+  , tdKycAuthority = maybeKycPkh
+  , tdPolicyId     = ticketPolicyId
+  , tdTokenName    = ticketTokenName
+  , tdUsedPolicyId = usedSouvenirPolicyId
+  }
+</code></pre>
+            <ul>
+                <li>
+                    The script input (when later spent) must contain 1 ticket NFT with
+                    <code>(tdPolicyId, tdTokenName)</code>.
+                </li>
+                <li>
+                    The ADA locked alongside the NFT is up to your off-chain flow (face value, deposits, etc).
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <strong>Primary sale UX</strong><br>
+            In the dApp:
+            <ul>
+                <li>The user picks a seat on your <strong>seat map UI</strong>.</li>
+                <li>Off-chain code finds / mints the corresponding NFT + datum.</li>
+                <li>
+                    When the purchase is complete, they end up controlling a <strong>script UTxO</strong> that:
+                    <ul>
+                        <li>lives at the SportsTickets script address,</li>
+                        <li>holds the ticket NFT,</li>
+                        <li>
+                            carries a <code>TicketDatum</code> with them as <code>tdOwner</code>.
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <blockquote>
+                💡 The validator doesn’t distinguish “primary” vs “secondary” sale — both happen through
+                <code>Transfer</code>.<br>
+                Primary sale is just “the first time we create / move a script UTxO with that seat NFT and datum”.
+            </blockquote>
+        </li>
+    </ol>
+
+    <hr>
+
+    <h3 id="32-resaletransfer-branch-on-chain">3.2 Resale/Transfer branch (On-chain)</h3>
+
+    <p>
+        Later, a ticket holder may want to <strong>resell or gift</strong> the ticket.
+        On-chain, this is the <code>Transfer newOwner price</code> branch.
+    </p>
+
+    <h4>Off-chain pattern for resale:</h4>
+
+    <p>Build a transaction that:</p>
+
+    <ul>
+        <li>
+            <strong>Inputs</strong>:
+            <ul>
+                <li>The ticket UTxO at the script (with its <code>TicketDatum</code>).</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Redeemer</strong>:
+            <ul>
+                <li>
+                    <code>Transfer newOwner price</code>, where:
+                    <ul>
+                        <li><code>newOwner :: PubKeyHash</code> – buyer / recipient.</li>
+                        <li><code>price   :: Integer</code> – ADA to pay current owner.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <strong>Outputs</strong>:
+            <ol>
+                <li>
+                    A <strong>new script UTxO</strong> at the same validator address:
+                    <ul>
+                        <li>Contains the <strong>same ticket NFT</strong> (1 unit).</li>
+                        <li>
+                            Datum identical to the input, except
+                            <code>tdOwner</code> updated to <code>newOwner</code>.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    A <strong>plain ADA output</strong> to the current owner:
+                    <ul>
+                        <li>Exactly <code>price</code> lovelace.</li>
+                    </ul>
+                </li>
+                <li>
+                    (Optionally) other outputs, as long as they don’t violate the validator rules.
+                </li>
+            </ol>
+        </li>
+    </ul>
+
+    <h4>What the validator enforces in <code>validateTransfer</code>:</h4>
+
+    <ul>
+        <li>
+            <strong>Ticket NFT is bound &amp; input is correct</strong><br>
+            <code>ticketNftBound dat ctx</code>:
+            <ul>
+                <li>The script input UTxO must contain <strong>exactly 1</strong> <code>(tdPolicyId, tdTokenName)</code>.</li>
+            </ul>
+        </li>
+
+        <li>
+            <strong>Ticket not used</strong><br>
+            <code>tdUsed dat</code> must be <code>False</code>.
+        </li>
+
+        <li>
+            <strong>Owner signature</strong><br>
+            <code>txSignedBy info (tdOwner dat)</code>:
+            <blockquote>
+                The current owner must sign the resale / transfer.
+            </blockquote>
+        </li>
+
+        <li>
+            <strong>Optional KYC authority</strong><br>
+            If <code>tdKycAuthority = Just pk</code>, then:
+            <ul>
+                <li><code>txSignedBy info pk</code> must also be <code>True</code>.</li>
+            </ul>
+            If <code>Nothing</code>, no extra KYC signature is required.
+        </li>
+
+        <li>
+            <strong>Price cap &amp; correct payment</strong><br>
+            Actual ADA paid to the owner:
+<pre><code class="language-haskell">let v = valuePaidTo info (tdOwner dat)
+in  valueOf v adaSymbol adaToken == price
+</code></pre>
+            And it must respect:
+<pre><code class="language-haskell">price &lt;= tdMaxPrice dat
+</code></pre>
+            So the declared <code>price</code> matches the <strong>real money flow</strong>,
+            and the money flow must not exceed the cap.
+        </li>
+
+        <li>
+            <strong>Owner actually changes</strong><br>
+            <code>newOwner /= tdOwner dat</code>:
+            <blockquote>
+                You can’t “transfer” to yourself.
+            </blockquote>
+        </li>
+
+        <li>
+            <strong>Ticket state transition is valid</strong><br>
+            <code>ticketStateTransitionOk dat newOwner ctx</code> checks:
+            <ul>
+                <li>There is <strong>exactly one</strong> continuing script output at the same validator.</li>
+                <li>
+                    That output:
+                    <ul>
+                        <li>Contains <strong>exactly 1</strong> of the ticket NFT.</li>
+                        <li>
+                            Contains <strong>no other non-ADA assets</strong> besides that NFT.
+                        </li>
+                        <li>
+                            Has datum <code>outDat</code> such that:
+                            <ul>
+                                <li><code>tdOwner outDat == newOwner</code></li>
+                                <li>
+                                    All <strong>static fields</strong> match the old datum:
+                                    event id, seat, face value, max price, time, KYC, policy IDs, token name.
+                                </li>
+                                <li><code>tdUsed</code> is unchanged (still <code>False</code> on transfer).</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <p>
+        <strong>Result:</strong><br>
+        Resales are allowed only within the configured price cap, with correct payment to the seller, with optional KYC,
+        and without ever mutating the ticket’s identity (event/seat/NFT) or rules.
+    </p>
+
+    <p>
+        Gifts are also possible by using <code>price = 0</code>, still subject to KYC and signatures.
+    </p>
+
+    <hr>
+
+    <h3 id="33-useatgate-branch-on-chain-entry-scan">3.3 UseAtGate branch (on-chain entry scan)</h3>
+
+    <p>
+        When the attendee arrives at the <strong>stadium gate</strong>, the ticket must be:
+    </p>
+    <ul>
+        <li>verified,</li>
+        <li>consumed,</li>
+        <li>and turned into a <strong>souvenir</strong> that proves they actually entered.</li>
+    </ul>
+
+    <p>
+        On-chain, this is the <code>UseAtGate</code> branch.
+    </p>
+
+    <h4>Off-chain pattern for gate scan:</h4>
+
+    <p>The dApp (or gate scanner) builds a transaction that:</p>
+
+    <ul>
+        <li>
+            <strong>Inputs</strong>:
+            <ul>
+                <li>The ticket UTxO at the script with its <code>TicketDatum</code>.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Redeemer</strong>:
+            <ul>
+                <li><code>UseAtGate</code>.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Mint / Burn</strong>:
+            <ul>
+                <li>Burns <strong>1 ticket NFT</strong>: <code>(tdPolicyId, tdTokenName)</code> with amount <code>-1</code>.</li>
+                <li>
+                    Mints <strong>1 USED souvenir NFT</strong>:
+                    <ul>
+                        <li>Policy: <code>tdUsedPolicyId</code></li>
+                        <li>Token name: <code>usedTokenName (tdTokenName dat)</code> = <code>"USED-" &lt;&gt; originalName</code></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <strong>Outputs</strong>:
+            <ol>
+                <li>
+                    A <strong>plain UTxO</strong> to the ticket owner:
+                    <ul>
+                        <li>Contains exactly 1 unit of the <strong>USED souvenir NFT</strong>.</li>
+                    </ul>
+                </li>
+                <li>(Optionally) change ADA, fees, etc.</li>
+            </ol>
+            <p>
+                👉 <strong>No continuing script UTxO</strong> for that ticket – the ticket is truly “spent”.
+            </p>
+        </li>
+    </ul>
+
+    <h4>What the validator enforces in <code>validateUseAtGate</code>:</h4>
+
+    <ul>
+        <li>
+            <strong>Ticket NFT still present in input</strong><br>
+            Reuses <code>ticketNftBound dat ctx</code>:
+            <ul>
+                <li>Script input must have exactly 1 of the ticket NFT.</li>
+            </ul>
+        </li>
+
+        <li>
+            <strong>Ticket not already used</strong><br>
+            <code>not (tdUsed dat)</code>:
+            <blockquote>
+                Gate cannot be used twice with the same ticket datum.
+            </blockquote>
+        </li>
+
+        <li>
+            <strong>Time restriction</strong><br>
+            Transaction’s validity range must be contained in:
+<pre><code class="language-haskell">Interval.to (tdEventTime dat)
+</code></pre>
+            i.e. <strong>on or before</strong> <code>tdEventTime</code>.
+        </li>
+
+        <li>
+            <strong>Mint / burn pattern</strong><br>
+            With:
+<pre><code class="language-haskell">csTicket = tdPolicyId dat
+tn       = tdTokenName dat
+csUsed   = tdUsedPolicyId dat
+utn      = usedTokenName tn  -- "USED-" &lt;&gt; original name
+</code></pre>
+            The script checks:
+            <ul>
+                <li>
+                    Burn exactly 1 ticket:
+<pre><code class="language-haskell">mintedAmountOf csTicket tn ctx == (-1)
+</code></pre>
+                </li>
+                <li>
+                    Mint exactly 1 USED souvenir:
+<pre><code class="language-haskell">mintedAmountOf csUsed utn ctx == 1
+</code></pre>
+                </li>
+                <li>
+                    <strong>No extra minting/burning</strong> besides these two triples, conceptually:
+<pre><code class="language-haskell">all allowed mintedTriples &amp;&amp; length mintedTriples == 2
+</code></pre>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <strong>USED souvenir must go to the owner</strong><br>
+<pre><code class="language-haskell">souvenirPaidToOwner =
+  valuePaidOf (tdOwner dat) csUsed utn ctx == 1
+</code></pre>
+            The only place the newly minted USED token can end up is the current owner’s wallet.
+        </li>
+
+        <li>
+            <strong>No continuing script output</strong><br>
+<pre><code class="language-haskell">noContinuingOutput ctx
+</code></pre>
+            After gate use, the script must <strong>not</strong> appear as an address on any output.
+            The ticket UTxO is consumed; only the souvenir + any ADA remain.
+        </li>
+    </ul>
+
+    <p>
+        <strong>Result:</strong><br>
+        A ticket can only be used at or before event time, exactly once, and doing so atomically burns the original
+        ticket NFT and mints a USED souvenir NFT to the rightful owner, leaving no ticket UTxO behind.
+    </p>
+
+    <p>
+        A gate operator (or auditor) can later see on-chain:
+    </p>
+    <ul>
+        <li>How many tickets were minted (from the minting policy).</li>
+        <li>How many were actually used (count of USED souvenirs).</li>
+        <li>
+            For any particular ticket NFT, whether it’s:
+            <ul>
+                <li>still unspent (valid ticket), or</li>
+                <li>already consumed (corresponding USED minted and ticket burned).</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+
+        <!-- 4. Data Types -->
+        <section id="4-on-chain-data-types">
+    <h2>4. On-Chain Data Types</h2>
+
+    <p>
+        The Sports Tickets system is made from <strong>two main scripts</strong>:
+    </p>
+
+    <ol>
+        <li>A <strong>validator</strong> script (<code>SportsTicketsContract</code>) that controls each ticket UTxO.</li>
+        <li>A <strong>minting policy</strong> (<code>SportsTicketsPolicy</code>) that controls how ticket NFTs are minted/burned.</li>
+    </ol>
+
+    <p>Each script has its own on-chain types:</p>
+
+    <ul>
+        <li><code>TicketDatum</code>, <code>TicketRedeemer</code> → used by the validator.</li>
+        <li><code>TicketMintParams</code>, <code>TicketMintRedeemer</code> → used by the minting policy.</li>
+    </ul>
+
+    <hr>
+
+    <h3 id="41-ticketdatum">4.1 <code>TicketDatum</code></h3>
+
+<pre><code class="language-haskell">data TicketDatum = TicketDatum
+    { tdEventId      :: BuiltinByteString  -- ^ Event identifier
+    , tdSeat         :: BuiltinByteString  -- ^ Seat / section description
+    , tdOwner        :: PubKeyHash         -- ^ Current owner of the ticket
+    , tdUsed         :: Bool               -- ^ Has this ticket been used at the gate?
+    , tdFaceValue    :: Integer            -- ^ Primary sale price (in lovelace)
+    , tdMaxPrice     :: Integer            -- ^ Max allowed resale price (in lovelace)
+    , tdEventTime    :: POSIXTime          -- ^ Event time (for gate checks)
+    , tdKycAuthority :: Maybe PubKeyHash   -- ^ If Just pk, transfers require pk's signature
+    , tdPolicyId     :: CurrencySymbol     -- ^ Policy ID of the ticket NFT
+    , tdTokenName    :: TokenName          -- ^ Token name of the ticket NFT
+    , tdUsedPolicyId :: CurrencySymbol     -- ^ Policy for USED souvenir tokens
+    }
+PlutusTx.unstableMakeIsData ''TicketDatum
+</code></pre>
+
+    <p>
+        Each <strong>ticket UTxO</strong> at the validator address carries exactly one
+        <code>TicketDatum</code>. Field-by-field:
+    </p>
+
+    <ul>
+        <li>
+            <strong><code>tdEventId :: BuiltinByteString</code></strong><br>
+            A short identifier for the event, e.g. <code>"MATCH-2025-APR-01"</code> or <code>"CONCERT-XYZ"</code>.
+            Used mainly for <strong>off-chain grouping</strong> and UI, but it also ensures the static identity of this
+            ticket never changes.
+        </li>
+
+        <li>
+            <strong><code>tdSeat :: BuiltinByteString</code></strong><br>
+            Human-readable seat/section info, e.g. <code>"BLOCK-A-ROW-1-SEAT-10"</code>.
+            This is treated as a <strong>static field</strong>: it cannot change during transfers.
+        </li>
+
+        <li>
+            <strong><code>tdOwner :: PubKeyHash</code></strong><br>
+            The <strong>current owner</strong> of the ticket:
+            <ul>
+                <li>Must sign any <code>Transfer</code> transaction.</li>
+                <li>Receives resale ADA.</li>
+                <li>Receives the USED souvenir when the ticket is used at the gate.</li>
+            </ul>
+        </li>
+
+        <li>
+            <strong><code>tdUsed :: Bool</code></strong><br>
+            Logical flag meaning “has this ticket already been used?”.
+            <ul>
+                <li>In <code>validateTransfer</code>: ticket must <strong>not</strong> be used (<code>False</code>).</li>
+                <li>In <code>validateUseAtGate</code>: ticket must <strong>not</strong> be used (<code>False</code>) to allow entry.</li>
+                <li>
+                    In practice, “used” is represented on-chain by
+                    <strong>burning the ticket NFT and minting a USED souvenir</strong>, but this flag gives an additional
+                    logical guard.
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <strong><code>tdFaceValue :: Integer</code> (lovelace)</strong><br>
+            The <strong>primary sale price</strong> of the ticket (face value). This is a static reference value and
+            doesn’t change after minting.
+        </li>
+
+        <li>
+            <strong><code>tdMaxPrice :: Integer</code> (lovelace)</strong><br>
+            The <strong>maximum allowed resale price</strong>:
+<pre><code class="language-haskell">price &lt;= tdMaxPrice dat
+</code></pre>
+            This implements the <strong>anti-scalping cap</strong>: owners cannot resell above this limit.
+        </li>
+
+        <li>
+            <strong><code>tdEventTime :: POSIXTime</code></strong><br>
+            Time of the event:
+            <ul>
+                <li><code>UseAtGate</code> requires the transaction’s valid range to be
+                    <strong>on or before</strong> <code>tdEventTime</code>.</li>
+                <li>Prevents entry after the event has effectively “expired”.</li>
+            </ul>
+        </li>
+
+        <li>
+            <strong><code>tdKycAuthority :: Maybe PubKeyHash</code></strong><br>
+            <ul>
+                <li><code>Nothing</code> → no extra KYC check: only owner needs to sign transfers.</li>
+                <li>
+                    <code>Just pk</code> → any <code>Transfer</code> must be signed by <strong>both</strong>:
+                    the current owner (<code>tdOwner</code>) and the KYC authority (<code>pk</code>).
+                </li>
+            </ul>
+            This allows optional <strong>KYC-gated resale</strong> for certain events.
+        </li>
+
+        <li>
+            <strong><code>tdPolicyId :: CurrencySymbol</code></strong><br>
+            Which <strong>policy</strong> this ticket NFT belongs to (usually created by
+            <code>SportsTicketsPolicy</code>):
+            <ul>
+                <li>Used to check the script input contains exactly 1 matching NFT.</li>
+                <li>Used in <code>ticketNftBound</code> and <code>ticketStateTransitionOk</code>.</li>
+            </ul>
+        </li>
+
+        <li>
+            <strong><code>tdTokenName :: TokenName</code></strong><br>
+            The <strong>token name</strong> for this specific ticket, e.g. <code>"TICKET-001"</code>.
+            Together with <code>tdPolicyId</code>, it uniquely identifies the ticket on-chain.
+        </li>
+
+        <li>
+            <strong><code>tdUsedPolicyId :: CurrencySymbol</code></strong><br>
+            The policy ID for <strong>USED souvenir NFTs</strong>:
+            <ul>
+                <li>
+                    <code>UseAtGate</code> burns <code>(tdPolicyId, tdTokenName)</code> and mints
+                    <code>(tdUsedPolicyId, "USED-" &lt;&gt; originalTokenName)</code>.
+                </li>
+                <li>This allows souvenir NFTs to live under a separate policy if desired.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <blockquote>
+        🔎 The validator treats most of these fields as <strong>static</strong>.<br>
+        For transfers, only <code>tdOwner</code> is allowed to change; all other “identity” fields must remain
+        identical on the continuing output datum.
+    </blockquote>
+
+    <hr>
+
+    <h3 id="42-ticketredeemer">4.2 <code>TicketRedeemer</code></h3>
+
+<pre><code class="language-haskell">data TicketRedeemer
+    = Transfer PubKeyHash Integer  -- ^ new owner, resale price (in lovelace)
+    | UseAtGate
+PlutusTx.unstableMakeIsData ''TicketRedeemer
+</code></pre>
+
+    <p>
+        Each time a ticket UTxO at the script is spent, a <code>TicketRedeemer</code> tells the validator
+        <strong>which path</strong> to run:
+    </p>
+
+    <h4 id="transfer-pubkeyhash-integer"><code>Transfer PubKeyHash Integer</code></h4>
+
+    <ul>
+        <li>Two arguments:</li>
+    </ul>
+    <ol>
+        <li><code>newOwner :: PubKeyHash</code> — who will become the <strong>new owner</strong> of the ticket.</li>
+        <li><code>price    :: Integer</code>   — the <strong>resale price in lovelace</strong>.</li>
+    </ol>
+
+    <p>
+        On this branch <code>mkTicketValidator</code> calls <code>validateTransfer</code> and enforces:
+    </p>
+
+    <ul>
+        <li>ticket is <strong>unused</strong>,</li>
+        <li>current <code>tdOwner</code> signed the transaction,</li>
+        <li>KYC authority signed (if <code>tdKycAuthority = Just pk</code>),</li>
+        <li>actual ADA paid to <code>tdOwner</code> equals <code>price</code>,</li>
+        <li><code>price &lt;= tdMaxPrice</code>, enforcing the anti-scalping cap,</li>
+        <li><code>newOwner /= tdOwner</code> (no fake self-transfer),</li>
+        <li>
+            continuing output’s datum has:
+            <ul>
+                <li>same static fields,</li>
+                <li><code>tdOwner</code> updated to <code>newOwner</code>,</li>
+                <li>NFT preserved correctly.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4 id="useatgate"><code>UseAtGate</code></h4>
+
+    <ul>
+        <li>No arguments; it’s just “I’m trying to use this ticket at the <strong>entry gate</strong>”.</li>
+        <li>
+            On this branch <code>mkTicketValidator</code> calls <code>validateUseAtGate</code> and enforces:
+            <ul>
+                <li>ticket is unused and within event time,</li>
+                <li>1 ticket NFT is <strong>burned</strong>,</li>
+                <li>1 USED souvenir NFT is <strong>minted</strong> under <code>tdUsedPolicyId</code>,</li>
+                <li>USED souvenir is paid to <code>tdOwner</code>,</li>
+                <li><strong>no</strong> continuing script output remains.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <hr>
+
+    <h3 id="43-ticketmintparams">4.3 <code>TicketMintParams</code></h3>
+
+<pre><code class="language-haskell">data TicketMintParams = TicketMintParams
+  { tmpOrganizer :: V2.PubKeyHash       -- ^ Who is allowed to mint / burn
+  , tmpEventId   :: BuiltinByteString   -- ^ Event id this policy is for
+  }
+
+PlutusTx.makeLift ''TicketMintParams
+</code></pre>
+
+    <p>
+        These are <strong>parameters baked into the minting policy</strong> for ticket NFTs.
+    </p>
+
+    <ul>
+        <li>
+            <strong><code>tmpOrganizer :: PubKeyHash</code></strong><br>
+            <ul>
+                <li>The <strong>only party allowed</strong> to mint or burn tickets under this policy.</li>
+                <li>
+                    <code>mkTicketPolicy</code> checks that any <code>MintTicket</code> / <code>BurnTicket</code>
+                    action is signed by this PKH:
+<pre><code class="language-haskell">V2Ctx.txSignedBy txInfo (tmpOrganizer params)
+</code></pre>
+                </li>
+                <li>In practice: you set this to the <strong>event organizer</strong>’s payment key.</li>
+            </ul>
+        </li>
+
+        <li>
+            <strong><code>tmpEventId :: BuiltinByteString</code></strong><br>
+            <ul>
+                <li>Event identifier used at the policy level (parallel to <code>tdEventId</code> in the datum).</li>
+                <li>Mainly for <strong>linking this policy to a specific event</strong> and for off-chain UX/logging.</li>
+                <li>Can be used to ensure that all tokens under this policy belong to the same event group.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p>
+        Because of <code>PlutusTx.makeLift</code>, <code>TicketMintParams</code> can be
+        <strong>embedded at compile time</strong> into the minting policy code, and used to derive the
+        <code>CurrencySymbol</code> of the ticket NFTs.
+    </p>
+
+    <hr>
+
+    <h3 id="44-ticketmintredeemer">4.4 <code>TicketMintRedeemer</code></h3>
+
+<pre><code class="language-haskell">data TicketMintRedeemer
+  = MintTicket BuiltinByteString
+  | BurnTicket BuiltinByteString
+  deriving (Haskell.Eq, Haskell.Show)
+
+PlutusTx.unstableMakeIsData ''TicketMintRedeemer
+</code></pre>
+
+    <p>
+        This is the redeemer type for the <strong>minting policy</strong> <code>SportsTicketsPolicy</code>.
+    </p>
+
+    <h4 id="mintticket-builtinbytestring"><code>MintTicket BuiltinByteString</code></h4>
+
+    <ul>
+        <li>Represents the action <strong>“mint exactly one ticket NFT for a given seat”</strong>.</li>
+        <li>The <code>BuiltinByteString</code> is the seat identifier, e.g. <code>"BLOCK-A-ROW-1-SEAT-10"</code>.</li>
+    </ul>
+
+    <p>Under the hood:</p>
+    <ul>
+        <li>The policy turns this into a <code>TokenName seat</code>.</li>
+        <li>
+            It then checks that under this policy’s <code>CurrencySymbol</code>:
+            <ul>
+                <li>exactly <strong>one</strong> token with that <code>TokenName</code> is minted (amount <code>+1</code>),</li>
+                <li>and <strong>no other tokens</strong> under this policy are minted in the same transaction.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p>This prevents:</p>
+    <ul>
+        <li>double-minting for the same seat (without burning),</li>
+        <li>minting multiple different seats in one go if the policy is configured that way.</li>
+    </ul>
+
+    <h4 id="burnticket-builtinbytestring"><code>BurnTicket BuiltinByteString</code></h4>
+
+    <ul>
+        <li>Represents the action <strong>“burn exactly one ticket NFT for a given seat”</strong>.</li>
+        <li>Same seat identifier, same <code>TokenName</code> strategy.</li>
+    </ul>
+
+    <p>The policy enforces:</p>
+    <ul>
+        <li>organizer signed, and</li>
+        <li>exactly one token under this policy for that seat is burned (amount <code>-1</code>),</li>
+        <li>with no extra tokens under the same policy being minted or burned.</li>
+    </ul>
+
+    <blockquote>
+        🧩 Together, <code>TicketMintParams</code> + <code>TicketMintRedeemer</code> define a
+        <strong>tight minting contract</strong>:<br>
+        – Only the organizer can mint/burn.<br>
+        – Each seat corresponds to a specific token name.<br>
+        – Each mint/burn transaction must involve exactly <strong>one</strong> ticket token for that seat under this policy.
+    </blockquote>
+</section>
+
+
+        <!-- 5. Language Extensions -->
+         <section id="5-language-extensions-why-theyre-here">
+    <h2>5. Language Extensions (Why they’re here)</h2>
+
+    <p>
+        At the top of your <strong>on-chain</strong> and <strong>generator</strong> modules you’ll see things like:
+    </p>
+
+<pre><code class="language-haskell">{-# LANGUAGE DataKinds           #-}
+{-# LANGUAGE NoImplicitPrelude   #-}
+{-# LANGUAGE TemplateHaskell     #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE OverloadedStrings   #-}
+{-# LANGUAGE TypeApplications    #-}
+</code></pre>
+
+    <p>
+        (and in the policy: <code>NumericUnderscores</code>, <code>MultiParamTypeClasses</code>,
+        <code>FlexibleInstances</code>, etc.)
+    </p>
+
+    <p>
+        These extensions are standard for Plutus projects. They enable:
+    </p>
+
+    <ul>
+        <li>on-chain compilation (<code>TemplateHaskell</code>, <code>DataKinds</code>),</li>
+        <li>safe/custom Prelude (<code>NoImplicitPrelude</code>),</li>
+        <li>nicer ergonomics (<code>OverloadedStrings</code>, <code>TypeApplications</code>, <code>ScopedTypeVariables</code>).</li>
+    </ul>
+
+    <p>
+        Below we focus on the <strong>core six</strong> used across
+        <strong><code>SportsTicketsContract.hs</code></strong>,
+        <strong><code>SportsTickets.hs</code></strong>, and
+        <strong><code>SportsTicketsPolicy.hs</code></strong>.
+    </p>
+
+    <hr>
+
+    <h3 id="51-datakinds">5.1 <code>DataKinds</code></h3>
+
+    <h4>What it does</h4>
+    <p>
+        Promotes certain values (like constructors, string-like things) to the type level, giving you extra type
+        information.
+    </p>
+
+    <h4>Why here</h4>
+    <ul>
+        <li>Plutus ledger types and TH-generated code often rely on <code>DataKinds</code> under the hood.</li>
+        <li>It’s part of the “standard Plutus header” and plays nicely with:
+            <ul>
+                <li><code>PlutusTx.compile</code></li>
+                <li>generated <code>IsData</code> instances</li>
+                <li>type-level tags inside the ledger API.</li>
+            </ul>
+        </li>
+    </ul>
+    <p>
+        You don’t use it directly in <code>SportsTicketsContract.hs</code>, but it keeps the Plutus / TH machinery happy
+        in the background.
+    </p>
+
+    <h4>If removed</h4>
+    <ul>
+        <li>Some Plutus or TH code might stop compiling in more complex setups.</li>
+        <li>It’s safe, standard boilerplate to leave on.</li>
+    </ul>
+
+    <hr>
+
+    <h3 id="52-noimplicitprelude">5.2 <code>NoImplicitPrelude</code></h3>
+
+    <h4>What it does</h4>
+    <p>Prevents GHC from automatically importing the default <code>Prelude</code>.</p>
+
+    <h4>Why here</h4>
+    <p>On-chain we <strong>must</strong> use <code>PlutusTx.Prelude</code>, not the normal Haskell <code>Prelude</code>, because:</p>
+    <ul>
+        <li>Plutus needs <strong>deterministic</strong>, integer-only, blockchain-safe code.</li>
+        <li>Many standard <code>Prelude</code> functions are not supported or would break determinism.</li>
+    </ul>
+
+<pre><code class="language-haskell">import PlutusTx.Prelude hiding (Semigroup(..), unless)
+import qualified Prelude as P
+</code></pre>
+
+    <ul>
+        <li><code>PlutusTx.Prelude</code> is used for <strong>on-chain logic</strong>:
+            <code>Bool</code>, <code>Integer</code>, <code>(==)</code>, <code>(&amp;&amp;)</code>,
+            <code>traceIfFalse</code>, <code>error</code>, etc.</li>
+        <li><code>Prelude</code> is imported as <code>P</code> only for <strong>off-chain IO</strong> / debugging, e.g.:
+<pre><code class="language-haskell">putStrLn $ "Validator Hash (Plutus): " <> P.show vh
+</code></pre>
+        </li>
+    </ul>
+
+    <h4>If removed</h4>
+    <ul>
+        <li>GHC would silently import <code>Prelude</code>.</li>
+        <li>
+            You might accidentally use off-chain-only functions inside on-chain code, causing compilation or runtime
+            issues.
+        </li>
+    </ul>
+
+    <hr>
+
+    <h3 id="53-templatehaskell">5.3 <code>TemplateHaskell</code></h3>
+
+    <p>Used in:</p>
+    <ul>
+        <li><code>SportsTicketsContract.hs</code></li>
+        <li><code>SportsTicketsPolicy.hs</code> (not needed in <code>SportsTickets.hs</code> which is only a generator).</li>
+    </ul>
+
+    <h4>What it does</h4>
+    <p>Enables compile-time metaprogramming via splices like <code>$$(...)</code>, <code>$(...)</code>.</p>
+
+    <h4>Why here</h4>
+    <p>You use Template Haskell in two crucial ways:</p>
+
+    <ol>
+        <li>
+            <strong>Deriving on-chain data instances</strong>
+<pre><code class="language-haskell">PlutusTx.unstableMakeIsData ''TicketDatum
+PlutusTx.unstableMakeIsData ''TicketRedeemer
+PlutusTx.makeLift ''TicketMintParams
+PlutusTx.unstableMakeIsData ''TicketMintRedeemer
+</code></pre>
+            <p>
+                This generates the <code>IsData</code> / <code>Lift</code> machinery so
+                <code>TicketDatum</code>, <code>TicketRedeemer</code>, <code>TicketMintParams</code>, etc. can be:
+            </p>
+            <ul>
+                <li>encoded/decoded in <code>BuiltinData</code>,</li>
+                <li>used inside Plutus Core.</li>
+            </ul>
+        </li>
+
+        <li>
+            <strong>Compiling validators/policies to Plutus Core</strong>
+<pre><code class="language-haskell">validator =
+  mkValidatorScript $$(PlutusTx.compile [|| mkTicketValidatorUntyped ||])
+</code></pre>
+
+<pre><code class="language-haskell">ticketPolicy params =
+  V2.mkMintingPolicyScript $
+    $$(PlutusTx.compile [|| \p -> mkWrappedPolicy p ||])
+      `PlutusTx.applyCode` PlutusTx.liftCode params
+</code></pre>
+            <p>
+                Template Haskell is what actually <strong>turns your Haskell validator/policy into Plutus Core</strong>
+                at compile time.
+            </p>
+        </li>
+    </ol>
+
+    <h4>If removed</h4>
+    <ul>
+        <li>You couldn’t derive <code>IsData</code>/<code>Lift</code> automatically.</li>
+        <li>You couldn’t use <code>PlutusTx.compile</code> or produce a <code>Validator</code> /
+            <code>MintingPolicy</code> script.</li>
+    </ul>
+
+    <hr>
+
+    <h3 id="54-scopedtypevariables">5.4 <code>ScopedTypeVariables</code></h3>
+
+    <h4>What it does</h4>
+    <p>Makes explicit type variables stay in scope across the whole function body.</p>
+
+    <h4>Why here</h4>
+    <p>It pairs with <code>TypeApplications</code> inside your untyped wrappers:</p>
+
+<pre><code class="language-haskell">{-# INLINABLE mkTicketValidatorUntyped #-}
+mkTicketValidatorUntyped :: BuiltinData -> BuiltinData -> BuiltinData -> ()
+mkTicketValidatorUntyped d r c =
+    let dat = unsafeFromBuiltinData @TicketDatum    d
+        red = unsafeFromBuiltinData @TicketRedeemer r
+        ctx = unsafeFromBuiltinData @ScriptContext  c
+    in if mkTicketValidator dat red ctx
+          then ()
+          else error ()
+</code></pre>
+
+<pre><code class="language-haskell">mkWrappedPolicy :: TicketMintParams -> BuiltinData -> BuiltinData -> ()
+mkWrappedPolicy params r ctxData =
+  let redeemer :: TicketMintRedeemer
+      redeemer = unsafeFromBuiltinData r
+      ctx      = unsafeFromBuiltinData ctxData
+  in ...
+</code></pre>
+
+    <p>
+        <code>ScopedTypeVariables</code> ensures that type variables you mention in the signature can be referred to
+        properly when you use <code>@TicketDatum</code>, <code>@TicketRedeemer</code>, etc.
+    </p>
+
+    <h4>If removed</h4>
+    <ul>
+        <li>GHC might complain about ambiguous types.</li>
+        <li>You’d need more verbose annotations, or the compiler could guess the wrong type.</li>
+    </ul>
+
+    <hr>
+
+    <h3 id="55-overloadedstrings">5.5 <code>OverloadedStrings</code></h3>
+
+    <h4>What it does</h4>
+    <p>
+        Makes string literals polymorphic – they can become <code>Text</code>, <code>ByteString</code>,
+        <code>BuiltinByteString</code>, etc. based on context.
+    </p>
+
+    <h4>Why here</h4>
+    <p>You use string literals in multiple contexts:</p>
+
+    <ul>
+        <li>
+            <strong>Descriptions for text envelopes</strong> (off-chain):
+<pre><code class="language-haskell">description :: C.TextEnvelopeDescr
+description = "Sports Tickets Plutus Validator"
+</code></pre>
+        </li>
+        <li>
+            <strong>Event IDs, seat strings, etc.</strong> that end up as <code>BuiltinByteString</code>:
+<pre><code class="language-haskell">tdEventId = "EVENT-001"
+tdSeat    = "BLOCK-A-ROW-1-SEAT-10"
+</code></pre>
+        </li>
+    </ul>
+
+    <p>
+        Because of <code>OverloadedStrings</code>, these literals automatically adapt to:
+    </p>
+    <ul>
+        <li><code>BuiltinByteString</code> (via conversions in the background),</li>
+        <li><code>Text</code>, <code>String</code>, etc. where needed.</li>
+    </ul>
+
+    <h4>If removed</h4>
+    <ul>
+        <li>You’d have to wrap a lot of values manually, like:
+<pre><code class="language-haskell">tdEventId = Builtins.toBuiltin ("EVENT-001" :: ByteString)
+</code></pre>
+        </li>
+        <li>or explicitly use <code>T.pack</code>, etc.</li>
+    </ul>
+
+    <hr>
+
+    <h3 id="56-typeapplications">5.6 <code>TypeApplications</code></h3>
+
+    <h4>What it does</h4>
+    <p>Allows you to explicitly specify type arguments with <code>@Type</code>.</p>
+
+    <h4>Why here</h4>
+    <p>It shows up in your <strong>untyped wrappers</strong> where you decode <code>BuiltinData</code>:</p>
+
+<pre><code class="language-haskell">unsafeFromBuiltinData @TicketDatum    d
+unsafeFromBuiltinData @TicketRedeemer r
+unsafeFromBuiltinData @ScriptContext  c
+</code></pre>
+
+    <p>
+        Instead of hoping the compiler guesses the right type, you tell it:
+        <br>
+        “Decode this <code>BuiltinData</code> as a <code>TicketDatum</code>.”
+    </p>
+
+    <p>That’s crystal clear and avoids ambiguity.</p>
+
+    <h4>If removed</h4>
+    <ul>
+        <li>You’d need more verbose patterns or helper functions.</li>
+        <li>Type inference might become unclear, especially as the contract grows.</li>
+    </ul>
+
+    <hr>
+
+    <h3 id="57-imports-in-sportsticketscontracths-validator">
+        5.7 Imports in <code>SportsTicketsContract.hs</code> (validator)
+    </h3>
+
+    <p>
+        This is the <strong>core on-chain validator</strong> for tickets (transfer + gate). Its imports are all about:
+    </p>
+    <ul>
+        <li>Plutus V2 types &amp; contexts,</li>
+        <li>V1 helpers for intervals and values,</li>
+        <li>Template Haskell helpers (<code>PlutusTx</code>, <code>unsafeFromBuiltinData</code>),</li>
+        <li>The Plutus on-chain Prelude.</li>
+    </ul>
+
+<pre><code class="language-haskell">import Plutus.V2.Ledger.Api
+  ( Validator
+  , ScriptContext(..)
+  , TxInfo(..)
+  , TxOut(..)
+  , TxInInfo(..)
+  , TxOutRef
+  , Address(..)
+  , Credential(..)
+  , OutputDatum(..)
+  , Datum(..)
+  , POSIXTime
+  , POSIXTimeRange
+  , PubKeyHash
+  , CurrencySymbol
+  , TokenName(..)
+  , unTokenName
+  , ValidatorHash
+  , BuiltinData
+  , mkValidatorScript
+  )
+</code></pre>
+
+    <ul>
+        <li><strong>What these are for:</strong>
+            <ul>
+                <li><code>Validator</code> – final compiled script type.</li>
+                <li>
+                    <code>ScriptContext</code>, <code>TxInfo</code>, <code>TxOut</code>,
+                    <code>TxInInfo</code>, <code>TxOutRef</code> – describe the spending transaction and UTxOs.
+                </li>
+                <li>
+                    <code>Address</code>, <code>Credential</code> – used to detect script vs pubkey addresses (for continuing outputs).
+                </li>
+                <li><code>OutputDatum</code>, <code>Datum</code> – unwrap inline datums to <code>TicketDatum</code>.</li>
+                <li><code>POSIXTime</code>, <code>POSIXTimeRange</code> – event time and validity ranges.</li>
+                <li><code>PubKeyHash</code>, <code>CurrencySymbol</code>, <code>TokenName</code> – identities of owners and tokens.</li>
+                <li><code>BuiltinData</code> – raw on-chain data used by the untyped wrapper.</li>
+                <li><code>mkValidatorScript</code> – wraps compiled core into a <code>Validator</code>.</li>
+            </ul>
+        </li>
+    </ul>
+
+<pre><code class="language-haskell">import Plutus.V2.Ledger.Contexts
+  ( txSignedBy
+  , scriptContextTxInfo
+  , valuePaidTo
+  , findOwnInput
+  , ownHash
+  , txInInfoResolved
+  )
+</code></pre>
+
+    <ul>
+        <li><strong>What these are for:</strong>
+            <ul>
+                <li><code>scriptContextTxInfo</code> – extract <code>TxInfo</code> from <code>ScriptContext</code>.</li>
+                <li><code>txSignedBy</code> – check if given <code>PubKeyHash</code> signed the transaction (owner / KYC).</li>
+                <li><code>valuePaidTo</code> – how much value a given <code>PubKeyHash</code> received (for payments + souvenirs).</li>
+                <li><code>findOwnInput</code>, <code>txInInfoResolved</code> – locate this script’s input and get its <code>TxOut</code>.</li>
+                <li><code>ownHash</code> – script’s own <code>ValidatorHash</code>, used to find continuing outputs.</li>
+            </ul>
+        </li>
+    </ul>
+
+<pre><code class="language-haskell">import Plutus.V1.Ledger.Interval as Interval
+  ( contains
+  , to
+  )
+</code></pre>
+
+    <ul>
+        <li><strong>Time logic:</strong>
+            <ul>
+                <li><code>Interval.to t</code> – build <code>(-∞, t]</code>.</li>
+                <li><code>Interval.contains</code> – check if <code>txInfoValidRange</code> lies within allowed bounds.</li>
+                <li>Used to enforce “before or at event time” in <code>UseAtGate</code>.</li>
+            </ul>
+        </li>
+    </ul>
+
+<pre><code class="language-haskell">import Plutus.V1.Ledger.Value
+  ( Value
+  , valueOf
+  , adaSymbol
+  , adaToken
+  , flattenValue
+  )
+</code></pre>
+
+    <ul>
+        <li><strong>Asset / value logic:</strong>
+            <ul>
+                <li><code>Value</code> – multi-asset container.</li>
+                <li><code>valueOf</code> – how much of (cs, token) is in a <code>Value</code>.</li>
+                <li><code>adaSymbol</code>, <code>adaToken</code> – identify ADA.</li>
+                <li>
+                    <code>flattenValue</code> – turn a <code>Value</code> into
+                    <code>[(CurrencySymbol, TokenName, Integer)]</code> triples; used to:
+                    <ul>
+                        <li>check exactly one ticket NFT in input,</li>
+                        <li>check mint/burn triples for <code>UseAtGate</code>.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+<pre><code class="language-haskell">import PlutusTx
+import PlutusTx.Prelude hiding (Semigroup(..), unless)
+import qualified PlutusTx.Builtins as Builtins
+</code></pre>
+
+    <ul>
+        <li><code>PlutusTx</code> – TH utilities (<code>unstableMakeIsData</code>, <code>compile</code>, <code>unsafeFromBuiltinData</code>).</li>
+        <li>
+            <code>PlutusTx.Prelude</code> – on-chain Prelude:
+            <code>Bool</code>, <code>Integer</code>, <code>(==)</code>, <code>(&amp;&amp;)</code>,
+            <code>traceError</code>, <code>traceIfFalse</code>, etc.
+        </li>
+        <li>
+            <code>PlutusTx.Builtins</code> – low-level builtins, here used for:
+            <ul>
+                <li><code>Builtins.appendByteString</code> to build <code>"USED-" &lt;&gt; tokenName</code>.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <hr>
+
+    <h3 id="58-imports-in-sportsticketspolicyhs-minting-policy">
+        5.8 Imports in <code>SportsTicketsPolicy.hs</code> (minting policy)
+    </h3>
+
+    <p>This module defines the <strong>NFT minting policy</strong> for tickets.</p>
+
+<pre><code class="language-haskell">import qualified Prelude as Haskell
+</code></pre>
+
+    <ul>
+        <li>Only used for <strong>off-chain-ish derivations and instances</strong>, e.g.:
+            <ul>
+                <li><code>deriving (Haskell.Eq, Haskell.Show)</code> for <code>TicketMintRedeemer</code>.</li>
+            </ul>
+        </li>
+        <li>On-chain logic still uses <code>PlutusTx.Prelude</code>.</li>
+    </ul>
+
+<pre><code class="language-haskell">import PlutusTx
+import PlutusTx.Prelude
+</code></pre>
+
+    <ul>
+        <li><code>PlutusTx</code> – TH code (<code>makeLift</code>, <code>unstableMakeIsData</code>, <code>compile</code>, <code>liftCode</code>).</li>
+        <li><code>PlutusTx.Prelude</code> – on-chain logic operators and functions.</li>
+    </ul>
+
+<pre><code class="language-haskell">import qualified Plutus.V2.Ledger.Api      as V2
+import qualified Plutus.V2.Ledger.Contexts as V2Ctx
+import qualified Plutus.V1.Ledger.Value    as Value
+</code></pre>
+
+    <ul>
+        <li><strong>V2 API / Contexts:</strong>
+            <ul>
+                <li><code>V2.ScriptContext</code>, <code>V2.TxInfo</code>, <code>V2.CurrencySymbol</code>, <code>V2.PubKeyHash</code>, etc.</li>
+                <li><code>V2Ctx.scriptContextTxInfo</code> – extract <code>TxInfo</code>.</li>
+                <li><code>V2Ctx.ownCurrencySymbol</code> – policy’s own <code>CurrencySymbol</code>.</li>
+                <li><code>V2Ctx.txSignedBy</code> – ensure organiser signed.</li>
+            </ul>
+        </li>
+        <li><strong>Value API:</strong>
+            <ul>
+                <li>
+                    <code>Value.flattenValue (V2.txInfoMint info)</code> – inspect all
+                    <code>(cs, token, amount)</code> minted or burned.
+                </li>
+                <li><code>Value.TokenName</code> – construct token names from seat bytes.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p>
+        Together these imports allow <code>mkTicketPolicy</code> to:
+    </p>
+    <ul>
+        <li>check organiser’s signature,</li>
+        <li>enforce <strong>exactly one</strong> ticket minted/burned per transaction under this policy,</li>
+        <li>disallow extra tokens under the same <code>CurrencySymbol</code>.</li>
+    </ul>
+
+    <hr>
+
+    <h3 id="59-imports-in-sportsticketshs-validator-generator--writer">
+        5.9 Imports in <code>SportsTickets.hs</code> (validator generator / writer)
+    </h3>
+
+    <p>
+        This is the <strong>off-chain helper executable</strong> that:
+    </p>
+    <ul>
+        <li>takes the compiled <code>validator</code>,</li>
+        <li>serialises it,</li>
+        <li>writes <code>sports-tickets.plutus</code>,</li>
+        <li>prints script hash &amp; addresses.</li>
+    </ul>
+
+<pre><code class="language-haskell">import Prelude (IO, FilePath, String, putStrLn, (&lt;&gt;))
+import qualified Prelude as P
+import qualified Data.Text as T
+</code></pre>
+
+    <ul>
+        <li>Minimal <code>Prelude</code> bits for IO and string operations.</li>
+        <li><code>P.show</code> used to print hashes/addresses.</li>
+        <li><code>Data.Text</code> used with <code>Cardano.Api</code> for Bech32 addresses.</li>
+    </ul>
+
+<pre><code class="language-haskell">import Plutus.V2.Ledger.Api
+  ( Validator
+  , Address(..)
+  , Credential(..)
+  )
+import qualified Plutus.V2.Ledger.Api as PlutusV2
+import PlutusTx.Prelude hiding (Semigroup(..), unless)
+import qualified PlutusTx.Builtins as Builtins
+</code></pre>
+
+    <ul>
+        <li><code>Validator</code> – the type of the compiled Plutus script.</li>
+        <li><code>Address</code>, <code>Credential</code> – used to build the on-chain <code>scriptAddress</code>.</li>
+        <li><code>PlutusV2</code> – qualified import for things like <code>ValidatorHash</code>.</li>
+        <li>
+            <code>PlutusTx.Prelude</code> &amp; <code>Builtins</code> – used to convert serialised bytes into
+            <code>BuiltinByteString</code> and construct <code>ValidatorHash</code> in a Plutus-like way.
+        </li>
+    </ul>
+
+<pre><code class="language-haskell">import qualified Codec.Serialise       as Serialise
+import qualified Data.ByteString.Lazy  as LBS
+import qualified Data.ByteString.Short as SBS
+import qualified Data.ByteString       as BS
+</code></pre>
+
+    <ul>
+        <li><strong>Serialisation stack:</strong>
+            <ul>
+                <li><code>Serialise.serialise validator</code> → CBOR bytes.</li>
+                <li><code>LBS</code> / <code>SBS</code> – convert between lazy/strict/short <code>ByteString</code>.</li>
+                <li>These are the bytes that get wrapped into a <code>PlutusScriptV2</code>.</li>
+            </ul>
+        </li>
+    </ul>
+
+<pre><code class="language-haskell">import qualified Cardano.Api          as C
+import qualified Cardano.Api.Shelley  as CS
+</code></pre>
+
+    <ul>
+        <li><strong>Bridge to the Cardano CLI world:</strong>
+            <ul>
+                <li><code>C.PlutusScript C.PlutusScriptV2</code></li>
+                <li><code>C.writeFileTextEnvelope</code></li>
+                <li><code>C.hashScript</code></li>
+                <li><code>C.makeShelleyAddressInEra</code></li>
+                <li><code>C.serialiseAddress</code></li>
+                <li><code>C.Testnet</code>, <code>C.NetworkMagic</code> to build a Bech32 script address.</li>
+            </ul>
+        </li>
+    </ul>
+
+<pre><code class="language-haskell">import SportsTicketsContract (validator)
+</code></pre>
+
+    <ul>
+        <li>Imports the <strong>on-chain validator</strong> defined in <code>SportsTicketsContract.hs</code>.</li>
+        <li>
+            Everything in this file revolves around taking that <code>validator</code> and outputting:
+            <ul>
+                <li><code>sports-tickets.plutus</code> file,</li>
+                <li>the human-readable Bech32 address,</li>
+                <li>the Plutus-style <code>ValidatorHash</code> and <code>Address</code> for debugging.</li>
+            </ul>
+        </li>
+    </ul>
+
+</section>
+
+        <!-- 6. Imports -->
+        <section id="6-imports-what-each-one-is-for">
+    <h2>6. Imports (What each one is for)</h2>
+
+    <p>
+        This section explains <strong>how the three main modules are structured</strong> and
+        <strong>what their imports are doing</strong>:
+    </p>
+
+    <ul>
+        <li><code>SportsTicketsContract.hs</code> – <strong>on-chain validator</strong> (ticket transfer + gate use).</li>
+        <li><code>SportsTicketsPolicy.hs</code> – <strong>on-chain minting policy</strong> (ticket NFTs).</li>
+        <li>
+            <code>SportsTickets.hs</code> – <strong>off-chain helper executable</strong> to dump
+            <code>sports-tickets.plutus</code> and print addresses.
+        </li>
+    </ul>
+
+    <hr>
+
+    <h3 id="61-module-structure-sportsticketscontract-sportsticketspolicy-sportstickets">
+        6.1 Module structure (<code>SportsTicketsContract</code>, <code>SportsTicketsPolicy</code>, <code>SportsTickets</code>)
+    </h3>
+
+    <p><strong>1. <code>SportsTicketsContract</code></strong></p>
+
+<pre><code class="language-haskell">module SportsTicketsContract
+  ( TicketDatum(..)
+  , TicketRedeemer(..)
+  , mkTicketValidator
+  , mkTicketValidatorUntyped
+  , validator
+  ) where
+</code></pre>
+
+    <ul>
+        <li><strong>Exposes:</strong></li>
+        <ul>
+            <li><code>TicketDatum</code> – on-chain state (who owns the ticket, seat, event, caps, KYC, NFT ids,…).</li>
+            <li><code>TicketRedeemer</code> – <code>Transfer</code> / <code>UseAtGate</code>.</li>
+            <li>
+                <code>mkTicketValidator</code> – <strong>typed</strong> validator:
+                <code>TicketDatum -&gt; TicketRedeemer -&gt; ScriptContext -&gt; Bool</code>.
+            </li>
+            <li><code>mkTicketValidatorUntyped</code> – <code>BuiltinData</code> wrapper used by PlutusTx.</li>
+            <li><code>validator</code> – final <code>Validator</code> value used by the writer and tests.</li>
+        </ul>
+    </ul>
+
+    <p><strong>2. <code>SportsTicketsPolicy</code></strong></p>
+
+<pre><code class="language-haskell">module SportsTicketsPolicy
+  ( TicketMintParams(..)
+  , TicketMintRedeemer(..)
+  , mkTicketPolicy
+  , ticketPolicy
+  ) where
+</code></pre>
+
+    <ul>
+        <li><strong>Exposes:</strong></li>
+        <ul>
+            <li><code>TicketMintParams</code> – baked-in organiser PKH + event id.</li>
+            <li><code>TicketMintRedeemer</code> – <code>MintTicket seat</code> / <code>BurnTicket seat</code>.</li>
+            <li><code>mkTicketPolicy</code> – core policy logic.</li>
+            <li><code>ticketPolicy</code> – final <code>MintingPolicy</code> parameterised by <code>TicketMintParams</code>.</li>
+        </ul>
+    </ul>
+
+    <p><strong>3. <code>SportsTickets</code></strong></p>
+
+<pre><code class="language-haskell">module Main where
+</code></pre>
+
+    <ul>
+        <li>Small <strong>executable</strong> whose job is:</li>
+        <ul>
+            <li>import <code>validator</code> from <code>SportsTicketsContract</code>,</li>
+            <li>serialise it,</li>
+            <li>write <code>sports-tickets.plutus</code>,</li>
+            <li>print:
+                <ul>
+                    <li>Plutus <code>ValidatorHash</code>,</li>
+                    <li>Plutus <code>Address</code>,</li>
+                    <li>Bech32 script address via <code>cardano-api</code>.</li>
+                </ul>
+            </li>
+        </ul>
+    </ul>
+
+    <hr>
+
+    <h3 id="62-prelude-and-qualified-prelude-as-p">
+        6.2 <code>Prelude</code> and <code>qualified Prelude as P</code>
+    </h3>
+
+    <p>
+        Because you use <code>NoImplicitPrelude</code> in the on-chain files, you control exactly
+        <strong>which Prelude</strong> is visible.
+    </p>
+
+    <p><strong>On-chain modules (<code>SportsTicketsContract</code>, <code>SportsTicketsPolicy</code>)</strong></p>
+
+    <ul>
+        <li>They don’t import base <code>Prelude</code> at all for logic.</li>
+        <li>Instead they use:</li>
+    </ul>
+
+<pre><code class="language-haskell">import PlutusTx.Prelude hiding (Semigroup(..), unless)
+</code></pre>
+
+    <ul>
+        <li>This ensures only <strong>Plutus-safe</strong> functions (deterministic, on-chain) are used in validation logic.</li>
+    </ul>
+
+    <p><strong>Off-chain writer (<code>SportsTickets.hs</code>)</strong></p>
+
+<pre><code class="language-haskell">import Prelude (IO, FilePath, String, putStrLn, (&lt;&gt;))
+import qualified Prelude as P
+</code></pre>
+
+    <ul>
+        <li>Minimal base Prelude for:
+            <ul>
+                <li><code>IO</code>, <code>FilePath</code>, <code>String</code>, <code>putStrLn</code>, <code>(&lt;&gt;)</code>.</li>
+                <li><code>P.show</code> when printing hashes and addresses.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p>You get a clean separation:</p>
+    <ul>
+        <li><strong>On-chain</strong>: <code>PlutusTx.Prelude</code>.</li>
+        <li><strong>Off-chain IO &amp; printing</strong>: base <code>Prelude</code> imported explicitly.</li>
+    </ul>
+
+    <hr>
+
+    <h3 id="63-plutus-core-imports">6.3 Plutus core imports</h3>
+
+    <p>
+        The Plutus imports give you all the <strong>ledger types</strong>, <strong>context accessors</strong>, and
+        <strong>value utilities</strong> for validator &amp; policy logic.
+    </p>
+
+    <h4 id="sportsticketscontracths"><code>SportsTicketsContract.hs</code></h4>
+
+    <p>Key imports:</p>
+
+<pre><code class="language-haskell">import Plutus.V2.Ledger.Api
+  ( Validator
+  , ScriptContext(..)
+  , TxInfo(..)
+  , TxOut(..)
+  , TxInInfo(..)
+  , TxOutRef
+  , Address(..)
+  , Credential(..)
+  , OutputDatum(..)
+  , Datum(..)
+  , POSIXTime
+  , POSIXTimeRange
+  , PubKeyHash
+  , CurrencySymbol
+  , TokenName(..)
+  , unTokenName
+  , ValidatorHash
+  , BuiltinData
+  , mkValidatorScript
+  )
+</code></pre>
+
+    <ul>
+        <li>Types used to <strong>inspect the transaction</strong> and <strong>encode ticket identity</strong>.</li>
+        <li><code>Validator</code>, <code>BuiltinData</code>, <code>mkValidatorScript</code> are needed to turn
+            <code>mkTicketValidatorUntyped</code> into a Plutus script.</li>
+    </ul>
+
+<pre><code class="language-haskell">import Plutus.V2.Ledger.Contexts
+  ( txSignedBy
+  , scriptContextTxInfo
+  , valuePaidTo
+  , findOwnInput
+  , ownHash
+  , txInInfoResolved
+  )
+</code></pre>
+
+    <ul>
+        <li>Check signatures: <code>txSignedBy</code> (owner / KYC).</li>
+        <li>Inspect payments: <code>valuePaidTo</code> (owner paid <code>price</code>, owner receives USED souvenir).</li>
+        <li>Discover script input and outputs: <code>findOwnInput</code>, <code>txInInfoResolved</code>, <code>ownHash</code>.</li>
+    </ul>
+
+<pre><code class="language-haskell">import Plutus.V1.Ledger.Interval as Interval
+  ( contains
+  , to
+  )
+</code></pre>
+
+    <ul>
+        <li><strong>Time checks:</strong>
+            <ul>
+                <li><code>Interval.to (tdEventTime dat)</code> + <code>contains</code> → <strong>before or at event time</strong> for <code>UseAtGate</code>.</li>
+            </ul>
+        </li>
+    </ul>
+
+<pre><code class="language-haskell">import Plutus.V1.Ledger.Value
+  ( Value
+  , valueOf
+  , adaSymbol
+  , adaToken
+  , flattenValue
+  )
+</code></pre>
+
+    <ul>
+        <li><strong>Multi-asset ops:</strong>
+            <ul>
+                <li><code>valueOf</code> – checks ADA paid to owner / ticket NFT presence / souvenir distribution.</li>
+                <li><code>flattenValue</code> – used to:
+                    <ul>
+                        <li>enforce “exactly 1 ticket NFT in input” (<code>ticketNftBound</code>),</li>
+                        <li>enforce mint/burn pattern (<code>tk -1</code>, <code>USED +1</code>).</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+<pre><code class="language-haskell">import PlutusTx
+import PlutusTx.Prelude hiding (Semigroup(..), unless)
+import qualified PlutusTx.Builtins as Builtins
+</code></pre>
+
+    <ul>
+        <li><code>PlutusTx</code> – Template Haskell derivations &amp; <code>unsafeFromBuiltinData</code>.</li>
+        <li><code>PlutusTx.Prelude</code> – Boolean logic, arithmetic, <code>traceIfFalse</code>, etc.</li>
+        <li><code>Builtins.appendByteString</code> – creates <code>"USED-" &lt;&gt; unTokenName tn</code> to derive the USED token name.</li>
+    </ul>
+
+    <h4 id="sportsticketspolicyhs"><code>SportsTicketsPolicy.hs</code></h4>
+
+<pre><code class="language-haskell">import PlutusTx
+import PlutusTx.Prelude
+import qualified Plutus.V2.Ledger.Api      as V2
+import qualified Plutus.V2.Ledger.Contexts as V2Ctx
+import qualified Plutus.V1.Ledger.Value    as Value
+</code></pre>
+
+    <ul>
+        <li><code>V2Ctx.ownCurrencySymbol ctx</code> – identifies the policy’s own <code>CurrencySymbol</code>.</li>
+        <li><code>Value.flattenValue (V2.txInfoMint info)</code> – sees exactly what is minted/burned.</li>
+        <li>Used to enforce:
+            <ul>
+                <li>organiser signed,</li>
+                <li>exactly one <code>(cs, seatTokenName, amount)</code> under this policy,</li>
+                <li>no extra tokens under this policy.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <hr>
+
+    <h3 id="64-serialization-stack">6.4 Serialization stack</h3>
+
+    <p>
+        The serialization stack is used only in the <strong>writer executables</strong> (e.g.
+        <code>SportsTickets.hs</code>) to convert the compiled validator into a <code>.plutus</code> file.
+    </p>
+
+<pre><code class="language-haskell">import qualified Codec.Serialise       as Serialise
+import qualified Data.ByteString.Lazy  as LBS
+import qualified Data.ByteString.Short as SBS
+import qualified Data.ByteString       as BS
+</code></pre>
+
+    <p>How they work together in <code>SportsTickets.hs</code>:</p>
+
+    <ol>
+        <li>
+            <strong>Serialise</strong> the validator:
+<pre><code class="language-haskell">let bytes    = Serialise.serialise validator       -- lazy ByteString
+</code></pre>
+        </li>
+        <li>
+            Convert between byte representations:
+<pre><code class="language-haskell">let strict   = LBS.toStrict bytes                  -- strict ByteString
+    short    = SBS.toShort strict                  -- ShortByteString
+</code></pre>
+        </li>
+        <li>
+            Use:
+            <ul>
+                <li><code>short</code> when constructing <code>C.PlutusScript C.PlutusScriptV2</code>.</li>
+                <li>
+                    The same bytes (via <code>Builtins.toBuiltin</code>) when building a
+                    <code>PlutusV2.ValidatorHash</code> in <code>plutusValidatorHash</code>.
+                </li>
+            </ul>
+        </li>
+    </ol>
+
+    <p>
+        This stack never runs on-chain; it’s purely off-chain tooling to make:
+    </p>
+    <ul>
+        <li><code>sports-tickets.plutus</code></li>
+        <li><code>revenue-splitter.plutus</code></li>
+        <li><code>sports-tickets-policy.plutus</code></li>
+    </ul>
+    <p>usable by <code>cardano-cli</code> / wallets / scripts.</p>
+
+    <hr>
+
+    <h3 id="65-cardano-api-imports">6.5 Cardano API imports</h3>
+
+    <p>
+        Finally, the <strong>Cardano API</strong> connects your Plutus code to the real Cardano node &amp; CLI ecosystem.
+    </p>
+
+<pre><code class="language-haskell">import qualified Cardano.Api         as C
+import qualified Cardano.Api.Shelley as CS
+</code></pre>
+
+    <p>
+        Used in <strong>writer executables</strong> like <code>SportsTickets.hs</code> to:
+    </p>
+
+    <ol>
+        <li>
+            Wrap raw bytes as a Plutus script:
+<pre><code class="language-haskell">plutusScript :: C.PlutusScript C.PlutusScriptV2
+plutusScript = CS.PlutusScriptSerialised serialised
+</code></pre>
+        </li>
+        <li>
+            <strong>Write a text envelope</strong> <code>.plutus</code>:
+<pre><code class="language-haskell">C.writeFileTextEnvelope path (Just "Sports Tickets Plutus Validator") plutusScript
+</code></pre>
+        </li>
+        <li>
+            Compute a <strong>script hash</strong> and <strong>Bech32 script address</strong>:
+<pre><code class="language-haskell">scriptHash  = C.hashScript (C.PlutusScript C.PlutusScriptV2 plutusScript)
+shelleyAddr = C.makeShelleyAddressInEra
+                 network
+                 (C.PaymentCredentialByScript scriptHash)
+                 C.NoStakeAddress
+bech32      = C.serialiseAddress shelleyAddr
+</code></pre>
+        </li>
+    </ol>
+
+    <p>
+        This is what lets you:
+    </p>
+    <ul>
+        <li>Take the on-chain validator from Haskell,</li>
+        <li>Turn it into a <code>.plutus</code> file,</li>
+        <li>Use it with:
+<pre><code class="language-bash">cardano-cli transaction build \
+  --tx-in-script-file sports-tickets.plutus \
+  ...
+</code></pre>
+        </li>
+    </ul>
+
+</section>
+
+        <!-- 7. Validator Logic -->
+        <section id="7-ticket-validator-logic-sportsticketscontract">
+    <h2>7. Ticket Validator Logic (<code>SportsTicketsContract</code>)</h2>
+
+    <p>The core validator lives in:</p>
+
+<pre><code class="language-haskell">mkTicketValidator :: TicketDatum -&gt; TicketRedeemer -&gt; ScriptContext -&gt; Bool
+</code></pre>
+
+    <p>It branches on the redeemer:</p>
+    <ul>
+        <li><code>Transfer newOwner price</code> – resale / secondary-market transfer.</li>
+        <li><code>UseAtGate</code> – gate scan at the venue entrance.</li>
+    </ul>
+
+    <p>Before looking at each branch, it’s useful to understand the shared helpers that enforce:</p>
+    <ul>
+        <li><strong>ticket identity binding</strong> (NFT must be present),</li>
+        <li><strong>safe state transitions</strong> (owner changes only as allowed),</li>
+        <li><strong>no “ghost” tickets</strong> (no extra script outputs or unexpected tokens),</li>
+        <li><strong>mint/burn patterns</strong> for gate usage.</li>
+    </ul>
+
+    <hr>
+
+    <h3 id="71-shared-helpers">7.1 Shared helpers</h3>
+
+    <h4 id="info-txrange-ticketnftbound"><code>info</code>, <code>txRange</code>, <code>ticketNftBound</code></h4>
+
+    <p>These helpers are used in both branches to get transaction context and enforce that the script input really is <em>the</em> ticket UTxO.</p>
+
+<pre><code class="language-haskell">{-# INLINABLE info #-}
+info :: ScriptContext -&gt; TxInfo
+info = scriptContextTxInfo
+
+{-# INLINABLE txRange #-}
+txRange :: ScriptContext -&gt; POSIXTimeRange
+txRange = txInfoValidRange . info
+</code></pre>
+
+    <ul>
+        <li><code>info ctx</code> – extracts the <code>TxInfo</code> from the <code>ScriptContext</code>.
+            <ul>
+                <li>This contains inputs, outputs, signatures, minted tokens, validity range, etc.</li>
+            </ul>
+        </li>
+        <li><code>txRange ctx</code> – convenience helper for the <strong>validity time range</strong> of the transaction.</li>
+    </ul>
+
+    <p>These are used to:</p>
+    <ul>
+        <li>Check <strong>signatures</strong> (<code>txSignedBy (info ctx) ...</code>).</li>
+        <li>Check <strong>time</strong> (with <code>Interval.contains</code> and <code>txRange</code>).</li>
+        <li>Inspect <strong>minting</strong>, payments, and script outputs.</li>
+    </ul>
+
+    <h5 id="ticketnftbound"><code>ticketNftBound</code></h5>
+
+<pre><code class="language-haskell">{-# INLINABLE ticketNftBound #-}
+ticketNftBound :: TicketDatum -&gt; ScriptContext -&gt; Bool
+ticketNftBound dat ctx =
+  case findOwnInput ctx of
+    Nothing  -&gt; traceIfFalse "ticket input missing" False
+    Just inp -&gt;
+      let v       = txOutValue (txInInfoResolved inp)
+          triples = flattenValue v
+          ours    =
+            [ amt
+            | (cs, tn, amt) &lt;- triples
+            , cs == tdPolicyId dat
+            , tn == tdTokenName dat
+            ]
+      in case ours of
+           [1] -&gt; True
+           _   -&gt; traceIfFalse "expected exactly one matching ticket NFT in input" False
+</code></pre>
+
+    <p>This enforces that <strong>the script input UTxO is uniquely bound to the ticket NFT</strong>:</p>
+    <ul>
+        <li>It looks up the <strong>UTxO being spent from this script</strong> via <code>findOwnInput ctx</code>.</li>
+        <li>It flattens its <code>Value</code> and filters for:
+            <ul>
+                <li><code>CurrencySymbol == tdPolicyId dat</code></li>
+                <li><code>TokenName == tdTokenName dat</code></li>
+            </ul>
+        </li>
+        <li>It requires <strong>exactly one entry with amount <code>1</code></strong>.
+            <ul>
+                <li>If there is no such entry, or multiple, or a different amount → the ticket is invalid.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p>This prevents:</p>
+    <ul>
+        <li>Spending a script UTxO that pretends to be this ticket but doesn’t hold the correct NFT.</li>
+        <li>Double-counting / mis-binding scenarios where there are multiple ticket NFTs in the same UTxO.</li>
+    </ul>
+
+    <blockquote>
+        Think of <code>ticketNftBound</code> as: “is the script really guarding this single, specific ticket token?”
+    </blockquote>
+
+    <h4 id="getcontinuingoutput-and-datumfromoutput"><code>getContinuingOutput</code> and <code>datumFromOutput</code></h4>
+
+    <p>These helpers ensure <strong>safe state transitions</strong> for the <code>Transfer</code> branch.</p>
+
+    <h5 id="getcontinuingoutput"><code>getContinuingOutput</code></h5>
+
+<pre><code class="language-haskell">{-# INLINABLE getContinuingOutput #-}
+getContinuingOutput :: ScriptContext -&gt; TxOut
+getContinuingOutput ctx =
+  let ti   = info ctx
+      vh   = ownHash ctx
+      outs = txInfoOutputs ti
+      isOwn o = case txOutAddress o of
+                  Address (ScriptCredential vh') _ -&gt; vh' == vh
+                  _                                -&gt; False
+      ownOuts = filter isOwn outs
+  in case ownOuts of
+       [o] -&gt; o
+       _   -&gt; traceError "expected exactly one continuing ticket output"
+</code></pre>
+
+    <ul>
+        <li>Computes the script’s own <code>ValidatorHash</code> via <code>ownHash ctx</code>.</li>
+        <li>Scans all <strong>outputs</strong> and keeps only those whose <code>Address</code> is a <strong>script address with this hash</strong>.</li>
+        <li>Requires <strong>exactly one</strong> such output.</li>
+    </ul>
+
+    <p>If there are:</p>
+    <ul>
+        <li><strong>Zero</strong> continuing outputs → for <code>Transfer</code>, this is invalid (you’d be destroying the ticket without gate use).</li>
+        <li><strong>More than one</strong> → that would create multiple script UTxOs and effectively duplicate the ticket’s logical state.</li>
+    </ul>
+
+    <p>So, for transfers:</p>
+    <blockquote>There must be exactly one “next state” ticket UTxO at the script.</blockquote>
+
+    <h5 id="datumfromoutput"><code>datumFromOutput</code></h5>
+
+<pre><code class="language-haskell">{-# INLINABLE datumFromOutput #-}
+datumFromOutput :: TxOut -&gt; TicketDatum
+datumFromOutput o =
+  case txOutDatum o of
+    OutputDatum (Datum d) -&gt; unsafeFromBuiltinData d
+    _                     -&gt; traceError "expected inline datum on continuing output"
+</code></pre>
+
+    <ul>
+        <li>Expects the continuing output to have an <strong>inline datum</strong>.</li>
+        <li>Decodes that datum into a <code>TicketDatum</code>.</li>
+    </ul>
+
+    <p>If it’s not inline, or if it’s missing, the script fails.</p>
+
+    <p>This guarantees:</p>
+    <ul>
+        <li>The new ticket state is explicitly present as a <code>TicketDatum</code> on the continuing UTxO.</li>
+        <li>Off-chain code can build the new datum, and on-chain code checks that it is structurally correct.</li>
+    </ul>
+
+    <h4 id="ticketstaticfieldsequal-and-nocontinuingoutput">
+        <code>ticketStaticFieldsEqual</code> and <code>noContinuingOutput</code>
+    </h4>
+
+    <h5 id="ticketstaticfieldsequal"><code>ticketStaticFieldsEqual</code></h5>
+
+<pre><code class="language-haskell">{-# INLINABLE ticketStaticFieldsEqual #-}
+ticketStaticFieldsEqual :: TicketDatum -&gt; TicketDatum -&gt; Bool
+ticketStaticFieldsEqual old new =
+       tdEventId old      == tdEventId new
+    &amp;&amp; tdSeat old         == tdSeat new
+    &amp;&amp; tdFaceValue old    == tdFaceValue new
+    &amp;&amp; tdMaxPrice old     == tdMaxPrice new
+    &amp;&amp; tdEventTime old    == tdEventTime new
+    &amp;&amp; tdKycAuthority old == tdKycAuthority new
+    &amp;&amp; tdPolicyId old     == tdPolicyId new
+    &amp;&amp; tdTokenName old    == tdTokenName new
+</code></pre>
+
+    <p>This enforces that, between the <strong>old datum</strong> and the <strong>new datum</strong>:</p>
+    <ul>
+        <li><strong>Cannot change</strong>:
+            <ul>
+                <li><code>tdEventId</code> – same event.</li>
+                <li><code>tdSeat</code> – same seat.</li>
+                <li><code>tdFaceValue</code> – original primary price stays in history.</li>
+                <li><code>tdMaxPrice</code> – anti-scalping cap remains the same.</li>
+                <li><code>tdEventTime</code> – gate time does not move.</li>
+                <li><code>tdKycAuthority</code> – no sneaky removal of a KYC requirement.</li>
+                <li><code>tdPolicyId</code> / <code>tdTokenName</code> – still the <strong>same ticket NFT</strong>.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p>Only fields allowed to change in a transfer:</p>
+    <ul>
+        <li><code>tdOwner</code> – current holder.</li>
+        <li><code>tdUsed</code> – only in gate branch (<code>UseAtGate</code>) / conceptual; in this contract <code>UseAtGate</code> consumes the UTxO entirely.</li>
+        <li><code>tdUsedPolicyId</code> – stays fixed, it doesn’t change.</li>
+    </ul>
+
+    <p>In practice, <code>ticketStaticFieldsEqual</code> is used inside <code>ticketStateTransitionOk</code> to assert:</p>
+    <blockquote>“All static aspects of the ticket remained the same across a Transfer; only the owner changed.”</blockquote>
+
+    <h5 id="nocontinuingoutput"><code>noContinuingOutput</code></h5>
+
+<pre><code class="language-haskell">{-# INLINABLE noContinuingOutput #-}
+noContinuingOutput :: ScriptContext -&gt; Bool
+noContinuingOutput ctx =
+  let vh   = ownHash ctx
+      outs = txInfoOutputs (scriptContextTxInfo ctx)
+      isOwn o = case txOutAddress o of
+                  Address (ScriptCredential vh') _ -&gt; vh' == vh
+                  _                                -&gt; False
+  in all (not . isOwn) outs
+</code></pre>
+
+    <ul>
+        <li>Checks that <strong>no outputs</strong> in the transaction go back to this script’s address.</li>
+        <li>Used in the <strong><code>UseAtGate</code></strong> branch to enforce:
+            <blockquote>After the gate scan, there is <strong>no more ticket at the script</strong>. The ticket is fully consumed; only the USED souvenir remains.</blockquote>
+        </li>
+    </ul>
+
+    <p>This ensures:</p>
+    <ul>
+        <li>Tickets cannot be “double-used” by keeping a script UTxO alive.</li>
+        <li>Gate use is a true <strong>one-way transition</strong> (ticket → USED souvenir).</li>
+    </ul>
+
+    <hr>
+
+    <h3 id="72-transfer-branch-transfer-newowner-price">
+        7.2 Transfer branch (<code>Transfer newOwner price</code>)
+    </h3>
+
+    <p>
+        The transfer branch handles <strong>resale</strong> of tickets on a secondary market or P2P transfer, under these rules:
+    </p>
+    <ul>
+        <li>Ticket must exist and be un-used.</li>
+        <li>Current owner must sign.</li>
+        <li>Optional KYC authority must also sign (if configured).</li>
+        <li>Price cannot exceed <code>tdMaxPrice</code>.</li>
+        <li>Owner must be paid exactly the <code>price</code>.</li>
+        <li>Owner must change (no dummy self-transfer).</li>
+        <li>New state must preserve all static fields and the ticket NFT.</li>
+    </ul>
+
+    <p>The core function:</p>
+
+<pre><code class="language-haskell">{-# INLINABLE validateTransfer #-}
+validateTransfer :: TicketDatum -&gt; PubKeyHash -&gt; Integer -&gt; ScriptContext -&gt; Bool
+validateTransfer dat newOwner price ctx =
+       traceIfFalse "ticket NFT missing / invalid" ticketHasNft
+    &amp;&amp; traceIfFalse "ticket already used"          ticketNotUsed
+    &amp;&amp; traceIfFalse "owner signature missing"      ownerSigned
+    &amp;&amp; traceIfFalse "kyc signature missing"        kycOk
+    &amp;&amp; traceIfFalse "resale price too high"        withinCap
+    &amp;&amp; traceIfFalse "owner unchanged"              ownerChanges
+    &amp;&amp; traceIfFalse "owner not paid correctly"     ownerPaidCorrectly
+    &amp;&amp; traceIfFalse "ticket state invalid"         stateOk
+    &amp;&amp; traceIfFalse "ticket state invalid"         (ticketStateTransitionOk dat newOwner ctx)
+  where
+    ti :: TxInfo
+    ti = info ctx
+
+    ticketHasNft :: Bool
+    ticketHasNft = ticketNftBound dat ctx
+
+    ticketNotUsed :: Bool
+    ticketNotUsed = not (tdUsed dat)
+
+    ownerSigned :: Bool
+    ownerSigned = txSignedBy ti (tdOwner dat)
+
+    kycOk :: Bool
+    kycOk =
+      case tdKycAuthority dat of
+        Nothing      -&gt; True
+        Just authPkh -&gt; txSignedBy ti authPkh
+
+    withinCap :: Bool
+    withinCap = price &lt;= tdMaxPrice dat
+
+    ownerChanges :: Bool
+    ownerChanges = newOwner /= tdOwner dat
+
+    actualPaidAda :: Integer
+    actualPaidAda =
+      let v = valuePaidTo ti (tdOwner dat)
+      in valueOf v adaSymbol adaToken
+
+    ownerPaidCorrectly :: Bool
+    ownerPaidCorrectly = actualPaidAda == price
+
+    stateOk :: Bool
+    stateOk = ticketStateTransitionOk dat newOwner ctx
+</code></pre>
+
+    <p>We’ll unpack each condition.</p>
+
+    <h4 id="1-ticket-nft-must-be-present-and-correct">1. Ticket NFT must be present and correct</h4>
+
+<pre><code class="language-haskell">ticketHasNft :: Bool
+ticketHasNft = ticketNftBound dat ctx
+</code></pre>
+
+    <ul>
+        <li>Uses the helper described above.</li>
+        <li>Enforces <strong>exactly one</strong> matching <code>(tdPolicyId, tdTokenName)</code> in the script input UTxO.</li>
+    </ul>
+
+    <p><strong>Effect:</strong> You cannot transfer a “ticket” datum that is not backed by the correct NFT.</p>
+
+    <h4 id="2-ticket-must-be-unused">2. Ticket must be unused</h4>
+
+<pre><code class="language-haskell">ticketNotUsed :: Bool
+ticketNotUsed = not (tdUsed dat)
+</code></pre>
+
+    <ul>
+        <li>Ensures you cannot transfer an already-used ticket.</li>
+        <li>In this contract’s actual gate design, <code>UseAtGate</code> consumes the UTxO entirely and there is no continuing ticket, but keeping <code>tdUsed</code> in the datum enforces the model consistently if extended.</li>
+    </ul>
+
+    <p><strong>Effect:</strong> Secondary sales only apply to <strong>fresh</strong> tickets.</p>
+
+    <h4 id="3-owner-must-sign-and-kyc-authority-if-any">3. Owner must sign, and KYC authority if any</h4>
+
+<pre><code class="language-haskell">ownerSigned :: Bool
+ownerSigned = txSignedBy ti (tdOwner dat)
+
+kycOk :: Bool
+kycOk =
+  case tdKycAuthority dat of
+    Nothing      -&gt; True
+    Just authPkh -&gt; txSignedBy ti authPkh
+</code></pre>
+
+    <ul>
+        <li><code>ownerSigned</code> – the current <code>tdOwner</code> must sign the transaction.</li>
+        <li><code>kycOk</code> – if <code>tdKycAuthority = Just pkh</code>, that pkh must also sign.</li>
+    </ul>
+
+    <p><strong>Effect:</strong></p>
+    <ul>
+        <li>Prevents stolen tickets from being transferred without the owner’s key.</li>
+        <li>Allows optional KYC/co-sign policies enforced purely on-chain (e.g. organiser signs all transfers or supervised marketplace).</li>
+    </ul>
+
+    <h4 id="4-price-must-respect-the-cap-owner-must-change">
+        4. Price must respect the cap, owner must change
+    </h4>
+
+<pre><code class="language-haskell">withinCap :: Bool
+withinCap = price &lt;= tdMaxPrice dat
+
+ownerChanges :: Bool
+ownerChanges = newOwner /= tdOwner dat
+</code></pre>
+
+    <ul>
+        <li><code>withinCap</code> – prevents scalping above <code>tdMaxPrice</code>.</li>
+        <li><code>ownerChanges</code> – rules out meaningless transfers where the owner does not change.</li>
+    </ul>
+
+    <p><strong>Effect:</strong></p>
+    <ul>
+        <li>Ensures resale stays within allowed limits.</li>
+        <li>Guarantees that <code>Transfer</code> actually performs a <strong>change in ownership</strong>.</li>
+    </ul>
+
+    <h4 id="5-owner-must-be-paid-exactly-the-declared-price">
+        5. Owner must be paid exactly the declared price
+    </h4>
+
+<pre><code class="language-haskell">actualPaidAda :: Integer
+actualPaidAda =
+  let v = valuePaidTo ti (tdOwner dat)
+  in valueOf v adaSymbol adaToken
+
+ownerPaidCorrectly :: Bool
+ownerPaidCorrectly = actualPaidAda == price
+</code></pre>
+
+    <ul>
+        <li><code>valuePaidTo ti (tdOwner dat)</code> computes everything the owner receives in <strong>all outputs</strong>.</li>
+        <li><code>valueOf ... adaSymbol adaToken</code> extracts the <strong>ADA</strong> portion.</li>
+        <li>This must match exactly the <code>price</code> in the redeemer.</li>
+    </ul>
+
+    <p><strong>Effect:</strong></p>
+    <ul>
+        <li>The <code>price</code> in the redeemer is <strong>not just a hint</strong>; it must match actual ADA paid.</li>
+        <li>Someone cannot underpay or overpay relative to the declared on-chain price.</li>
+    </ul>
+
+    <blockquote>
+        Combined with <code>withinCap</code>, this ensures the <strong>real</strong> sale price is both:
+        <ul>
+            <li>exactly what the redeemer claims, and</li>
+            <li>not above the configured cap.</li>
+        </ul>
+    </blockquote>
+
+    <h4 id="6-ticket-state-transition-must-be-correct-ticketstatetransitionok">
+        6. Ticket state transition must be correct (<code>ticketStateTransitionOk</code>)
+    </h4>
+
+<pre><code class="language-haskell">{-# INLINABLE ticketStateTransitionOk #-}
+ticketStateTransitionOk :: TicketDatum -&gt; PubKeyHash -&gt; ScriptContext -&gt; Bool
+ticketStateTransitionOk dat newOwner ctx =
+  let out    = getContinuingOutput ctx
+      outDat = datumFromOutput out
+
+      -- must still hold exactly 1 of *this* ticket NFT
+      nftOk  = valueOf (txOutValue out) (tdPolicyId dat) (tdTokenName dat) == 1
+
+      -- forbid any other non-ADA assets in the continuing output
+      nonAdaTriples =
+        [ (cs, tn, amt)
+        | (cs, tn, amt) &lt;- flattenValue (txOutValue out)
+        , not (cs == adaSymbol &amp;&amp; tn == adaToken)
+        ]
+
+      onlyThisNft :: Bool
+      onlyThisNft =
+        case nonAdaTriples of
+          [(cs, tn, amt)] -&gt; cs == tdPolicyId dat &amp;&amp; tn == tdTokenName dat &amp;&amp; amt == 1
+          _               -&gt; False
+  in     traceIfFalse "ticket NFT not preserved in output" nftOk
+     &amp;&amp;  traceIfFalse "continuing output contains extra non-ADA tokens" onlyThisNft
+     &amp;&amp;  traceIfFalse "owner not updated to new owner"     (tdOwner outDat == newOwner)
+     &amp;&amp;  traceIfFalse "static ticket fields changed"       (ticketStaticFieldsEqual dat outDat)
+     &amp;&amp;  traceIfFalse "used flag changed on transfer"      (tdUsed outDat == tdUsed dat)
+</code></pre>
+
+    <p>Breakdown:</p>
+    <ol>
+        <li>
+            <strong>Exactly one continuing output at this script</strong> –
+            enforced by <code>getContinuingOutput ctx</code>. Any deviation (0 or &gt;1) is rejected.
+        </li>
+        <li>
+            <strong>Ticket NFT preserved:</strong>
+<pre><code class="language-haskell">nftOk =
+  valueOf (txOutValue out) (tdPolicyId dat) (tdTokenName dat) == 1
+</code></pre>
+            The continuing output must still hold <em>exactly one</em> of the ticket NFT.
+        </li>
+        <li>
+            <strong>No extra non-ADA tokens:</strong>
+<pre><code class="language-haskell">nonAdaTriples =
+  [ (cs, tn, amt)
+  | (cs, tn, amt) &lt;- flattenValue (txOutValue out)
+  , not (cs == adaSymbol &amp;&amp; tn == adaToken)
+  ]
+
+onlyThisNft =
+  case nonAdaTriples of
+    [(cs, tn, amt)] -&gt; cs == tdPolicyId dat &amp;&amp; tn == tdTokenName dat &amp;&amp; amt == 1
+    _               -&gt; False
+</code></pre>
+            Among all non-ADA assets in the output:
+            <ul>
+                <li>There must be <strong>exactly one triple</strong>.</li>
+                <li>It must match the ticket NFT with amount <code>1</code>.</li>
+            </ul>
+            No airdrops, no bundled extra tokens; just ADA + the ticket.
+        </li>
+        <li>
+            <strong>Owner updated correctly:</strong>
+<pre><code class="language-haskell">tdOwner outDat == newOwner
+</code></pre>
+        </li>
+        <li>
+            <strong>Static fields unchanged:</strong>
+<pre><code class="language-haskell">ticketStaticFieldsEqual dat outDat
+</code></pre>
+            All immutable fields (event id, seat, caps, event time, KYC, NFT ids) must stay the same.
+        </li>
+        <li>
+            <strong><code>tdUsed</code> unchanged on transfer:</strong>
+<pre><code class="language-haskell">tdUsed outDat == tdUsed dat
+</code></pre>
+            Transfer alone should not mark the ticket as used. Marking used is a <strong>gate-only</strong>
+            privilege (conceptually <code>UseAtGate</code>; here the gate burns the UTxO instead).
+        </li>
+    </ol>
+
+    <p>The <code>validateTransfer</code> function then calls this twice (once via <code>stateOk</code>, once directly), which is redundant but safe; it ensures the transition is checked.</p>
+
+    <p><strong>Overall effect:</strong></p>
+    <blockquote>
+        A Transfer can only:
+        <ul>
+            <li>change the <code>tdOwner</code>,</li>
+            <li>keep the ticket NFT exactly intact,</li>
+            <li>preserve all core ticket attributes,</li>
+            <li>keep <code>tdUsed</code> unchanged,</li>
+            <li>respect price limits and payments.</li>
+        </ul>
+    </blockquote>
+
+    <hr>
+
+    <h3 id="73-useatgate-branch-useatgate">
+        7.3 UseAtGate branch (<code>UseAtGate</code>)
+    </h3>
+
+    <p>
+        The <code>UseAtGate</code> branch enforces the <strong>gate scan</strong> logic:
+        the ticket is validated, consumed, and converted into a USED souvenir.
+    </p>
+
+<pre><code class="language-haskell">{-# INLINABLE validateUseAtGate #-}
+validateUseAtGate :: TicketDatum -&gt; ScriptContext -&gt; Bool
+validateUseAtGate dat ctx =
+       traceIfFalse "ticket NFT missing / invalid"        ticketHasNft
+    &amp;&amp; traceIfFalse "ticket already used"                 ticketNotUsed
+    &amp;&amp; traceIfFalse "too late for entry"                  beforeOrAtEventTime
+    &amp;&amp; traceIfFalse "must burn 1 ticket NFT"              burnedExactlyOne
+    &amp;&amp; traceIfFalse "must mint 1 USED souvenir"           mintedExactlyOne
+    &amp;&amp; traceIfFalse "unexpected extra minting"            noExtraMinting
+    &amp;&amp; traceIfFalse "USED souvenir not paid to owner"     souvenirPaidToOwner
+    &amp;&amp; traceIfFalse "no continuing output expected"       (noContinuingOutput ctx)
+  where
+    ti :: TxInfo
+    ti = info ctx
+
+    ticketHasNft :: Bool
+    ticketHasNft = ticketNftBound dat ctx
+
+    ticketNotUsed :: Bool
+    ticketNotUsed = not (tdUsed dat)
+
+    csTicket :: CurrencySymbol
+    csTicket = tdPolicyId     dat
+
+    tn :: TokenName
+    tn = tdTokenName          dat
+
+    csUsed :: CurrencySymbol
+    csUsed = tdUsedPolicyId   dat
+
+    utn :: TokenName
+    utn = usedTokenName       tn
+
+    beforeOrAtEventTime :: Bool
+    beforeOrAtEventTime =
+      Interval.contains (Interval.to (tdEventTime dat)) (txRange ctx)
+
+    burnedExactlyOne :: Bool
+    burnedExactlyOne = mintedAmountOf csTicket tn  ctx == (-1)
+
+    mintedExactlyOne :: Bool
+    mintedExactlyOne = mintedAmountOf csUsed   utn ctx == 1
+
+    noExtraMinting :: Bool
+    noExtraMinting =
+      let mintedTriples = flattenValue (txInfoMint ti)
+          allowed (cs, tnm, amt) =
+               (cs == csTicket &amp;&amp; tnm == tn  &amp;&amp; amt == (-1))
+            || (cs == csUsed   &amp;&amp; tnm == utn &amp;&amp; amt == 1)
+      in  all allowed mintedTriples &amp;&amp; length mintedTriples == 2
+
+    souvenirPaidToOwner :: Bool
+    souvenirPaidToOwner =
+      valuePaidOf (tdOwner dat) csUsed utn ctx == 1
+</code></pre>
+
+    <p>We saw the high-level flow in Section 3.3; here’s how the code enforces it.</p>
+
+    <h4 id="1-ticket-existence--unused-status">1. Ticket existence + unused status</h4>
+
+    <ul>
+        <li><code>ticketHasNft</code> – same <code>ticketNftBound dat ctx</code> as in Transfer.</li>
+        <li><code>ticketNotUsed</code> – again enforces it hasn’t been marked as used.</li>
+    </ul>
+
+    <p>Even though <code>UseAtGate</code> <strong>burns</strong> the ticket and leaves no continuing output, these checks ensure:</p>
+    <ul>
+        <li>You can only gate-scan a UTxO that truly holds this ticket NFT.</li>
+        <li>You can’t gate-scan a datum that already flagged <code>tdUsed = True</code>.</li>
+    </ul>
+
+    <h4 id="2-time-restriction-on-or-before-tdeventtime">
+        2. Time restriction: on or before <code>tdEventTime</code>
+    </h4>
+
+<pre><code class="language-haskell">beforeOrAtEventTime :: Bool
+beforeOrAtEventTime =
+  Interval.contains (Interval.to (tdEventTime dat)) (txRange ctx)
+</code></pre>
+
+    <ul>
+        <li>Requires the transaction’s validity range (<code>txRange ctx</code>) to be contained in <code>to tdEventTime</code>.</li>
+        <li>This means:
+            <ul>
+                <li>The tx must be valid at or before <code>tdEventTime</code>.</li>
+                <li>You <strong>cannot</strong> enter after the event time (strict rule).</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4 id="3-mintburn-keys-usedtokenname-mintedamountof-valuepaidof">
+        3. Mint/burn keys: <code>usedTokenName</code>, <code>mintedAmountOf</code>, <code>valuePaidOf</code>
+    </h4>
+
+    <p>These helpers are used to enforce the mint / burn and payment pattern.</p>
+
+<pre><code class="language-haskell">{-# INLINABLE usedTokenName #-}
+usedTokenName :: TokenName -&gt; TokenName
+usedTokenName tn =
+  TokenName (Builtins.appendByteString "USED-" (unTokenName tn))
+
+{-# INLINABLE mintedAmountOf #-}
+mintedAmountOf :: CurrencySymbol -&gt; TokenName -&gt; ScriptContext -&gt; Integer
+mintedAmountOf cs tn ctx =
+  let mintedTriples = flattenValue (txInfoMint (info ctx))
+  in sum [ amt | (cs', tn', amt) &lt;- mintedTriples, cs' == cs, tn' == tn ]
+
+{-# INLINABLE valuePaidOf #-}
+valuePaidOf :: PubKeyHash -&gt; CurrencySymbol -&gt; TokenName -&gt; ScriptContext -&gt; Integer
+valuePaidOf pkh cs tn ctx =
+  let v = valuePaidTo (info ctx) pkh
+  in valueOf v cs tn
+</code></pre>
+
+    <ul>
+        <li><code>usedTokenName</code> derives a <strong>souvenir token name</strong> from the original ticket name, e.g. <code>"TICKET-001"</code> → <code>"USED-TICKET-001"</code>.</li>
+        <li><code>mintedAmountOf</code> sums all minted/burned amounts for a given <code>(cs, tn)</code> from <code>txInfoMint</code> (positive → mint; negative → burn).</li>
+        <li><code>valuePaidOf</code> checks how many units of a given token are paid to a particular PKH in outputs.</li>
+    </ul>
+
+    <h4 id="4-burn-exactly-one-ticket-mint-exactly-one-used-souvenir">
+        4. Burn exactly one ticket, mint exactly one USED souvenir
+    </h4>
+
+<pre><code class="language-haskell">burnedExactlyOne :: Bool
+burnedExactlyOne = mintedAmountOf csTicket tn  ctx == (-1)
+
+mintedExactlyOne :: Bool
+mintedExactlyOne = mintedAmountOf csUsed   utn ctx == 1
+</code></pre>
+
+    <ul>
+        <li>The transaction must:
+            <ul>
+                <li>Burn exactly 1 ticket NFT (<code>-1</code> under <code>tdPolicyId/tdTokenName</code>).</li>
+                <li>Mint exactly 1 souvenir NFT (<code>+1</code> under <code>tdUsedPolicyId/usedTokenName</code>).</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p><strong>Effect:</strong></p>
+    <ul>
+        <li>A ticket cannot be used without being destroyed at the policy level.</li>
+        <li>A USED souvenir is always created 1:1 when a ticket is used.</li>
+    </ul>
+
+    <h4 id="5-no-extra-minting">5. No extra minting</h4>
+
+<pre><code class="language-haskell">noExtraMinting :: Bool
+noExtraMinting =
+  let mintedTriples = flattenValue (txInfoMint ti)
+      allowed (cs, tnm, amt) =
+           (cs == csTicket &amp;&amp; tnm == tn  &amp;&amp; amt == (-1))
+        || (cs == csUsed   &amp;&amp; tnm == utn &amp;&amp; amt == 1)
+  in  all allowed mintedTriples &amp;&amp; length mintedTriples == 2
+</code></pre>
+
+    <ul>
+        <li>Flattens the entire <code>txInfoMint</code>.</li>
+        <li>Checks that:
+            <ul>
+                <li>Every triple matches either:
+                    <ul>
+                        <li><code>(csTicket, tn, -1)</code> – ticket burn, or</li>
+                        <li><code>(csUsed, utn, 1)</code> – souvenir mint.</li>
+                    </ul>
+                </li>
+                <li>There are exactly <strong>two</strong> triples in total.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p><strong>Effect:</strong></p>
+    <ul>
+        <li>No other tokens can be minted or burned in this transaction (including other tickets).</li>
+        <li>Gate scan tx is “pure” — only concerned with <strong>this</strong> ticket → USED souvenir.</li>
+    </ul>
+
+    <h4 id="6-used-souvenir-goes-to-the-owner">6. USED souvenir goes to the owner</h4>
+
+<pre><code class="language-haskell">souvenirPaidToOwner :: Bool
+souvenirPaidToOwner = valuePaidOf (tdOwner dat) csUsed utn ctx == 1
+</code></pre>
+
+    <ul>
+        <li>Using <code>valuePaidOf</code>:
+            <ul>
+                <li>Checks that <strong>exactly 1</strong> USED token is paid to the <strong>current owner (<code>tdOwner dat</code>)</strong>.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p><strong>Effect:</strong></p>
+    <ul>
+        <li>The attendee whose ticket is being consumed becomes the holder of the souvenir.</li>
+        <li>Souvenir cannot be siphoned to someone else or left at the script.</li>
+    </ul>
+
+    <h4 id="7-no-continuing-script-output-nocontinuingoutput">
+        7. No continuing script output (<code>noContinuingOutput</code>)
+    </h4>
+
+    <p>Finally:</p>
+
+<pre><code class="language-haskell">traceIfFalse "no continuing output expected" (noContinuingOutput ctx)
+</code></pre>
+
+    <ul>
+        <li>Uses the helper described earlier.</li>
+        <li>Ensures <strong>the script does not reappear as an output</strong>.</li>
+    </ul>
+
+    <p><strong>Effect:</strong></p>
+    <ul>
+        <li>After gate validation, the ticket UTxO is fully consumed.</li>
+        <li>Only regular outputs remain (USED souvenir and ADA change).</li>
+        <li>Prevents creating a new ticket UTxO to re-use later.</li>
+    </ul>
+
+    <hr>
+
+    <p><strong>Overall behaviour of <code>UseAtGate</code>:</strong></p>
+
+    <ul>
+        <li>Ticket must be valid and unused.</li>
+        <li>Gate use must be at or before event time.</li>
+        <li>One ticket NFT is burned.</li>
+        <li>One USED souvenir NFT is minted under <code>tdUsedPolicyId</code>.</li>
+        <li>That souvenir goes to the ticket owner.</li>
+        <li>No other minting occurs.</li>
+        <li>No ticket UTxO continues at the script.</li>
+    </ul>
+
+    <p>This locks in the invariant:</p>
+
+    <blockquote>
+        <strong>Each ticket can be used at most once</strong>, and the on-chain history clearly shows:
+        <ul>
+            <li>it existed (minted under the ticket policy),</li>
+            <li>it was consumed (burned),</li>
+            <li>it was used at the gate (USED souvenir minted to the owner).</li>
+        </ul>
+    </blockquote>
+</section>
+
+
+        <!-- 8. Minting Policy -->
+         <section id="8-minting-policy-logic-sportsticketspolicy">
+  <h2>8. Minting Policy Logic (SportsTicketsPolicy)</h2>
+
+  <p>
+    While the ticket validator controls <strong>resale and gate usage</strong>, the
+    <strong>minting policy</strong> controls:
+  </p>
+
+  <ul>
+    <li><strong>Who</strong> is allowed to create / burn ticket NFTs.</li>
+    <li><strong>How many</strong> can be minted or burned per transaction.</li>
+    <li>Ensuring there are no <q>extra</q> tokens riding under the same policy.</li>
+  </ul>
+
+  <p>The core on-chain function:</p>
+
+  <pre><code class="language-haskell">{-# INLINABLE mkTicketPolicy #-}
+mkTicketPolicy :: TicketMintParams -&gt; TicketMintRedeemer -&gt; V2.ScriptContext -&gt; Bool
+</code></pre>
+
+  <p>It branches on the redeemer:</p>
+
+  <ul>
+    <li><code>MintTicket seat</code> – mint <strong>one</strong> NFT for a specific seat.</li>
+    <li><code>BurnTicket seat</code> – burn <strong>one</strong> NFT for a specific seat.</li>
+  </ul>
+
+  <p>
+    Everything is parameterised by <code>TicketMintParams</code>, which encodes the
+    <strong>event organiser</strong> and <strong>event id</strong>.
+  </p>
+
+  <hr>
+
+  <h3 id="8-1-parameters-ticketmintparams-and-organiser-role">
+    8.1 Parameters (<code>TicketMintParams</code> and organiser role)
+  </h3>
+
+  <pre><code class="language-haskell">data TicketMintParams = TicketMintParams
+  { tmpOrganizer :: V2.PubKeyHash       -- ^ Who is allowed to mint / burn
+  , tmpEventId   :: BuiltinByteString   -- ^ Event id this policy is for
+  }
+
+PlutusTx.makeLift ''TicketMintParams
+</code></pre>
+
+  <h4><code>tmpOrganizer :: PubKeyHash</code></h4>
+
+  <ul>
+    <li>The <strong>organiser’s public key hash</strong>.</li>
+    <li>This key must <strong>sign every mint or burn</strong> under this policy.</li>
+    <li>It acts as the <strong>on-chain authority</strong> for ticket creation/destruction.</li>
+  </ul>
+
+  <p>Practical meaning:</p>
+  <ul>
+    <li>Only transactions signed by <code>tmpOrganizer</code> can:
+      <ul>
+        <li>Mint new seat tickets for the event.</li>
+        <li>Burn existing seat tickets (e.g. cleanup / admin operations).</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h4><code>tmpEventId :: BuiltinByteString</code></h4>
+
+  <ul>
+    <li>A short identifier for the <strong>event</strong> (e.g. <code>"BOK-2025-FINAL"</code>).</li>
+    <li>Not heavily used in the logic yet, but useful for:
+      <ul>
+        <li>Off-chain labelling and indexing.</li>
+        <li>Grouping policies by event.</li>
+        <li>Future extensions (for example: validating that seat strings follow an event-specific pattern).</li>
+      </ul>
+    </li>
+  </ul>
+
+  <p>
+    <code>makeLift</code> lets these parameters be embedded at compile time into the policy, so you can have:
+  </p>
+
+  <ul>
+    <li>One <strong>policy per event</strong> (with its own organiser + id).</li>
+    <li>Multiple seat NFTs under that single event-specific policy.</li>
+  </ul>
+
+  <hr>
+
+  <h3 id="8-2-mintticket-seat-branch">
+    8.2 <code>MintTicket seat</code> branch
+  </h3>
+
+  <p>Redeemer type:</p>
+
+  <pre><code class="language-haskell">data TicketMintRedeemer
+  = MintTicket BuiltinByteString
+  | BurnTicket BuiltinByteString
+  deriving (Haskell.Eq, Haskell.Show)
+
+PlutusTx.unstableMakeIsData ''TicketMintRedeemer
+</code></pre>
+
+  <p>For minting:</p>
+
+  <pre><code class="language-haskell">mkTicketPolicy :: TicketMintParams -&gt; TicketMintRedeemer -&gt; V2.ScriptContext -&gt; Bool
+mkTicketPolicy params redeemer ctx =
+  case redeemer of
+    MintTicket seat -&gt;
+         traceIfFalse "organizer not signed"              (signedByOrganizer info)
+      &amp;&amp; traceIfFalse "wrong minting for seat"           (checkMint seat 1)
+      &amp;&amp; traceIfFalse "no extra tokens under this policy" noExtraUnderPolicy
+
+    BurnTicket seat -&gt;  -- handled in 8.3
+      ...
+
+  where
+    info :: V2.TxInfo
+    info = V2Ctx.scriptContextTxInfo ctx
+
+    cs :: V2.CurrencySymbol
+    cs = V2Ctx.ownCurrencySymbol ctx
+
+    minted :: [(V2.CurrencySymbol, Value.TokenName, Integer)]
+    minted = Value.flattenValue (V2.txInfoMint info)
+</code></pre>
+
+  <h4>What this branch enforces</h4>
+
+  <ol>
+    <li>
+      <strong>Organiser must sign the transaction</strong>
+      <pre><code class="language-haskell">signedByOrganizer :: V2.TxInfo -&gt; Bool
+signedByOrganizer txInfo =
+  V2Ctx.txSignedBy txInfo (tmpOrganizer params)
+</code></pre>
+      <ul>
+        <li><code>tmpOrganizer</code> must appear in <code>txInfoSignatories</code>.</li>
+        <li>Prevents anyone else from minting/burning event tickets.</li>
+      </ul>
+    </li>
+
+    <li>
+      <strong>Exactly one seat NFT is minted with amount <code>+1</code></strong>
+      <pre><code class="language-haskell">checkMint :: BuiltinByteString -&gt; Integer -&gt; Bool
+checkMint seat expected =
+  let tn   = Value.TokenName seat
+      ours = [ amt
+             | (cs', tn', amt) &lt;- minted
+             , cs' == cs
+             , tn' == tn
+             ]
+  in case ours of
+       [amt] -&gt; amt == expected
+       _     -&gt; False
+</code></pre>
+      <ul>
+        <li><code>cs</code> is the policy’s own <code>CurrencySymbol</code> (from <code>ownCurrencySymbol</code>).</li>
+        <li><code>Value.flattenValue</code> exposes all <code>(cs, tokenName, amount)</code> minted/burned.</li>
+        <li><code>checkMint seat 1</code> requires:
+          <ul>
+            <li>Exactly one triple for <code>(cs, TokenName seat)</code>.</li>
+            <li>The amount is exactly <code>+1</code>.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <p><strong>Effect:</strong></p>
+      <blockquote>
+        When using <code>MintTicket seat</code>, you must mint <strong>exactly</strong> 1 ticket NFT for that specific
+        seat under this policy.
+      </blockquote>
+    </li>
+
+    <li>
+      <strong>No extra tokens under the same policy</strong>
+      <pre><code class="language-haskell">noExtraUnderPolicy :: Bool
+noExtraUnderPolicy =
+  let underThis = [ (tn, amt)
+                  | (cs', tn, amt) &lt;- minted
+                  , cs' == cs
+                  ]
+  in length underThis == 1
+</code></pre>
+
+      <p>
+        This is explained in more detail in <a href="#8-4-preventing-extra-tokens-under-the-same-policy">8.4</a>, but
+        from the mint branch’s perspective it guarantees:
+      </p>
+      <ul>
+        <li>Only <strong>one</strong> token (one seat, one amount) is touched under this policy in the transaction.</li>
+        <li>You can’t piggyback additional seats or amounts into the same mint.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <hr>
+
+  <h3 id="8-3-burnticket-seat-branch">
+    8.3 <code>BurnTicket seat</code> branch
+  </h3>
+
+  <p>For burning:</p>
+
+  <pre><code class="language-haskell">mkTicketPolicy params redeemer ctx =
+  case redeemer of
+    MintTicket seat -&gt; ...
+    BurnTicket seat -&gt;
+         traceIfFalse "organizer not signed"              (signedByOrganizer info)
+      &amp;&amp; traceIfFalse "burn must be -1"                   (checkMint seat (-1))
+      &amp;&amp; traceIfFalse "no extra tokens under this policy" noExtraUnderPolicy
+  where
+    info    = V2Ctx.scriptContextTxInfo ctx
+    cs      = V2Ctx.ownCurrencySymbol ctx
+    minted  = Value.flattenValue (V2.txInfoMint info)
+</code></pre>
+
+  <h4>What this branch enforces</h4>
+
+  <ol>
+    <li>
+      <strong>Organiser must sign</strong>
+      <ul>
+        <li>Same <code>signedByOrganizer info</code> as in the mint branch.</li>
+      </ul>
+
+      <p><strong>Effect:</strong></p>
+      <blockquote>
+        Only the organiser can destroy tickets under this policy (e.g. event cancelled, admin cleanup).
+      </blockquote>
+    </li>
+
+    <li>
+      <strong>Exactly one seat NFT is burned with amount <code>-1</code></strong>
+      <ul>
+        <li>Uses the same <code>checkMint</code> helper, but with <code>expected = -1</code>:</li>
+      </ul>
+      <pre><code class="language-haskell">checkMint seat (-1)
+</code></pre>
+      <p>It requires:</p>
+      <ul>
+        <li>Exactly one triple <code>(cs, TokenName seat, -1)</code> in <code>txInfoMint</code>.</li>
+        <li>No other triple for that seat under this policy.</li>
+      </ul>
+
+      <p><strong>Effect:</strong></p>
+      <blockquote>
+        Burning a seat ticket is a <strong>precise</strong> operation: one token for that seat is burned, no more, no less.
+      </blockquote>
+    </li>
+
+    <li>
+      <strong>No extra tokens under the same policy</strong>
+      <ul>
+        <li>Again, enforced by <code>noExtraUnderPolicy</code> (see below).</li>
+      </ul>
+    </li>
+  </ol>
+
+  <hr>
+
+  <h3 id="8-4-preventing-extra-tokens-under-the-same-policy">
+    8.4 Preventing extra tokens under the same policy
+  </h3>
+
+  <p>
+    Beyond checking a specific <code>(seat, amount)</code>, the policy also enforces that the transaction does
+    <strong>not</strong> mint or burn <strong>any other token</strong> for this <code>CurrencySymbol</code>:
+  </p>
+
+  <pre><code class="language-haskell">noExtraUnderPolicy :: Bool
+noExtraUnderPolicy =
+  let underThis = [ (tn, amt)
+                  | (cs', tn, amt) &lt;- minted
+                  , cs' == cs
+                  ]
+  in length underThis == 1
+</code></pre>
+
+  <h4>Breakdown</h4>
+
+  <ul>
+    <li><code>minted</code> is the full flattened list:
+      <pre><code class="language-haskell">minted :: [(V2.CurrencySymbol, Value.TokenName, Integer)]
+minted = Value.flattenValue (V2.txInfoMint info)
+</code></pre>
+    </li>
+    <li><code>underThis</code> filters only entries where <code>cs' == cs</code> (this policy’s own symbol):
+      <pre><code class="language-haskell">underThis = [ (tn, amt)
+            | (cs', tn, amt) &lt;- minted
+            , cs' == cs
+            ]
+</code></pre>
+    </li>
+    <li>And the policy requires:
+      <pre><code class="language-haskell">length underThis == 1
+</code></pre>
+      i.e. there is exactly <strong>one</strong> <code>(TokenName, amount)</code> pair affected by this policy.
+    </li>
+  </ul>
+
+  <p>Combined with <code>checkMint seat expected</code>, this means:</p>
+
+  <ul>
+    <li>
+      For <code>MintTicket seat</code>:
+      <ul>
+        <li>You can only mint <strong>exactly one</strong> <code>TokenName seat</code> with amount <code>+1</code>.</li>
+        <li>No other seats or extra tokens can be minted under this same policy in the transaction.</li>
+      </ul>
+    </li>
+    <li>
+      For <code>BurnTicket seat</code>:
+      <ul>
+        <li>You can only burn <strong>exactly one</strong> <code>TokenName seat</code> with amount <code>-1</code>.</li>
+        <li>No other seats or tokens can be burned under this same policy at the same time.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h4>Why this matters</h4>
+
+  <ul>
+    <li>
+      It gives strong, per-seat control:
+      <ul>
+        <li>Off-chain you can adopt the pattern: “one tx, one seat, one redeemer”.</li>
+        <li>Every mint looks like <code>MintTicket "BLOCK-A-ROW-1-SEAT-10"</code> with a single token under that policy.</li>
+        <li>You avoid mistakes like accidentally minting <strong>multiple seats</strong> in one go under the same redeemer.</li>
+      </ul>
+    </li>
+    <li>
+      It supports organiser-controlled workflows:
+      <ul>
+        <li>The organiser can script ticket creation as a series of small, explicit transactions.</li>
+        <li>The smart contract, not just off-chain code, guarantees seat-level correctness per policy.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <blockquote>
+    🔒 <strong>Security intuition:</strong><br>
+    The minting policy ensures that <strong>any change under this ticket policy is 1:1 and organiser-approved</strong>.
+    Every transaction is a clear <code>(seat, ±1)</code> operation with no hidden extra tokens riding along.
+  </blockquote>
+</section>
+
+
+
+        <!-- 9. Producing .plutus -->
+        <section id="9-producing-sports-ticketsplutus-and-sports-tickets-policyplutus">
+  <h2>9. Producing <code>sports-tickets.plutus</code> and <code>sports-tickets-policy.plutus</code> 📝</h2>
+
+  <p>The on-chain logic for tickets lives in <strong>two different scripts</strong>:</p>
+
+  <ol>
+    <li>
+      A <strong>validator script</strong> (<code>SportsTicketsContract</code>)<br>
+      &rarr; compiled and written by <code>sports-tickets-exe</code> into <code>sports-tickets.plutus</code>.
+    </li>
+    <li>
+      A <strong>minting policy</strong> (<code>SportsTicketsPolicy</code>)<br>
+      &rarr; compiled and written by <code>sports-tickets-policy-exe</code> into <code>sports-tickets-policy.plutus</code>.
+    </li>
+  </ol>
+
+  <p>Both executables follow the same core pattern:</p>
+
+  <ul>
+    <li>Take the in-memory Plutus script (<code>Validator</code> or <code>MintingPolicy</code>).</li>
+    <li>Serialise it to CBOR using <code>serialise</code>.</li>
+    <li>Wrap it in a <strong>Cardano text envelope</strong>.</li>
+    <li>Save as <code>.plutus</code> on disk so <code>cardano-cli</code> can use it.</li>
+  </ul>
+
+  <hr>
+
+  <h3 id="91-sports-tickets-exe-validator-writer">
+    9.1 <code>sports-tickets-exe</code> (validator writer)
+  </h3>
+
+  <p>
+    The main module <code>SportsTickets.hs</code> is an executable whose job is to:
+  </p>
+
+  <ul>
+    <li>Turn the Plutus <strong>ticket validator</strong> into a <code>.plutus</code> file.</li>
+    <li>Print its hash and Bech32 script address for you to use off-chain.</li>
+  </ul>
+
+  <p>Key pieces:</p>
+
+  <pre><code class="language-haskell">module Main where
+
+import SportsTicketsContract (validator)
+</code></pre>
+
+  <p>Here <code>validator :: Validator</code> is the Plutus V2 script compiled from:</p>
+
+  <pre><code class="language-haskell">mkTicketValidatorUntyped :: BuiltinData -&gt; BuiltinData -&gt; BuiltinData -&gt; ()
+
+validator :: Validator
+validator =
+  mkValidatorScript $$(PlutusTx.compile [|| mkTicketValidatorUntyped ||])
+</code></pre>
+
+  <h4 id="911-computing-the-plutus-validator-hash">
+    9.1.1 Computing the Plutus validator hash
+  </h4>
+
+  <pre><code class="language-haskell">plutusValidatorHash :: PlutusV2.Validator -&gt; PlutusV2.ValidatorHash
+plutusValidatorHash v =
+  let bytes    = Serialise.serialise v        -- lazy ByteString
+      strict   = LBS.toStrict bytes           -- ByteString
+      short    = SBS.toShort strict           -- ShortByteString
+      strictBS = SBS.fromShort short          -- back to ByteString
+      builtin  = Builtins.toBuiltin strictBS  -- BuiltinByteString
+  in PlutusV2.ValidatorHash builtin
+</code></pre>
+
+  <p>What this is doing:</p>
+
+  <ul>
+    <li><code>Serialise.serialise v</code> &rarr; CBOR of the validator.</li>
+    <li>Convert between lazy / strict / short <code>ByteString</code>s to get the raw bytes.</li>
+    <li>Wrap those bytes in a <code>BuiltinByteString</code>.</li>
+    <li>Construct the on-chain <code>ValidatorHash</code>.</li>
+  </ul>
+
+  <p>
+    This hash defines the <strong>script address</strong> in Plutus-land and is the hash
+    you see on-chain.
+  </p>
+
+  <h4 id="912-computing-the-plutus-script-address">
+    9.1.2 Computing the Plutus script address
+  </h4>
+
+  <pre><code class="language-haskell">plutusScriptAddress :: PlutusV2.Address
+plutusScriptAddress =
+  Address (ScriptCredential (plutusValidatorHash validator)) Nothing
+</code></pre>
+
+  <ul>
+    <li>Low-level Plutus <code>Address</code> with:
+      <ul>
+        <li>Payment credential = <code>ScriptCredential &lt;validatorHash&gt;</code>.</li>
+        <li>No staking part (<code>Nothing</code>).</li>
+      </ul>
+    </li>
+  </ul>
+
+  <p>
+    You mainly use this in tests or when reasoning about address structure; for real usage you
+    typically work with the Bech32 script address.
+  </p>
+
+  <h4 id="913-bech32-script-address-via-cardano-api">
+    9.1.3 Bech32 script address via cardano-api
+  </h4>
+
+  <pre><code class="language-haskell">toBech32ScriptAddress :: C.NetworkId -&gt; Validator -&gt; String
+toBech32ScriptAddress network val =
+  let serialised :: SBS.ShortByteString
+      serialised = SBS.toShort . LBS.toStrict $ Serialise.serialise val
+
+      plutusScript :: C.PlutusScript C.PlutusScriptV2
+      plutusScript = CS.PlutusScriptSerialised serialised
+
+      scriptHash :: C.ScriptHash
+      scriptHash = C.hashScript (C.PlutusScript C.PlutusScriptV2 plutusScript)
+
+      shelleyAddr :: C.AddressInEra C.BabbageEra
+      shelleyAddr =
+        C.makeShelleyAddressInEra
+          network
+          (C.PaymentCredentialByScript scriptHash)
+          C.NoStakeAddress
+  in T.unpack (C.serialiseAddress shelleyAddr)
+</code></pre>
+
+  <p>Steps:</p>
+
+  <ol>
+    <li>Serialise the validator to short bytes.</li>
+    <li>Wrap it as <code>PlutusScriptV2</code> for <code>cardano-api</code>.</li>
+    <li>Call <code>hashScript</code> to get a <code>ScriptHash</code>.</li>
+    <li>Build a Shelley <strong>script address</strong> for a network
+      (e.g. <code>Testnet (NetworkMagic 1)</code>).</li>
+    <li>Convert to Bech32 with <code>serialiseAddress</code>.</li>
+  </ol>
+
+  <p>
+    This Bech32 address is what you’ll use to lock ticket UTxOs with a
+    <code>TicketDatum</code> in real transactions.
+  </p>
+
+  <h4 id="914-writing-sports-ticketsplutus">
+    9.1.4 Writing <code>sports-tickets.plutus</code>
+  </h4>
+
+  <pre><code class="language-haskell">writeValidator :: FilePath -&gt; Validator -&gt; IO ()
+writeValidator path val = do
+  let serialised :: SBS.ShortByteString
+      serialised = SBS.toShort . LBS.toStrict $ Serialise.serialise val
+
+      plutusScript :: C.PlutusScript C.PlutusScriptV2
+      plutusScript = CS.PlutusScriptSerialised serialised
+
+      description :: C.TextEnvelopeDescr
+      description = "Sports Tickets Plutus Validator"
+
+  result &lt;- C.writeFileTextEnvelope path (Just description) plutusScript
+  case result of
+    Left err  -&gt; putStrLn $ "Error writing validator: " &lt;&gt; C.displayError err
+    Right ()  -&gt; putStrLn $ "Validator written to: " &lt;&gt; path
+</code></pre>
+
+  <p><code>writeFileTextEnvelope</code> produces a JSON-like text envelope:</p>
+
+  <pre><code class="language-plaintext">{
+  "type": "PlutusScriptV2",
+  "description": "Sports Tickets Plutus Validator",
+  "cborHex": "4e4d010000332222..."
+}
+</code></pre>
+
+  <p>
+    That <code>.plutus</code> file is exactly what <code>cardano-cli</code> expects for
+    <code>--tx-in-script-file</code>.
+  </p>
+
+  <h4 id="915-what-main-prints">
+    9.1.5 What <code>main</code> prints
+  </h4>
+
+  <pre><code class="language-haskell">main :: IO ()
+main = do
+  let network = C.Testnet (C.NetworkMagic 1)
+
+  writeValidator "sports-tickets.plutus" validator
+
+  let vh      = plutusValidatorHash validator
+      onchain = plutusScriptAddress
+      bech32  = toBech32ScriptAddress network validator
+
+  putStrLn "\n--- Sports Tickets Validator Info ---"
+  putStrLn $ "Validator Hash (Plutus): " &lt;&gt; P.show vh
+  putStrLn $ "Plutus Script Address:    " &lt;&gt; P.show onchain
+  putStrLn $ "Bech32 Script Address:    " &lt;&gt; bech32
+  putStrLn "--------------------------------------"
+  putStrLn "Sports tickets validator generated successfully."
+</code></pre>
+
+  <p>Running:</p>
+
+  <pre><code class="language-bash">cabal run sports-tickets-exe
+</code></pre>
+
+  <p>does three things:</p>
+
+  <ol>
+    <li>Writes <strong><code>sports-tickets.plutus</code></strong> in the current directory.</li>
+    <li>Prints the <strong>Plutus validator hash</strong> and <strong>Plutus address</strong> (for debugging / docs).</li>
+    <li>Prints the <strong>Bech32 script address</strong> you’ll use to lock ticket UTxOs.</li>
+  </ol>
+
+  <hr>
+
+  <h3 id="92-sports-tickets-policy-exe-minting-policy-writer">
+    9.2 <code>sports-tickets-policy-exe</code> (minting policy writer)
+  </h3>
+
+  <p>
+    The minting policy is compiled separately and produces:
+  </p>
+
+  <ul>
+    <li>A <code>.plutus</code> file: <code>sports-tickets-policy.plutus</code>.</li>
+    <li>
+      A <strong>policy id</strong> (script hash) you’ll use as
+      <code>CurrencySymbol</code> when minting NFTs.
+    </li>
+  </ul>
+
+  <p>
+    The executable (<code>sports-tickets-policy-exe</code>) wires together the on-chain: <br>
+  </p>
+  <ul>
+    <li>
+      policy with concrete parameters <code>TicketMintParams { tmpOrganizer, tmpEventId } </code>.
+    </li>
+  </ul>
+
+  <pre><code class="language-haskell">ticketPolicy :: TicketMintParams -&gt; V2.MintingPolicy
+</code></pre>
+
+  <p>When you ran:</p>
+
+  <pre><code class="language-bash">cabal run sports-tickets-policy-exe
+</code></pre>
+
+  <p>you saw output like:</p>
+
+  <pre><code class="language-plaintext">Minting policy written to: sports-tickets-policy.plutus
+
+--- Sports Tickets Minting Policy Info ---
+Script Hash: "873843ea464a6068cd8e29ca7729e9766766daa7973c19555ba798e0"
+Policy Id:   "873843ea464a6068cd8e29ca7729e9766766daa7973c19555ba798e0"
+------------------------------------------
+Sports tickets minting policy generated successfully.
+</code></pre>
+
+  <h4 id="921-building-ticketmintparams-organiser--event-id">
+    9.2.1 Building <code>TicketMintParams</code> (organiser &amp; event id)
+  </h4>
+
+  <p>Inside the policy writer you construct parameters like:</p>
+
+  <pre><code class="language-haskell">let params = TicketMintParams
+               { tmpOrganizer = organiserPkh
+               , tmpEventId   = "EVENT-001"
+               }
+</code></pre>
+
+  <ul>
+    <li><code>organiserPkh</code> &ndash; on-chain <code>PubKeyHash</code> of the organiser.</li>
+    <li><code>tmpEventId</code> &ndash; <code>BuiltinByteString</code> describing the event.</li>
+  </ul>
+
+  <p>Then you bake those params into the policy:</p>
+
+  <pre><code class="language-haskell">let policy :: V2.MintingPolicy
+    policy = ticketPolicy params
+</code></pre>
+
+  <p>
+    Every token minted with this <code>.plutus</code> file is governed by that organiser and
+    conceptually belongs to <code>tmpEventId</code>.
+  </p>
+
+  <h4 id="922-serialising-the-policy-and-computing-the-policy-id">
+    9.2.2 Serialising the policy and computing the policy id
+  </h4>
+
+  <p>The writer script then:</p>
+
+  <ol>
+    <li>Serialises the <code>MintingPolicy</code> to CBOR.</li>
+    <li>Wraps it as <code>PlutusScriptV2</code>.</li>
+    <li>Uses <code>cardano-api</code> to compute the <strong>script hash</strong> (policy id).</li>
+  </ol>
+
+  <pre><code class="language-haskell">let serialised   = SBS.toShort . LBS.toStrict $ Serialise.serialise policy
+    plutusScript = CS.PlutusScriptSerialised serialised
+
+    scriptHash :: C.ScriptHash
+    scriptHash = C.hashScript (C.PlutusScript C.PlutusScriptV2 plutusScript)
+</code></pre>
+
+  <p>
+    When converted to hex and printed (e.g. <code>"8738...98e0"</code>), that string is both:
+  </p>
+
+  <ul>
+    <li>The <strong>Script Hash</strong> (cardano-api terminology).</li>
+    <li>The <strong>Policy Id</strong> (ledger / wallet terminology).</li>
+  </ul>
+
+  <p>On-chain, this corresponds to the <code>CurrencySymbol</code> you’ll use in:</p>
+
+  <ul>
+    <li><code>Value.singleton policyId tokenName amount</code></li>
+    <li><code>flattenValue</code>, etc.</li>
+  </ul>
+
+  <h4 id="923-writing-sports-tickets-policyplutus">
+    9.2.3 Writing <code>sports-tickets-policy.plutus</code>
+  </h4>
+
+  <p>
+    The writing logic mirrors the validator writer, but targets a minting policy
+    instead of a validator:
+  </p>
+
+  <pre><code class="language-haskell">C.writeFileTextEnvelope
+  "sports-tickets-policy.plutus"
+  (Just "Sports Tickets Minting Policy")
+  plutusScript
+</code></pre>
+
+  <p>Result:</p>
+
+  <ul>
+    <li>A text envelope file containing the policy’s CBOR and description.</li>
+    <li>
+      This is what you pass to <code>cardano-cli</code> when minting or burning
+      tickets:
+      <pre><code class="language-bash">cardano-cli transaction build \
+  ... \
+  --mint-script-file sports-tickets-policy.plutus \
+  --mint "&lt;amount&gt; &lt;policyId&gt;.&lt;tokenName&gt;" \
+  ...
+</code></pre>
+    </li>
+  </ul>
+
+  <h4 id="924-why-you-need-both-plutus-files">
+    9.2.4 Why you need both <code>.plutus</code> files
+  </h4>
+
+  <ul>
+    <li>
+      <strong><code>sports-tickets.plutus</code></strong> (validator)
+      <ul>
+        <li>Used when <strong>spending</strong> ticket UTxOs (transfer / resale / <code>UseAtGate</code>).</li>
+        <li>Passed as <code>--tx-in-script-file</code> (or equivalent) when consuming a ticket script UTxO.</li>
+      </ul>
+    </li>
+    <li>
+      <strong><code>sports-tickets-policy.plutus</code></strong> (minting policy)
+      <ul>
+        <li>Used when <strong>minting or burning</strong> ticket NFTs (seats).</li>
+        <li>Passed as <code>--mint-script-file</code> when creating or destroying ticket tokens.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <p>They represent two different pieces of the system:</p>
+
+  <ul>
+    <li>The <strong>validator</strong> controls <strong>behaviour</strong> of ticket UTxOs.</li>
+    <li>The <strong>minting policy</strong> controls <strong>existence &amp; supply</strong> of ticket NFTs.</li>
+  </ul>
+</section>
+
+
+        <!-- 10. Testing -->
+        <section id="10-testing-the-contracts">
+  <h2>10. Testing the Contracts ✅</h2>
+
+  <p>The <strong>Sports Tickets</strong> system is covered by two Haskell test modules:</p>
+
+  <ul>
+    <li><code>SportsTicketsSpec.hs</code> – tests the <strong>validator</strong> (<code>SportsTicketsContract</code>).</li>
+    <li><code>SportsTicketsPolicySpec.hs</code> – tests the <strong>minting policy</strong> (<code>SportsTicketsPolicy</code>).</li>
+  </ul>
+
+  <p>Both run under the shared <code>wspace-tests</code> test suite:</p>
+
+  <pre><code class="language-bash">cabal test wspace-tests
+</code></pre>
+
+  <p>
+    This section explains <strong>what</strong> each group of tests is checking and
+    <strong>which on-chain rules</strong> each group corresponds to.
+  </p>
+
+  <hr>
+
+  <h3 id="101-what-sportsticketsspec-tests-validator">
+    10.1 What <code>SportsTicketsSpec</code> tests (validator)
+  </h3>
+
+  <p>
+    <code>SportsTicketsSpec</code> focuses on the <strong>UTxO validator</strong> that controls
+    the ticket lifecycle:
+  </p>
+
+  <ul>
+    <li><strong>Transfers / resales</strong> via <code>Transfer newOwner price</code>.</li>
+    <li><strong>Gate usage</strong> via <code>UseAtGate</code>.</li>
+  </ul>
+
+  <p>
+    The tests exercise the core business rules described in Sections 3 &amp; 7.
+  </p>
+
+  <h4 id="1011-transfer-tests">
+    10.1.1 Transfer tests
+  </h4>
+
+  <p>
+    The <strong>Transfer</strong> group checks that secondary-market resales obey:
+  </p>
+  <ul>
+    <li><strong>Ownership &amp; signatures</strong></li>
+    <li><strong>Price caps</strong></li>
+    <li><strong>Static field immutability</strong></li>
+    <li><strong>Ticket NFT continuity</strong></li>
+  </ul>
+
+  <p>The tests:</p>
+  <ol>
+    <li>
+      <p><strong><code>valid transfer passes (owner signed, price &lt;= cap)</code></strong></p>
+      <p>Scenario:</p>
+      <ul>
+        <li>Original owner = <code>pkhOwner</code></li>
+        <li>buyer = <code>pkhBuyer</code>.</li>
+        <li><code>price = 1_200_000</code> lovelace, </li>
+        <li><code>tdMaxPrice = 1_500_000</code>.</li>
+        <li>Owner is in <code>txInfoSignatories</code>.</li>
+      </ul>
+      <p>Expected: validator <strong>accepts</strong> when:</p>
+      <ul>
+        <li>Ticket is unused (<code>tdUsed = False</code>).</li>
+        <li>Owner signed the tx.</li>
+        <li><code>price &lt;= tdMaxPrice</code>.</li>
+        <li>New owner changes from <code>pkhOwner</code> to <code>pkhBuyer</code></li>
+        <li>Continuing script output:
+          <ul>
+            <li>Holds exactly 1 ticket NFT <code>(tdPolicyId, tdTokenName)</code>.</li>
+            <li>Contains only ADA + that NFT (no extra tokens).</li>
+            <li>Preserves static fields: event id, seat, face value, cap, event time, KYC, policy IDs, token name.</li>
+            <li>Keeps <code>tdUsed</code> unchanged.</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+
+    <li>
+      <p><strong><code>transfer fails when owner not signed</code></strong></p>
+      <p>Scenario:</p>
+      <ul>
+        <li>Same as above, but <code>txInfoSignatories = []</code> (owner did not sign).</li>
+      </ul>
+      <p>Expected: fails at:</p>
+      <pre><code class="language-haskell">txSignedBy ti (tdOwner dat) 
+</code></pre>
+      <p>
+        Ensures only the <strong>current owner</strong> can authorise transfers of their ticket.
+      </p>
+    </li>
+
+    <li>
+      <p><strong><code>transfer fails when price is above cap</code></strong></p>
+      <p>Scenario:</p>
+      <ul>
+        <li>Price set to <code>2_000_000</code> lovelace (> <code> tdMaxPrice = 1_500_000</code>).</li>
+        <li>Owner <em>does</em> sign.</li>
+      </ul>
+      <p>Expected: fails at:</p>
+      <pre><code class="language-haskell">price &lt;= tdMaxPrice dat
+</code></pre>
+      <p>Enforces the on-chain <strong>anti-scalping ceiling</strong>.</p>
+    </li>
+
+    <li>
+      <p><strong><code>transfer fails if static fields change</code></strong></p>
+      <p>Scenario:</p>
+      <ul>
+        <li>Start from a valid transfer.</li>
+        <li>Then tamper with continuing datum, e.g. <code>tdSeat</code> =&nbsp;<code>"BLOCK-Z-ROW-99-SEAT-99"</code>.</li>
+      </ul>
+      <p>Expected: fails:</p>
+      <pre><code class="language-haskell">ticketStaticFieldsEqual oldDat outDat == True
+</code></pre>
+      <p>Confirms only <strong>ownership</strong> can change on transfer; metadata must remain identical.</p>
+    </li>
+
+    <li>
+      <p><strong><code>transfer fails if continuing output lacks the ticket NFT</code></strong></p>
+      <p>Scenario:</p>
+      <ul>
+        <li>Continuing script output has <strong>no ticket NFT</strong> in its <code>txOutValue</code>.</li>
+        <li>Owner is signed, price &le; cap, etc.</li>
+      </ul>
+      <p>Expected: fails inside <code>ticketStateTransitionOk</code>:</p>
+      <ul>
+        <li><code>nftOk</code> or <code>onlyThisNft</code> is False.</li>
+        <pre><code class="language-haskell">
+    valueOf (txOutValue out) (tdPolicyId dat) (tdTokenName dat) == 1
+</code></pre>
+      </ul>
+      <p>Guarantees the script state is <strong>always backed by the NFT itself</strong>.</p>
+    </li>
+  </ol>
+
+  <h4 id="1012-useatgate-tests">
+    10.1.2 UseAtGate tests
+  </h4>
+
+  <p>
+    The <strong>UseAtGate</strong> tests cover the entry scan logic:
+  </p>
+
+  <ul>
+    <li>Ticket can only be used once.</li>
+    <li>Use must be at or before <code>tdEventTime</code>.</li>
+    <li>Correct burn/mint pattern for ticket vs USED souvenir.</li>
+    <li>USED souvenir must go to the owner.</li>
+    <li>No continuing script output.</li>
+  </ul>
+  <p>Each test tweaks one condition:</p>
+  <ol>
+    <li>
+      <p><strong><code>unused ticket before event (burn + mint USED to owner) passes</code></strong></p>
+      <p>Scenario:</p>
+      <ul>
+        <li><code>tdUsed = False</code>.</li>
+        <li><code>txInfoValidRange</code> is at or before <code>tdEventTime</code>.</li>
+        <li>Mint field:
+          <pre><code class="language-haskell">-1 (tdPolicyId, tdTokenName)                  -- burn ticket
++1 (tdUsedPolicyId, usedTokenName tdTokenName) -- mint USED souvenir
+</code></pre>
+        </li>
+        <li>Output: UTxO to <code>tdOwner</code> with exactly 1 USED NFT.</li>
+      </ul>
+      <p>Expected: </p>
+        <ul>
+          <li>
+            <code>validateUseAtGate</code> returns True:
+            <ul>
+              <li>Ticket NFT still in input</li>
+              <li>Not used yet.</li>
+              <li>Time in range.</li>
+              <li>Mint/burn pattern exactly matches.</li>
+              <li>USED goes to owner.</li>
+              <li><code>noContinuingOutput</code> holds.</li>
+            </ul>
+          </li>
+        </ul>
+    </li>
+
+    <li>
+      <p><strong><code>already-used ticket fails at gate</code></strong></p>
+      <p>Scenario:</p>
+      <ul>
+        <li>As above, but <code>tdUsed = True</code>.in the datum</li>
+      </ul>
+      <p>Expected: fails at:</p>
+      <pre><code class="language-haskell">ticketNotUsed = not (tdUsed dat)
+</code></pre>
+      <p>Prevents <strong>double entry</strong> with the same logical ticket.</p>
+    </li>
+
+    <li>
+      <p><strong><code>ticket after event time fails</code></strong></p>
+      <p>Scenario:</p>
+      <ul>
+        <li><code>tdUsed = False</code>.</li>
+        <li>Validity range strictly after <code>tdEventTime</code>  (using <code>Interval.from (eventTime + 1))</code>.</li>
+      </ul>
+      <p>Expected: fails the time check:</p>
+      <pre><code class="language-haskell">Interval.contains (Interval.to (tdEventTime dat)) (txRange ctx)
+</code></pre>
+      <p>Disallows entry <strong>after</strong> the event deadline.</p>
+    </li>
+
+    <li>
+      <p><strong><code>missing burn of original ticket fails</code></strong></p>
+      <p>Scenario:</p>
+      <ul>
+        <li>Mint USED souvenir, but do <strong>not</strong> burn the ticket NFT.</li>
+        <pre><code class="language-haskell">+1 USED</code></pre>
+      </ul>
+      <p>Expected: fails:</p>
+      <pre><code class="language-haskell">mintedAmountOf csTicket tn ctx == (-1)
+</code></pre>
+      <p>Prevents minting USED tokens without actually consuming the ticket.</p>
+    </li>
+
+    <li>
+      <p><strong><code>missing mint of USED souvenir fails</code></strong></p>
+      <p>Scenario:</p>
+      <ul>
+        <li>Burn the ticket NFT, but don’t mint the USED souvenir.</li>
+        <pre><code class="language-haskell">-1 (ticket NFT)</code></pre>
+        <li>No output with the USED token.</li>
+      </ul>
+      <p>Expected: fails:</p>
+      <pre><code class="language-haskell">mintedAmountOf csUsed utn ctx == 1
+</code></pre>
+      <p>You can’t burn the ticket without issuing the “proof of entry” NFT.</p>
+    </li>
+
+    <li>
+      <p><strong><code>USED souvenir not sent to owner fails</code></strong></p>
+      <p>Scenario:</p>
+      <ul>
+        <li>Burn + mint pattern is correct.</li>
+        <li>USED souvenir is sent to some other PKH (e.g. marketplace or wrong address).</li>
+      </ul>
+      <p>Expected: fails:</p>
+      <pre><code class="language-haskell">valuePaidOf (tdOwner dat) csUsed utn ctx == 1
+</code></pre>
+      <p>This ensures the USED token is a <strong>soul-bound style souvenir</strong> for the actual holder of the ticket.</p>
+    </li>
+
+    <li>
+      <p><strong><code>USED souvenir under wrong policy fails</code></strong></p>
+      <p>Scenario:</p>
+      <ul>
+        <li>Burn the original ticket under <code>tdPolicyId</code>.</li>
+        <li>Mint the USED souvenir under a <strong>different</strong> <code>CurrencySymbol</code> (wrong policy)..</li>
+      </ul>
+      <p>Expected: fails mint checks and/or <code>souvenirPaidToOwner</code>, as minted triple doesn’t match <code>tdUsedPolicyId</code>.</p>
+      <p>Prevents “fake” USED souvenirs under a bogus policy.</p>
+    </li>
+
+    <li>
+      <p><strong><code>USED souvenir minted but not paid to owner fails</code></strong></p>
+      <p>Scenario:</p>
+      <ul>
+        <li>Burn original ticket, mint USED under correct policy.</li>
+        <li>Send USED token to the <strong>script address</strong> instead of the owner.</li>
+      </ul>
+      <p>Expected: fails <code>souvenirPaidToOwner</code>.</p>
+      <p>Confirms that the USED NFT must end in the owner’s wallet, not remain locked on-chain.</p>
+    </li>
+  </ol>
+
+  <hr>
+
+  <h3 id="102-what-sportsticketspolicyspec-tests-minting-policy">
+  10.2 What <code>SportsTicketsPolicySpec</code> tests (minting policy)
+</h3>
+
+<p>
+  <code>SportsTicketsPolicySpec</code> tests the <strong>minting policy</strong> that governs
+  creation and destruction of ticket NFTs (one per seat).
+</p>
+
+<p>The tests map directly to the on-chain rules in <code>mkTicketPolicy</code>:</p>
+
+<h4>10.2.1 Minting tests (<code>MintTicket</code>)</h4>
+
+<ol>
+  <li>
+    <p><strong><code>organiser-signed, correct +1 mint</code></strong></p>
+    <p>Expected to pass when:</p>
+    <ul>
+      <li><code>txSignedBy info (tmpOrganizer params)</code> is <code>True</code>.</li>
+      <li>
+        <code>txInfoMint</code> contains exactly:
+        <pre><code class="language-haskell">+1 (cs, TokenName seat)
+</code></pre>
+      </li>
+      <li>No other tokens are minted or burned under this policy id.</li>
+    </ul>
+    <p>Expected: the policy returns <code>True</code>.</p>
+  </li>
+
+  <li>
+    <p><strong><code>missing organiser signature fails</code></strong></p>
+    <p>Scenario:</p>
+    <ul>
+      <li>Mint pattern is correct for the seat.</li>
+      <li>But the organiser PKH does <strong>not</strong> sign the transaction.</li>
+    </ul>
+    <p>Expected: fails the <code>signedByOrganizer</code> check.</p>
+  </li>
+
+  <li>
+    <p><strong><code>wrong amount (2 instead of 1) fails</code></strong></p>
+    <p>Scenario:</p>
+    <ul>
+      <li>Attempt to mint <code>2</code> tokens for the same seat instead of <code>1</code>.</li>
+    </ul>
+    <p>Expected: fails <code>checkMint seat 1</code> because the amount ≠ 1.</p>
+    <p>This enforces <strong>“one NFT per seat” per mint transaction</strong>.</p>
+  </li>
+
+  <li>
+    <p><strong><code>extra NFTs under same policy fails</code></strong></p>
+    <p>Scenario:</p>
+    <ul>
+      <li>
+        <code>flattenValue txInfoMint</code> contains more than one triple
+        where <code>CurrencySymbol == cs</code>, e.g. minting seat A and seat B
+        in one transaction under the same policy.
+      </li>
+    </ul>
+    <p>
+      Expected: fails <code>noExtraUnderPolicy</code>, which requires
+      <code>length underThis == 1</code> for this policy’s <code>CurrencySymbol</code>.
+    </p>
+    <p>
+      This keeps each transaction focused on a <strong>single seat token</strong> for clarity
+      and reduces complexity in the dApp flow.
+    </p>
+  </li>
+</ol>
+
+<h4>10.2.2 Burning tests (<code>BurnTicket</code>)</h4>
+
+<ol>
+  <li>
+    <p><strong><code>organiser-signed, -1 burn passes</code></strong></p>
+    <p>Expected to pass when:</p>
+    <ul>
+      <li>The organiser signs the transaction.</li>
+      <li>
+        <code>txInfoMint</code> includes exactly:
+        <pre><code class="language-haskell">-1 (cs, TokenName seat)
+</code></pre>
+      </li>
+      <li>No other tokens under that policy are minted or burned.</li>
+    </ul>
+    <p>Expected: the policy returns <code>True</code>.</p>
+  </li>
+
+  <li>
+    <p><strong><code>burn with wrong amount fails</code></strong></p>
+    <p>Scenario:</p>
+    <ul>
+      <li>Same seat, but the amount is e.g. <code>-2</code> or <code>0</code> instead of <code>-1</code>.</li>
+    </ul>
+    <p>Expected: fails <code>checkMint seat (-1)</code>.</p>
+  </li>
+
+  <li>
+    <p><strong><code>burn without organiser signature fails</code></strong></p>
+    <p>Scenario:</p>
+    <ul>
+      <li>The burn pattern is correct (<code>-1</code> for that seat).</li>
+      <li>But the organiser does <strong>not</strong> sign the transaction.</li>
+    </ul>
+    <p>Expected: fails the organiser-signature check.</p>
+  </li>
+</ol>
+
+<p>Together, these tests guarantee:</p>
+
+<ul>
+  <li>
+    <strong>Only the organiser</strong> (as defined in <code>TicketMintParams</code>)
+    can mint or burn seat tickets under this policy.
+  </li>
+  <li>
+    Each policy transaction is <strong>minimal and precise</strong>:
+    <ul>
+      <li><strong>Mint</strong>: exactly one seat NFT with amount <code>+1</code>.</li>
+      <li><strong>Burn</strong>: exactly that seat NFT with amount <code>-1</code>.</li>
+      <li>No batch mint/burn of multiple seats under the same policy in a single transaction.</li>
+    </ul>
+  </li>
+</ul>
+
+  <hr>
+
+  <h3 id="103-running-the-tests">
+    10.3 Running the tests
+  </h3>
+
+  <p>
+    All tests are wired into the <code>wspace-tests</code> suite in your <code>.cabal</code> file:
+  </p>
+
+  <pre><code class="language-cabal">test-suite wspace-tests
+  ...
+  other-modules:
+    ...
+    SportsTicketsContract
+    SportsTicketsSpec
+    SportsTicketsPolicy
+    RevenueSplitterContract
+    RevenueSplitterSpec
+</code></pre>
+
+  <p>To run the full suite:</p>
+
+  <pre><code class="language-bash"># (optional) enter Nix dev shell
+nix develop
+
+# run all tests
+cabal test wspace-tests
+</code></pre>
+
+  <p>Expected output snippets:</p>
+
+  <pre><code class="language-plaintext">SportsTickets (on-chain v1)
+  Transfer
+    valid transfer passes (owner signed, price &lt;= cap):            OK
+    transfer fails when owner not signed:                          OK
+    transfer fails when price is above cap:                        OK
+    transfer fails if static fields change:                        OK
+    transfer fails if continuing output lacks the ticket NFT:      OK
+  UseAtGate
+    unused ticket before event (burn + mint USED to owner) passes: OK
+    already-used ticket fails at gate:                             OK
+    ticket after event time fails:                                 OK
+    missing burn of original ticket fails:                         OK
+    missing mint of USED souvenir fails:                           OK
+    USED souvenir not sent to owner fails:                         OK
+    USED souvenir under wrong policy fails:                        OK
+    USED souvenir minted but not paid to owner fails:              OK
+
+SportsTicketsPolicy (NFT minting)
+  MintTicket
+    organiser-signed, correct +1 mint:                             OK
+    missing organiser signature fails:                             OK
+    wrong amount (2 instead of 1) fails:                           OK
+    extra NFTs under same policy fails:                            OK
+  BurnTicket
+    organiser-signed, -1 burn passes:                              OK
+    burn with wrong amount fails:                                  OK
+    burn without organiser signature fails:                        OK
+</code></pre>
+
+  <p>To run only the Sports Tickets tests:</p>
+
+  <pre><code class="language-bash"># All SportsTickets-related tests
+cabal test wspace-tests -p SportsTickets
+
+# A single case by pattern
+cabal test wspace-tests \
+  -p '/transfer fails if continuing output lacks the ticket NFT/'
+</code></pre>
+
+  <p>
+    This gives you a tight feedback loop as you evolve the contracts, while ensuring that:
+  </p>
+
+  <ul>
+    <li><strong>Resale rules</strong> (caps, signatures, NFT continuity) stay enforced.</li>
+    <li><strong>Gate usage</strong> (time, burn/mint pattern, souvenir receiver, no double-use) remains correct.</li>
+    <li><strong>Minting policy</strong> (organiser-only, per-seat mint/burn) behaves exactly as specified.</li>
+  </ul>
+</section>
+
+
+        <!-- 11. Glossary -->
+        <h2 id="11-glossary-of-terms">11. Glossary of Terms</h2>
+
+<h3 id="111-nft-ticket">11.1 NFT ticket</h3>
+
+<p>
+  An <strong>NFT ticket</strong> is a <em>non-fungible token</em> that represents a specific right to attend an event.
+</p>
+
+<p>In this contract:</p>
+
+<ul>
+  <li>
+    It is identified by:
+    <ul>
+      <li><code>tdPolicyId  :: CurrencySymbol</code></li>
+      <li><code>tdTokenName :: TokenName</code></li>
+    </ul>
+  </li>
+  <li>Each <strong>seat</strong> is modeled as a <strong>unique NFT</strong> under the organiser’s ticket policy.</li>
+  <li>
+    On-chain, the validator checks that:
+    <ul>
+      <li>The script input contains exactly <strong>1 ticket NFT</strong>.</li>
+      <li>The continuing script output (for resales) keeps exactly <strong>that same NFT</strong>.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>
+  You can think of the NFT ticket as the <strong>digital twin</strong> of the physical seat:
+  whoever controls that NFT (subject to validator rules) controls the entry right.
+</p>
+
+<h3 id="112-primary-sale-face-value">11.2 Primary sale / face value</h3>
+
+<p>
+  The <strong>primary sale</strong> is the <strong>first sale</strong> of a ticket from organiser → fan.
+</p>
+
+<ul>
+  <li>
+    <code>tdFaceValue :: Integer</code> stores the <strong>primary sale price</strong> in lovelace.
+  </li>
+</ul>
+
+<p>Characteristics:</p>
+
+<ul>
+  <li>Typically = official ticket price set by the organiser.</li>
+  <li>It’s a <strong>reference value</strong> used in pricing and reporting.</li>
+  <li>
+    The contract doesn’t force resales to equal face value, but combined with
+    <code>tdMaxPrice</code> and off-chain logic, you can enforce policies like
+    “resale ≤ 110% of face value”.
+  </li>
+</ul>
+
+<h3 id="113-resale-cap-tdmaxprice">11.3 Resale cap (<code>tdMaxPrice</code>)</h3>
+
+<p><code>tdMaxPrice :: Integer</code> is the <strong>maximum allowed resale price</strong> for a ticket (in lovelace).</p>
+
+<ul>
+  <li>Used in the <code>Transfer newOwner price</code> branch.</li>
+  <li>
+    The redeemer declares a resale <code>price</code>, and the validator checks:
+    <pre><code class="language-haskell">price &lt;= tdMaxPrice dat
+</code></pre>
+  </li>
+</ul>
+
+<p>Purpose:</p>
+
+<ul>
+  <li>Enforces <strong>anti-scalping</strong> rules on the secondary market.</li>
+  <li>
+    You can set:
+    <ul>
+      <li><code>tdMaxPrice = tdFaceValue</code> → no profit resales.</li>
+      <li>Or some margin above – e.g. <code>1.10 * faceValue</code>.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>If someone tries to sell above <code>tdMaxPrice</code>, the validator rejects the transfer.</p>
+
+<h3 id="114-kyc-authority-tdkycauthority">11.4 KYC authority (<code>tdKycAuthority</code>)</h3>
+
+<p>
+  <code>tdKycAuthority :: Maybe PubKeyHash</code> optionally encodes a
+  <strong>KYC / compliance authority</strong>.
+</p>
+
+<ul>
+  <li><code>Nothing</code> → <strong>no extra signature</strong> needed; only ticket owner must sign for transfers.</li>
+  <li>
+    <code>Just kycPkh</code> → any <code>Transfer</code> must be signed by:
+    <ul>
+      <li>the current ticket owner, and</li>
+      <li>this <code>kycPkh</code> address (regulator / KYC provider / venue admin).</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Validator logic:</p>
+
+<pre><code class="language-haskell">kycOk :: Bool
+kycOk =
+  case tdKycAuthority dat of
+    Nothing      -&gt; True
+    Just authPkh -&gt; txSignedBy ti authPkh
+</code></pre>
+
+<p>Use cases:</p>
+
+<ul>
+  <li>High-value events or regions requiring identity checks.</li>
+  <li>Whitelisted resale platforms where a KYC provider “co-signs” legitimate transfers.</li>
+</ul>
+
+<h3 id="115-used-souvenir-token-tdusedpolicyid-usedtokenname">
+  11.5 USED souvenir token (<code>tdUsedPolicyId</code> + <code>usedTokenName</code>)
+</h3>
+
+<p>When a ticket is used at the gate, the system:</p>
+
+<ul>
+  <li><strong>Burns</strong> the original ticket NFT.</li>
+  <li><strong>Mints</strong> a <strong>USED souvenir token</strong> to the owner.</li>
+</ul>
+
+<p>On-chain:</p>
+
+<ul>
+  <li><code>tdUsedPolicyId :: CurrencySymbol</code> – policy for USED souvenirs.</li>
+  <li>
+    <code>usedTokenName :: TokenName</code> – derived as:
+    <pre><code class="language-haskell">usedTokenName tn = TokenName ("USED-" &lt;&gt; unTokenName tn)
+</code></pre>
+  </li>
+</ul>
+
+<p>So for a ticket named <code>"TICKET-001"</code> you get:</p>
+
+<ul>
+  <li>Ticket: <code>"TICKET-001"</code></li>
+  <li>Souvenir: <code>"USED-TICKET-001"</code></li>
+</ul>
+
+<p>The <code>UseAtGate</code> branch enforces that:</p>
+
+<ul>
+  <li>Exactly <strong>1 ticket NFT</strong> is burned.</li>
+  <li>Exactly <strong>1 USED souvenir</strong> under <code>tdUsedPolicyId</code> is minted.</li>
+  <li>That USED token goes to the <strong>ticket owner</strong> (not a random address or script).</li>
+</ul>
+
+<p>This creates a <strong>verifiable on-chain record</strong> that:</p>
+
+<ul>
+  <li>The ticket was truly used to enter.</li>
+  <li>
+    The owner retains a non-transferable / symbolic proof of attendance if you wish
+    (or you can allow them to trade it as a collectible).
+  </li>
+</ul>
+
+<h3 id="116-gate-entry-scan-useatgate">11.6 Gate / entry scan (<code>UseAtGate</code>)</h3>
+
+<p><code>UseAtGate</code> is the <strong>gate entry</strong> path of <code>TicketRedeemer</code>:</p>
+
+<pre><code class="language-haskell">data TicketRedeemer
+  = Transfer PubKeyHash Integer
+  | UseAtGate
+</code></pre>
+
+<p>When a gate scan happens:</p>
+
+<ul>
+  <li>The <strong>validator</strong> executes the <code>UseAtGate</code> branch.</li>
+  <li>It checks:
+    <ul>
+      <li>Ticket still exists in input.</li>
+      <li>Ticket is not already marked used (by rules).</li>
+      <li>Transaction’s time range is <strong>at or before</strong> <code>tdEventTime</code>.</li>
+      <li>Correct mint/burn pattern for ticket vs USED souvenir.</li>
+      <li>USED souvenir goes to ticket owner.</li>
+      <li>There is <strong>no continuing ticket UTxO</strong>.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>
+  Conceptually:
+  <br />
+  <em>
+    A <code>UseAtGate</code> transaction means “let this attendee in, and mark their ticket as consumed,
+    issuing a souvenir in return”.
+  </em>
+</p>
+
+<h3 id="117-datum-ticketdatum">11.7 Datum (<code>TicketDatum</code>)</h3>
+
+<p>A <strong>datum</strong> is on-chain data attached to a script UTxO.</p>
+
+<p>Here:</p>
+
+<pre><code class="language-haskell">data TicketDatum = TicketDatum
+  { tdEventId      :: BuiltinByteString
+  , tdSeat         :: BuiltinByteString
+  , tdOwner        :: PubKeyHash
+  , tdUsed         :: Bool
+  , tdFaceValue    :: Integer
+  , tdMaxPrice     :: Integer
+  , tdEventTime    :: POSIXTime
+  , tdKycAuthority :: Maybe PubKeyHash
+  , tdPolicyId     :: CurrencySymbol
+  , tdTokenName    :: TokenName
+  , tdUsedPolicyId :: CurrencySymbol
+  }
+</code></pre>
+
+<p>It encodes the <strong>state of a single ticket</strong>:</p>
+
+<ul>
+  <li>Which event (<code>tdEventId</code>).</li>
+  <li>Which seat (<code>tdSeat</code>).</li>
+  <li>Who owns it (<code>tdOwner</code>).</li>
+  <li>Whether it’s used (<code>tdUsed</code>).</li>
+  <li>Price info (<code>tdFaceValue</code>, <code>tdMaxPrice</code>).</li>
+  <li>Timing (<code>tdEventTime</code>).</li>
+  <li>Optional KYC authority.</li>
+  <li>Link to the exact ticket NFT and used souvenir policy.</li>
+</ul>
+
+<p>
+  The validator can read this datum and decide if:
+</p>
+
+<ul>
+  <li>A resale is allowed.</li>
+  <li>A gate usage is valid.</li>
+</ul>
+
+<h3 id="118-redeemer-ticketredeemer">11.8 Redeemer (<code>TicketRedeemer</code>)</h3>
+
+<p>A <strong>redeemer</strong> is the “action” provided when spending a script UTxO.</p>
+
+<p>Here:</p>
+
+<pre><code class="language-haskell">data TicketRedeemer
+  = Transfer PubKeyHash Integer
+  | UseAtGate
+</code></pre>
+
+<ul>
+  <li>
+    <p><code>Transfer newOwner price</code></p>
+    <p>Means: “I want to resell/transfer this ticket to <code>newOwner</code> for <code>price</code>.”</p>
+    <p>The validator checks:</p>
+    <ul>
+      <li>owner + optional KYC signatures,</li>
+      <li><code>price &lt;= tdMaxPrice</code>,</li>
+      <li>owner paid correctly,</li>
+      <li>ticket NFT preserved in a correct continuing output,</li>
+      <li>static fields unchanged.</li>
+    </ul>
+  </li>
+  <li>
+    <p><code>UseAtGate</code></p>
+    <p>
+      Means: “I want to consume this ticket at the venue gate.”
+      It triggers burn+mint of ticket vs USED tokens, time checks, and no continuing ticket UTxO.
+    </p>
+  </li>
+</ul>
+
+<h3 id="119-minting-policy">11.9 Minting policy</h3>
+
+<p>A <strong>minting policy</strong> controls <em>creation and destruction</em> of tokens under a given <code>CurrencySymbol</code>.</p>
+
+<p>In this system:</p>
+
+<ul>
+  <li><code>SportsTicketsPolicy</code> defines a minting policy for <strong>ticket NFTs</strong>.</li>
+</ul>
+
+<p>Parameters:</p>
+
+<pre><code class="language-haskell">data TicketMintParams = TicketMintParams
+  { tmpOrganizer :: PubKeyHash
+  , tmpEventId   :: BuiltinByteString
+  }
+</code></pre>
+
+<p>Redeemer:</p>
+
+<pre><code class="language-haskell">data TicketMintRedeemer
+  = MintTicket BuiltinByteString
+  | BurnTicket BuiltinByteString
+</code></pre>
+
+<p>Rules:</p>
+
+<ul>
+  <li>Only <code>tmpOrganizer</code> may sign mint/burn transactions.</li>
+  <li>
+    Each tx can only mint/burn <strong>one seat token</strong> under this policy
+    (one entry in <code>flattenValue</code> for this <code>CurrencySymbol</code>).
+  </li>
+  <li>Mint path: <code>+1</code> seat token.</li>
+  <li>Burn path: <code>-1</code> seat token.</li>
+</ul>
+
+<p>So the minting policy ensures the <strong>supply &amp; uniqueness</strong> of seat NFTs.</p>
+
+<h3 id="1110-validator">11.10 Validator</h3>
+
+<p>
+  A <strong>validator</strong> is the Plutus script that decides whether a script UTxO can be spent.
+</p>
+
+<p>Here, the ticket validator has the typed form:</p>
+
+<pre><code class="language-haskell">mkTicketValidator :: TicketDatum -&gt; TicketRedeemer -&gt; ScriptContext -&gt; Bool
+</code></pre>
+
+<p>and is compiled to a <code>Validator</code>:</p>
+
+<pre><code class="language-haskell">validator :: Validator
+validator =
+  mkValidatorScript $$(PlutusTx.compile [|| mkTicketValidatorUntyped ||])
+</code></pre>
+
+<p>Roles:</p>
+
+<ul>
+  <li>Enforces <strong>resale rules</strong> (<code>Transfer</code>).</li>
+  <li>Enforces <strong>entry rules</strong> (<code>UseAtGate</code>).</li>
+  <li>Ensures ticket NFT is bound, preserved, or burned correctly.</li>
+  <li>Enforces time windows, signatures, and static field integrity.</li>
+</ul>
+
+<p>If it returns <code>False</code> / <code>error</code>, the transaction is invalid.</p>
+
+<h3 id="1111-script-address">11.11 Script address</h3>
+
+<p>
+  A <strong>script address</strong> is the Cardano address derived from the hash of a validator.
+</p>
+
+<p>Your executable:</p>
+
+<ul>
+  <li>Computes <code>plutusValidatorHash validator</code>.</li>
+  <li>Derives a Bech32 address via cardano-api (<code>toBech32ScriptAddress</code>).</li>
+  <li>Prints it out so wallets and tools know where to send ticket UTxOs.</li>
+</ul>
+
+<p>Flow:</p>
+
+<ol>
+  <li>You deploy the validator (on-chain hash).</li>
+  <li>You compute its script address.</li>
+  <li>Primary sale + resales lock ticket UTxOs at that address.</li>
+</ol>
+
+<p>Any spend from that address must pass the ticket validator.</p>
+
+<h3 id="1112-policy-id">11.12 Policy ID</h3>
+
+<p>A <strong>Policy ID</strong> is the on-chain identifier (a <code>CurrencySymbol</code>) for a minting policy.</p>
+
+<ul>
+  <li>For tickets: <code>tdPolicyId</code> and the <code>CurrencySymbol</code> derived from <code>ticketPolicy params</code>.</li>
+  <li>For USED souvenirs: <code>tdUsedPolicyId</code>.</li>
+</ul>
+
+<p>Characteristics:</p>
+
+<ul>
+  <li>All tokens minted under the same policy share the same Policy ID.</li>
+  <li>A ticket NFT is fully identified by <code>(policyId, tokenName)</code>.</li>
+  <li>
+    Clients use the Policy ID to query balances and verify authenticity
+    (e.g. “is this NFT from the official event policy?”).
+  </li>
+</ul>
+
+<h3 id="1113-text-envelope-plutus-file">11.13 Text envelope (<code>.plutus</code> file)</h3>
+
+<p>
+  A <strong>text envelope</strong> is the standard JSON-like format used by
+  <code>cardano-api</code> / <code>cardano-cli</code> to store scripts and keys.
+</p>
+
+<p>Your tools:</p>
+
+<ul>
+  <li><code>sports-tickets-exe</code> writes <code>sports-tickets.plutus</code>.</li>
+  <li><code>sports-tickets-policy-exe</code> writes <code>sports-tickets-policy.plutus</code>.</li>
+</ul>
+
+<p>Each <code>.plutus</code> file includes:</p>
+
+<ul>
+  <li><code>type</code> – e.g. <code>"PlutusScriptV2"</code>.</li>
+  <li><code>description</code> – human-readable label.</li>
+  <li><code>cborHex</code> – hex-encoded Plutus CBOR bytes.</li>
+</ul>
+
+<p>Usage:</p>
+
+<ul>
+  <li>
+    <code>cardano-cli transaction build</code> with
+    <code>--tx-in-script-file</code> / <code>--minting-script-file</code>.
+  </li>
+  <li>Wallets or dev tools can load and inspect the script metadata.</li>
+</ul>
+
+<h3 id="1114-how-these-concepts-connect-ticket-lifecycle-diagram">
+  11.14 How these concepts connect (ticket lifecycle diagram)
+</h3>
+
+<p>Below is an ASCII overview of how everything fits together for a single ticket:</p>
+
+<pre><code>(1) Minting: organiser creates seat NFT
+---------------------------------------
+
+Organiser wallet
+   |
+   |  tx with minting policy:
+   |    - Policy: SportsTicketsPolicy (TicketMintParams)
+   |    - Redeemer: MintTicket seatId
+   |    - Signed by tmpOrganizer
+   v
++-----------------------------------------------+
+|  Mint 1 NFT: (ticketPolicyId, tokenName)      |
+|  -&gt; UTxO to organiser address                 |
++-----------------------------------------------+
+
+Now: 1 NFT ticket exists for that seat.
+
+
+(2) Primary sale: organiser -&gt; first fan
+----------------------------------------
+
+Organiser sells the ticket:
+
+  - Off-chain: they transfer NFT + some metadata
+  - On-chain: send NFT to buyer (fan) address
+
+Result:
+  Buyer wallet now holds the ticket NFT.
+
+
+(3) Locking to validator (optional pattern)
+-------------------------------------------
+
+For a fully on-chain flow, buyer can lock the NFT at
+the SportsTickets validator address with TicketDatum:
+
+  TicketDatum
+    - tdEventId, tdSeat
+    - tdOwner        = buyer PKH
+    - tdUsed         = False
+    - tdFaceValue    = faceValueAda
+    - tdMaxPrice     = resaleCapAda
+    - tdEventTime    = eventTime
+    - tdKycAuthority = maybe KYC PKH
+    - tdPolicyId     = ticketPolicyId
+    - tdTokenName    = tokenName
+    - tdUsedPolicyId = usedPolicyId
+
+
+(4) Resale / Transfer (secondary market)
+----------------------------------------
+
+Buyer (current owner) wants to resell:
+
+  Tx spends script UTxO at ticket validator with:
+
+    Redeemer: Transfer newOwner price
+
+  Validator checks:
+    - ticket NFT bound &amp; preserved
+    - owner signed (and KYC if required)
+    - price &lt;= tdMaxPrice
+    - owner paid exactly price
+    - static fields unchanged
+    - continuing script output:
+        * 1 ticket NFT
+        * same TicketDatum except tdOwner = newOwner
+
+Result:
+  New owner now controls the ticket UTxO at the validator.
+
+
+(5) Gate Use (UseAtGate)
+------------------------
+
+New owner goes to the event gate:
+
+  Tx spends script UTxO with:
+
+    Redeemer: UseAtGate
+
+  Validator checks:
+    - ticket NFT in input
+    - tdUsed == False
+    - valid time range (&lt;= tdEventTime)
+    - Mint/burn pattern:
+        * -1 (tdPolicyId, tdTokenName)
+        * +1 (tdUsedPolicyId, "USED-" &lt;&gt; tokenName)
+    - USED NFT paid to tdOwner
+    - no continuing script output
+
+Result:
+  - Original ticket NFT is burned (no more entry rights).
+  - Owner receives USED souvenir NFT in their wallet.
+
+
+(6) Post-event analysis
+-----------------------
+
+Off-chain dashboards / tools can:
+
+  - Count original ticket mints   -&gt; capacity / total tickets.
+  - Count USED souvenirs minted   -&gt; actual attendance.
+  - Inspect resale patterns       -&gt; anti-scalping analytics.
+
+The on-chain model ensures that:
+  * each seat has exactly one ticket NFT,
+  * all transfers respect price caps &amp; rules,
+  * each entry scan consumes the ticket and issues a verifiable USED souvenir.
+</code></pre>
+
+<p>This lifecycle ties together:</p>
+
+<ul>
+  <li><strong>Minting policy</strong> (who can create/burn seat NFTs),</li>
+  <li><strong>Validator</strong> (how tickets move between owners and are consumed),</li>
+  <li><strong>Datums &amp; redeemers</strong> (state + actions),</li>
+  <li>
+    <strong>Policy IDs / addresses / <code>.plutus</code> files</strong>
+    (deployment &amp; CLI integration),
+  </li>
+</ul>
+
+<p>into one coherent <strong>sports &amp; entertainment ticketing system</strong> on Cardano.</p>
+
+    </main>
+
+    <script>
+        // Initialize Highlighter.js
+        hljs.highlightAll();
+
+        // Scrollspy Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.content section');
+            const navLinks = document.querySelectorAll('.sidebar ul a');
+
+            if (!sections.length || !navLinks.length) {
+                return;
+            }
+
+            const onScroll = () => {
+                let currentSection = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (window.scrollY >= sectionTop - 100) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${currentSection}`) {
+                        link.classList.add('active');
+                        // Highlight parent if sub-item
+                        const parentLi = link.closest('ul').closest('li');
+                        if(parentLi) {
+                            const parentLink = parentLi.querySelector('a');
+                            if (parentLink) parentLink.classList.add('active');
+                        }
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', onScroll);
+            onScroll();
+        });
+    </script>
+</body>
+</html>
