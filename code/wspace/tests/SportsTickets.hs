@@ -1,4 +1,4 @@
-    {-# LANGUAGE DataKinds           #-}
+{-# LANGUAGE DataKinds           #-}
 {-# LANGUAGE NoImplicitPrelude   #-}
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
