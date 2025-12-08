@@ -11,6 +11,9 @@ import DemoSpec                qualified as DemoSpec
 import AtomicSwapSpec         qualified as AtomicSwapSpec
 import AtomicSwapHTLCSpec     qualified as AtomicSwapHTLCSpec
 import SealedBidSpec          qualified as SealedBidSpec
+import SportsTicketsSpec      qualified as SportsTicketsSpec
+import RevenueSplitterSpec   qualified as RevenueSplitterSpec
+import SportsTicketsPolicySpec qualified as SportsTicketsPolicySpec
 
 
 main :: IO ()
@@ -26,5 +29,9 @@ allTests =
     , DemoSpec.tests
     , AtomicSwapSpec.tests 
     , AtomicSwapHTLCSpec.tests    
-    , SealedBidSpec.tests    
+    , SealedBidSpec.tests
+    , SportsTicketsSpec.tests
+    , SportsTicketsPolicySpec.tests
+    , RevenueSplitterSpec.revenueSplitterTests
     ]
+
