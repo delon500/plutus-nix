@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SealedBid.hs Tutorial</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/haskell.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/plaintext.min.js"></script>
+
+    <style>
+        /* --- Global Styles --- */
+        :root {
+            --primary-color: #007acc;
+            --text-color: #333;
+            --bg-color: #ffffff;
+            --sidebar-bg: #f7f7f7;
+            --border-color: #eee;
+            --code-bg: #2d2d2d;
+            --code-color: #f1f1f1;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 20px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5em;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.3em;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: #444;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.9em;
+            background-color: #f0f0f0;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 1.25em;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        blockquote {
+            margin: 1.5em 0;
+            padding: 1em;
+            background-color: #f9f9f9;
+            border-left: 5px solid var(--primary-color);
+            font-style: italic;
+        }
+
+        ul, ol {
+            padding-left: 1.5em;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        /* --- Layout --- */
+        .sidebar {
+            width: 300px;
+            flex-shrink: 0;
+            background-color: var(--sidebar-bg);
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            overflow-y: auto;
+            padding: 2em;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 2em 4em;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .content section {
+            margin-bottom: 3em;
+        }
+
+        /* --- Sidebar Navigation --- */
+        .sidebar h3 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #555;
+            margin-top: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 0.25em;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 0.3em 0.5em;
+            border-radius: 4px;
+            color: #444;
+            transition: background-color 0.2s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: #e9e9e9;
+            text-decoration: none;
+        }
+
+        .sidebar ul ul {
+            padding-left: 1em;
+            margin-top: 0.25em;
+            font-size: 0.9em;
+        }
+
+        .sidebar a.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        /* --- Glossary / Definition Lists --- */
+        dl { margin-top: 1.5em; }
+        dt { font-weight: 600; color: var(--text-color); margin-top: 1em; }
+        dd { margin-left: 1.5em; margin-bottom: 0.5em; color: #555; }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .content { padding: 2em; }
+        }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <h3>SealedBid.hs 🔨</h3>
+        <ul>
+            <li><a href="#overview">1. Overview 📖</a></li>
+            <li><a href="#problem">2. The Problem 💡</a></li>
+            <li>
+                <a href="#flow">3. High-Level Flow 🌊</a>
+                <ul>
+                    <li><a href="#flow-commit">3.1 Commit phase</a></li>
+                    <li><a href="#flow-reveal">3.2 Reveal branch</a></li>
+                    <li><a href="#flow-refund">3.3 Refund branch</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#data-types">4. On-Chain Data Types 🧬</a>
+                <ul>
+                    <li><a href="#data-commit">4.1 CommitDatum</a></li>
+                    <li><a href="#data-redeemer">4.2 AuctionRedeemer</a></li>
+                    <li><a href="#data-hash">4.3 bidHash</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#extensions">5. Language Extensions 🔧</a>
+                <ul>
+                    <li><a href="#ext-datakinds">5.1 DataKinds</a></li>
+                    <li><a href="#ext-noprelude">5.2 NoImplicitPrelude</a></li>
+                    <li><a href="#ext-th">5.3 TemplateHaskell</a></li>
+                    <li><a href="#ext-scoped">5.4 ScopedTypeVariables</a></li>
+                    <li><a href="#ext-strings">5.5 OverloadedStrings</a></li>
+                    <li><a href="#ext-apps">5.6 TypeApplications</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#imports">6. Imports 📦</a>
+                <ul>
+                    <li><a href="#module-main">6.1 module Main where</a></li>
+                    <li><a href="#prelude-qualified">6.2 Prelude and qualified Prelude as P</a></li>
+                    <li><a href="#plutus-core-imports">6.3 Plutus core imports</a></li>
+                    <li><a href="#serialization-stack">6.4 Serialization stack</a></li>
+                    <li><a href="#cardano-api-imports">6.5 Cardano API imports</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#validation">7. Validation Logic ✅</a>
+                <ul>
+                    <li><a href="#val-helpers">7.1 Shared helpers</a></li>
+                    <li><a href="#val-reveal">7.2 Reveal branch</a></li>
+                    <li><a href="#val-refund">7.3 Refund branch</a></li>
+                </ul>
+            </li>
+            <li><a href="#producing">8. Producing the .plutus file 📝</a></li>
+            <li>
+                <a href="#testing">9. Testing the Contract 🧪</a>
+                <ul>
+                    <li><a href="#what-sealedbidspec-test">9.1 What <code>SealedBidSpec</code> tests</a></li>
+                    <li><a href="#running-the-tests">9.2 Running the tests</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#glossary">10. Glossary 📚</a>
+                <ul>
+                     <li><a href="#glossary-sealed">10.1 Sealed-bid auction</a></li>
+                     <li><a href="#glossary-commit">10.2 Commit–reveal</a></li>
+                     <li><a href="#glossary-hash">10.3 Commitment hash</a></li>
+                     <li><a href="#glossary-salt">10.4 Salt</a></li>
+                     <li><a href="#glossary-datum">10.5 Datum</a></li>
+                     <li><a href="#glossary-redeemer">10.6 Redeemer</a></li>
+                     <li><a href="#glossary-script-utxo">10.7 Script UTxO</a></li>
+                     <li><a href="#glossary-validator">10.8 Validator</a></li>
+                     <li><a href="#glossary-addr">10.9 Script address</a></li>
+                     <li><a href="#glossary-plutus">10.10 Text envelope</a></li>
+                     <li><a href="#glossary-flow">10.11 Flow Diagram</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="content">
+        <header>
+            <h1>SealedBid.hs – Beginner Tutorial / Documentation</h1>
+        </header>
+
+        <section id="overview">
+            <h2>1. Overview</h2>
+            <p><code>SealedBid.hs</code> is a Plutus V2 validator that implements a <strong>sealed-bid commit–reveal auction UTxO</strong> for an NFT.</p>
+            <p>Each UTxO at this script represents <strong>one committed bid</strong>:</p>
+            <ul>
+                <li>The <strong>bidder</strong> locks some ADA at the script and stores a <strong>hash of (amount, salt)</strong> in the datum (the actual bid amount is hidden).</li>
+                <li>Later, the bidder can:
+                    <ul>
+                        <li><strong>Reveal</strong> the bid (before a deadline), paying ADA to the <strong>seller</strong> and receiving the NFT.</li>
+                        <li>Or <strong>Refund</strong> (after the deadline), recovering their committed ADA if they don’t (or can’t) reveal.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>The sealed-bid property comes from the fact that the amount is only known as a <strong>commitment hash</strong> until the bidder reveals <code>(amount, salt)</code>.</p>
+            <blockquote>💡 This contract is <em>per-commitment</em>: it enforces correct reveal/refund for one bidder’s commitment. Selection of “highest bid wins” is handled off-chain by the dApp logic that chooses which Reveal transaction to submit.</blockquote>
+        </section>
+
+        <section id="problem">
+            <h2>2. What Problem This Contract Solves</h2>
+            <p>On a transparent UTxO blockchain, if you just publish your bid as a value in a transaction:</p>
+            <blockquote>Everyone can see it immediately and potentially out-bid you.</blockquote>
+            <p>A <strong>sealed-bid commit–reveal</strong> scheme solves this:</p>
+            <ol>
+                <li><strong>Commit phase</strong>
+                    <ul>
+                        <li>Bidder posts a transaction locking funds and a <em>hash</em> of their bid (amount + secret salt).</li>
+                        <li>No one can see the actual amount, just the hash.</li>
+                    </ul>
+                </li>
+                <li><strong>Reveal phase</strong>
+                    <ul>
+                        <li>After the commit phase and before a reveal deadline, bidders reveal <code>(amount, salt)</code>.</li>
+                        <li>The contract recomputes the hash and checks it matches the committed one.</li>
+                    </ul>
+                </li>
+                <li><strong>Settlement / Refunds</strong>
+                    <ul>
+                        <li>Off-chain logic picks which revealed bid should win (usually highest).</li>
+                        <li>Winning bidder’s Reveal transaction:
+                            <ul>
+                                <li>pays the seller,</li>
+                                <li>transfers the NFT to the bidder.</li>
+                            </ul>
+                        </li>
+                        <li>Losers (or non-revealers) get refunds after the deadline.</li>
+                    </ul>
+                </li>
+            </ol>
+            <p><code>SealedBid.hs</code> enforces the <strong>on-chain rules</strong> for: 
+                <ul>
+                    <li>verifying commitments,</li>
+                    <li>enforcing timing (before/after deadline),</li>
+                    <li>ensuring correct ADA / NFT flows for reveal & refund.</li>
+                </ul> 
+        </section>
+
+        <section id="flow">
+            <h2>3. High-Level Flow (Commit → Reveal / Refund)</h2>
+            <p>The validator only sees <strong>Reveal</strong> or <strong>Refund</strong>. The <strong>Commit</strong> step is just “send a UTxO with a suitable datum to this script address”.</p>
+            
+            <h3 id="flow-commit">3.1 Commit phase (off-chain pattern)</h3>
+            <p>Off-chain, to <strong>commit a bid</strong>:</p>
+            <ol>
+                <li>Compute:
+<pre><code class="language-haskell">commitHash = bidHash amount salt
+</code></pre>
+                </li>
+                <li>Build a <code>CommitDatum</code>:
+<pre><code class="language-haskell">CommitDatum
+  { cdBidder         = bidderPkh
+  , cdSeller         = sellerPkh
+  , cdCommitHash     = commitHash
+  , cdDeadlineReveal = someDeadline
+  , cdCurrency       = nftCurrency
+  , cdToken          = nftToken
+  }
+</code></pre>
+                </li>
+                <li>Lock a UTxO at the script address with:
+                    <ul>
+                        <li>Value: bidder’s ADA (e.g. “max they’re willing to pay” or exactly <code>amount</code>).</li>
+                        <li>Datum: the <code>CommitDatum</code> above.</li>
+                        <li>No validator execution yet: it’s just creating the script UTxO.</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3 id="flow-reveal">3.2 Reveal branch (on-chain)</h3>
+            <p>When the bidder wants to settle as the <strong>winner</strong>:</p>
+            <ul>
+                <li>They build a transaction that:
+                    <ul>
+                        <li>spends their committed UTxO from the script,</li>
+                        <li>includes a <strong>Reveal amount salt</strong> redeemer,</li>
+                        <li>pays at least <code>amount</code> ADA to the seller,</li>
+                        <li>sends the NFT to the bidder.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>The validator checks:</p>
+            <ul>
+                <li>The bid was revealed <strong>before</strong> <code>cdDeadlineReveal</code>.</li>
+                <li>The <code>(amount, salt)</code> matches <code>cdCommitHash</code>.</li>
+                <li>The seller receives at least <code>amount</code> ADA.</li>
+                <li>The bidder receives at least 1 unit of the NFT.</li>
+            </ul>
+            <p>If all conditions hold → <strong>Reveal branch passes.</strong></p>
+            <h3 id="flow-refund">3.3 Refund branch (on-chain)</h3>
+            <p>After the reveal deadline:</p>
+            <ul>
+                <li>If the bidder did not (or cannot) reveal, they can take the <strong>Refund path</strong>.</li>
+            </ul>
+            <p>The transaction:</p>
+            <ul>
+                <li>spends the script UTxO with redeemer <code>Refund</code>,</li>
+                <li>is valid strictly <strong>after</strong> the reveal deadline,</li>
+                <li>returns at least the committed ADA back to the bidder.</li>
+            </ul>
+            <p>The validator enforces:</p>
+            <ul>
+                <li>Bidder signed the transaction.</li>
+                <li>Time is after deadline.</li>
+                <li>Bidder gets at least <code>inputAda</code> (the ADA originally locked in that commit UTxO).</li>
+            </ul>
+        </section>
+
+        <section id="data-types">
+            <h2>4. On-Chain Data Types</h2>
+
+            <h3 id="data-commit">4.1 <code>CommitDatum</code></h3>
+<pre><code class="language-haskell">data CommitDatum = CommitDatum
+    { cdBidder         :: PubKeyHash          -- bidder who owns this commitment
+    , cdSeller         :: PubKeyHash          -- seller who will receive the ADA
+    , cdCommitHash     :: BuiltinByteString   -- hash of (amount, salt)
+    , cdDeadlineReveal :: POSIXTime           -- reveal deadline
+    , cdCurrency       :: CurrencySymbol      -- NFT currency symbol
+    , cdToken          :: TokenName           -- NFT token name
+    }
+PlutusTx.unstableMakeIsData ''CommitDatum
+</code></pre>
+            <ul>
+                <li><strong><code>cdBidder</code></strong>
+                    <ul>
+                        <li>The public key hash that:
+                            <ul>
+                                <li>is allowed to <strong>reveal</strong> this bid,</li>
+                                <li>is allowed to <strong>refund</strong> it after the deadline.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><strong><code>cdSeller</code></strong>
+                    <ul>
+                        <li>The seller’s public key hash:
+                            <ul>
+                                <li><code>Reveal</code> branch checks that seller is paid at least the revealed bid amount.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><strong><code>cdCommitHash</code></strong>
+                    <ul>
+                        <li>A <code>BuiltinByteString</code> storing <code>sha2_256(serialiseData (amount, salt))</code>.</li>
+                        <li>Hides the bid amount until the bidder reveals.</li>
+                    </ul>
+                </li>
+                <li><strong><code>cdDeadlineReveal</code></strong>
+                    <ul>
+                        <li>A POSIX timestamp.</li>
+                        <li>Before this: bidder can reveal.</li>
+                        <li>After this: bidder can refund.</li>
+                    </ul>
+                </li>
+                <li><strong><code>cdCurrency</code>, <code>cdToken</code></strong>
+                    <ul>
+                        <li>Identify the <strong>NFT</strong> being auctioned:
+                            <ul>
+                                <li><code>cdCurrency :: CurrencySymbol</code></li>
+                                <li><code>cdToken    :: TokenName</code></li>
+                            </ul>
+                        </li>
+                        <li><code>Reveal</code> branch ensures the bidder receives this NFT.</li>
+                    </ul>
+                </li>
+            </ul>
+            <h3 id="data-redeemer">4.2 <code>AuctionRedeemer</code></h3>
+<pre><code class="language-haskell">data AuctionRedeemer
+    = Reveal Integer BuiltinByteString
+    | Refund
+PlutusTx.unstableMakeIsData ''AuctionRedeemer
+</code></pre>
+            <ul>
+                <li><strong><code>Reveal amount salt</code></strong></li>
+                <ul>
+                    <li>Used when the bidder reveals their bid.</li> 
+                    <li><code>amount :: Integer</code> – the bid value.</li>
+                    <li><code>salt :: BuiltinByteString</code> – secret nonce used in the commitment.</li>
+                    <li>Validator recomputes <code>bidHash amount salt</code> and compares to <code>cdCommitHash</code>.</li>
+                </ul>
+                <li><strong><code>Refund</code></strong></li>
+                <ul>
+                    <li>Used when the bidder wants their money back after the deadline (no successful reveal).</li>
+                </ul>    
+            </ul>
+
+            <h3 id="data-hash">4.3 <code>bidHash</code></h3>
+<pre><code class="language-haskell">{-# INLINABLE bidHash #-}
+bidHash :: Integer -> BuiltinByteString -> BuiltinByteString
+bidHash amount salt =
+    Builtins.sha2_256 $
+      Builtins.serialiseData (PlutusTx.toBuiltinData (amount, salt))
+</code></pre>
+            <li>Takes an <code>amount</code> and <code>salt</code>, turns them into on-chain Data, serialises, hashes with <code>sha2_256</code>.</li>
+            <li>This is what is committed in <code>cdCommitHash</code>.</li>
+                    </section>
+
+        <section id="extensions">
+            <h2>5. Language Extensions (Why they’re here)</h2>
+            <pre><code class="language-haskell">{-# LANGUAGE DataKinds           #-}
+{-# LANGUAGE NoImplicitPrelude   #-}
+{-# LANGUAGE TemplateHaskell     #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE OverloadedStrings   #-}
+{-# LANGUAGE TypeApplications    #-}</code></pre>
+<h3 id="ext-datakinds">5.1 <code>DataKinds</code></h3>
+            <ul>
+                <li><strong>What it does:</strong> Promotes some values (like constructors, strings) to the type level.</li>
+                <li><strong>Why here:</strong> Common in Plutus projects (TH-generated code and ledger types can depend on it). It’s a safe default.</li>
+                <li><strong>If removed:</strong> Some advanced or generated types may fail in more complex codebases. In this file it’s mostly harmless/safe boilerplate.</li>
+            </ul>
+
+            <h3 id="ext-noprelude">5.2 <code>NoImplicitPrelude</code></h3>
+            <ul>
+                <li><strong>What it does:</strong> Stops GHC from importing the default <code>Prelude</code>.</li>
+                <li><strong>Why here:</strong> On-chain code must use <code>PlutusTx.Prelude</code> (deterministic and Plutus-compatible). We only import from base <code>Prelude</code> <strong>explicitly</strong> for off-chain IO stuff.</li>
+                <li><strong>If removed:</strong> You might accidentally pull in non-deterministic or unsupported functions into on-chain parts.</li>
+            </ul>
+
+            <h3 id="ext-th">5.3 <code>TemplateHaskell</code></h3>
+            <ul>
+                <li><strong>What it does:</strong> Enables compile-time metaprogramming (splices like <code>$(...)</code>, <code>$$(...)</code>).</li>
+                <li><strong>Why here:</strong>
+                    <ul>
+                        <li><code>PlutusTx.unstableMakeIsData ''CommitDatum</code></li>
+                        <li><code>PlutusTx.unstableMakeIsData ''AuctionRedeemer</code></li>
+                        <li><code>mkValidatorScript $$(PlutusTx.compile [|| mkValidatorUntyped ||])</code></li>
+                    </ul>
+                </li>
+                <li><strong>If removed:</strong> You can’t derive on-chain <code>IsData</code> instances or compile your validator to Plutus Core.</li>
+            </ul>
+
+            <h3 id="ext-scoped">5.4 <code>ScopedTypeVariables</code></h3>
+            <ul>
+                <li><strong>What it does:</strong> Keeps explicit type variables in scope across the whole function.</li>
+                <li><strong>Why here:</strong> Used together with <code>TypeApplications</code> in:
+<pre><code class="language-haskell">let dat = unsafeFromBuiltinData @CommitDatum d
+    red = unsafeFromBuiltinData @AuctionRedeemer r
+    ctx = unsafeFromBuiltinData @ScriptContext   c
+</code></pre>
+                It helps GHC know exactly which type you’re applying.
+                </li>
+                <li><strong>If removed:</strong> You may get ambiguous type errors or need more repetitive annotations.</li>
+            </ul>
+
+            <h3 id="ext-strings">5.5 <code>OverloadedStrings</code></h3>
+            <ul>
+                <li><strong>What it does:</strong> Makes string literals polymorphic (they can be <code>Text</code>, <code>ByteString</code>, etc.).</li>
+                <li><strong>Why here:</strong> For writing things like the text-envelope description:
+<pre><code class="language-haskell">(Just "Sealed-Bid Commit-Reveal NFT Auction Validator")
+</code></pre>
+                without manual <code>T.pack</code> or similar.
+                </li>
+                <li><strong>If removed:</strong> You’d need explicit conversions when using string literals for <code>Text</code>-like types.</li>
+            </ul>
+
+            <h3 id="ext-apps">5.6 <code>TypeApplications</code></h3>
+            <ul>
+                <li><strong>What it does:</strong> Lets you specify type arguments explicitly using <code>@Type</code>.</li>
+                <li><strong>Why here:</strong>
+<pre><code class="language-haskell">unsafeFromBuiltinData @CommitDatum d
+unsafeFromBuiltinData @AuctionRedeemer r
+unsafeFromBuiltinData @ScriptContext c
+</code></pre>
+                This makes it very clear which type we’re decoding from <code>BuiltinData</code>.
+                </li>
+                <li><strong>If removed:</strong> You’d need alternative patterns or more verbose type annotations.</li>
+            </ul>
+        </section>
+
+<section id="imports">
+            <h2>6. Imports (What each one is for)</h2>
+
+            <h3 id="module-main">6.1 <code>module Main where</code></h3>
+            <p>This file is an <strong>executable</strong>:</p>
+            <ul>
+                <li>It defines the validator (on-chain logic).</li>
+                <li>It also has a <code>main :: IO ()</code> that:
+                    <ul>
+                        <li>writes <code>sealed-bid-commit-reveal-nft.plutus</code> (text envelope),</li>
+                        <li>prints the script hash & addresses.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3 id="prelude-qualified">6.2 <code>Prelude</code> and <code>qualified Prelude as P</code></h3>
+<pre><code class="language-haskell">import Prelude (IO, String, FilePath, putStrLn, (<>))
+import qualified Prelude as P
+</code></pre>
+            <ul>
+                <li>Because of <code>NoImplicitPrelude</code>, base <code>Prelude</code> is not imported automatically.</li>
+                <li>We selectively import:
+                    <ul>
+                        <li><code>IO</code>, <code>String</code>, <code>FilePath</code>, <code>putStrLn</code>, <code>( <>)</code> for <strong>off-chain</strong> work (writing files, printing).</li>
+                    </ul>
+                </li>
+                <li>We also import the rest of <code>Prelude</code> as <code>P</code> when we need <code>P.show</code>, etc.</li>
+            </ul>
+            <p>On-chain logic never uses base <code>Prelude</code> directly; it uses <code>PlutusTx.Prelude</code>.</p>
+
+            <h3 id="plutus-core-imports">6.3 Plutus core imports</h3>
+<pre><code class="language-haskell">import Plutus.V2.Ledger.Api
+import Plutus.V2.Ledger.Contexts
+import qualified Plutus.V2.Ledger.Api as PlutusV2
+import Plutus.V1.Ledger.Interval as Interval
+import Plutus.V1.Ledger.Value (valueOf, adaSymbol, adaToken)
+import PlutusTx
+import PlutusTx.Prelude hiding (Semigroup(..), unless)
+import qualified PlutusTx.Builtins as Builtins
+</code></pre>
+            <ul>
+                <li><strong><code>Plutus.V2.Ledger.Api</code> / <code>Plutus.V2.Ledger.Contexts</code></strong>
+                    <ul>
+                        <li>Types like <code>ScriptContext</code>, <code>TxInfo</code>, <code>Validator</code>, <code>Address</code>, <code>POSIXTime</code>, etc.</li>
+                        <li>Helpers like <code>scriptContextTxInfo</code>, <code>txInInfoResolved</code>, <code>txOutValue</code>, <code>findOwnInput</code>, <code>valuePaidTo</code>, <code>txInfoValidRange</code>.</li>
+                    </ul>
+                </li>
+                <li><strong><code>Plutus.V1.Ledger.Interval as Interval</code></strong>
+                    <ul>
+                        <li>Interval functions for time range checking:
+                            <ul>
+                                <li><code>Interval.to</code>, <code>Interval.from</code>, <code>Interval.contains</code>.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><strong><code>Plutus.V1.Ledger.Value (valueOf, adaSymbol, adaToken)</code></strong>
+                    <ul>
+                        <li><code>valueOf</code> – query how much of a given currency/token is in a <code>Value</code>.</li>
+                        <li><code>adaSymbol</code>, <code>adaToken</code> – identify ADA in the multi-asset system.</li>
+                    </ul>
+                </li>
+                <li><strong><code>PlutusTx</code> + <code>PlutusTx.Prelude</code></strong>
+                    <ul>
+                        <li><code>PlutusTx</code> – TH utilities and <code>unsafeFromBuiltinData</code>.</li>
+                        <li><code>PlutusTx.Prelude</code> – safe, deterministic on-chain Prelude (Bool, Integer, <code>(==)</code>, <code>(&&)</code>, <code>traceIfFalse</code>, etc.).</li>
+                    </ul>
+                </li>
+                <li><strong><code>PlutusTx.Builtins</code></strong>
+                    <ul>
+                        <li><code>sha2_256</code>, <code>serialiseData</code>, <code>toBuiltin</code>, etc.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3 id="serialization-stack">6.4 Serialization stack</h3>
+<pre><code class="language-haskell">import qualified Codec.Serialise as Serialise
+import qualified Data.ByteString.Lazy  as LBS
+import qualified Data.ByteString.Short as SBS
+</code></pre>
+            <ul>
+                <li><code>Serialise.serialise validator</code> → CBOR-encoded bytes of the validator.</li>
+                <li><code>LBS</code> + <code>SBS</code> used to:
+                    <ul>
+                        <li>convert between lazy / strict / short ByteString types,</li>
+                        <li>prepare the script bytes for <code>Cardano.Api</code>.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3 id="cardano-api-imports">6.5 Cardano API imports</h3>
+<pre><code class="language-haskell">import qualified Cardano.Api as C
+import qualified Cardano.Api.Shelley as CS
+</code></pre>
+            <p>Used for:</p>
+            <ul>
+                <li><strong>Text envelope <code>.plutus</code> file</strong>:
+                    <ul>
+                        <li><code>C.PlutusScript C.PlutusScriptV2</code></li>
+                        <li><code>C.writeFileTextEnvelope</code></li>
+                    </ul>
+                </li>
+                <li><strong>Address derivation</strong>:
+                    <ul>
+                        <li><code>C.hashScript</code></li>
+                        <li><code>C.PaymentCredentialByScript</code></li>
+                        <li><code>C.makeShelleyAddressInEra</code></li>
+                        <li><code>C.serialiseAddress</code></li>
+                        <li><code>C.NetworkId</code>, <code>C.Testnet</code>, <code>C.NetworkMagic</code>.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>This is the bridge between your Plutus validator and the Cardano CLI ecosystem.</p>
+        </section>
+        <section id="validation">
+            <h2>7. Validation Logic</h2>
+            <p>The core function:</p>
+<pre><code class="language-haskell">{-# INLINABLE mkValidator #-}
+mkValidator :: CommitDatum -> AuctionRedeemer -> ScriptContext -> Bool
+</code></pre>
+            <p>There are <strong>two branches</strong>:</p>
+            <ul>
+                <li><code>Reveal amount salt</code></li>
+                <li><code>Refund</code></li>
+            </ul>
+
+            <h3 id="val-helpers">7.1 Shared helpers</h3>
+            <h4><code>ownInput</code> and <code>inputAda</code></h4>
+<pre><code class="language-haskell">{-# INLINABLE ownInput #-}
+ownInput :: ScriptContext -> TxOut
+ownInput ctx =
+    case findOwnInput ctx of
+        Nothing -> traceError "own input missing"
+        Just i  -> txInInfoResolved i
+
+{-# INLINABLE inputAda #-}
+inputAda :: ScriptContext -> Integer
+inputAda ctx =
+    let v = txOutValue (ownInput ctx)
+    in valueOf v adaSymbol adaToken
+</code></pre>
+            <ul>
+                <li><code>ownInput</code> finds <strong>the UTxO being spent from this script</strong>.</li>
+                <li><code>inputAda</code> reads how much ADA was locked in that script UTxO originally.</li>
+            </ul>
+            <p>Used in the Refund branch to enforce <strong>“you must refund at least what was locked”</strong>.</p>
+
+            <h3 id="val-reveal">7.2 Reveal branch</h3>
+<pre><code class="language-haskell">mkValidator dat (Reveal amount salt) ctx =
+       traceIfFalse "bidder signature missing"   bidderSigned
+    && traceIfFalse "reveal too late"           beforeDeadline
+    && traceIfFalse "commitment mismatch"       commitMatches
+    && traceIfFalse "seller not paid"           sellerPaid
+    && traceIfFalse "bidder not receive NFT"    bidderGetsNFT
+  where
+    info  = scriptContextTxInfo ctx
+    txRange = txInfoValidRange info
+
+    bidder = cdBidder dat
+    seller = cdSeller dat
+
+    bidderSigned =
+      txSignedBy info bidder
+
+    beforeDeadline =
+      Interval.contains (Interval.to (cdDeadlineReveal dat)) txRange
+
+    commitMatches =
+      cdCommitHash dat == bidHash amount salt
+
+    sellerPaid =
+      let v = valuePaidTo info seller
+      in valueOf v adaSymbol adaToken >= amount
+
+    bidderGetsNFT =
+      let v = valuePaidTo info bidder
+      in valueOf v (cdCurrency dat) (cdToken dat) >= 1
+</code></pre>
+            <p>Checks:</p>
+            <ol>
+                <li><strong>Bidder has signed</strong>
+                    <p>Only the original bidder can reveal this commitment.</p>
+                </li>
+                <li><strong>Reveal is on time</strong>
+                    <p>The transaction’s valid range must be contained in <code>to deadline</code>:</p>
+                    <ul>
+                        <li>i.e. on or before <code>cdDeadlineReveal</code>.</li>
+                    </ul>
+                </li>
+                <li><strong>Commitment matches</strong>
+                    <p>Recompute <code>bidHash amount salt</code> and compare with <code>cdCommitHash</code>.</p>
+                </li>
+                <li><strong>Seller is paid</strong>
+                    <p>The total <code>Value</code> paid to <code>cdSeller</code> must contain at least <code>amount</code> ADA.</p>
+                </li>
+                <li><strong>Bidder receives NFT</strong>
+                    <p>The total <code>Value</code> paid to <code>cdBidder</code> must contain at least 1 unit of the NFT <code>(cdCurrency, cdToken)</code>.</p>
+                </li>
+            </ol>
+            <blockquote>🧠 Note: The script does <strong>not</strong> enforce that <code>amount == inputAda ctx</code> or that the ADA comes <em>from</em> the committed UTxO. That relationship is enforced by how you construct transactions off-chain.</blockquote>
+
+            <h3 id="val-refund">7.3 Refund branch</h3>
+<pre><code class="language-haskell">mkValidator dat Refund ctx =
+       traceIfFalse "bidder signature missing"   bidderSigned
+    && traceIfFalse "too early for refund"       afterDeadline
+    && traceIfFalse "refund not paid to bidder"  refundPaid
+  where
+    info  = scriptContextTxInfo ctx
+    txRange = txInfoValidRange info
+
+    bidder = cdBidder dat
+
+    bidderSigned =
+      txSignedBy info bidder
+
+    afterDeadline =
+      Interval.contains (Interval.from (cdDeadlineReveal dat + 1)) txRange
+
+    refundPaid =
+      let paidToBidder = valuePaidTo info bidder
+      in valueOf paidToBidder adaSymbol adaToken
+           >= inputAda ctx
+</code></pre>
+            <p>Checks:</p>
+            <ol>
+                <li><strong>Bidder has signed</strong>
+                    <p>Only the original bidder can claim the refund.</p>
+                </li>
+                <li><strong>After deadline</strong>
+                    <p>The tx validity range must be contained in <code>from (deadline + 1)</code>, i.e. strictly after the deadline.</p>
+                </li>
+                <li><strong>Refund amount</strong>
+                    <p>The amount of ADA paid to the bidder must be <strong>at least the ADA that was locked</strong> in the script input (<code>inputAda ctx</code>).</p>
+                </li>
+            </ol>
+            <p>If any of these fails, the Refund attempt is rejected.</p>
+        </section>
+
+        <section id="producing">
+            <h2>8. Producing <code>sealed-bid-commit-reveal-nft.plutus</code></h2>
+            <p>At the bottom of the file:</p>
+<pre><code class="language-haskell">writeValidator :: FilePath -> Validator -> IO ()
+writeValidator path val = do
+    let serialised :: SBS.ShortByteString
+        serialised = SBS.toShort . LBS.toStrict $ Serialise.serialise val
+
+        plutusScript :: C.PlutusScript C.PlutusScriptV2
+        plutusScript = CS.PlutusScriptSerialised serialised
+
+    result <- C.writeFileTextEnvelope
+                path
+                (Just "Sealed-Bid Commit-Reveal NFT Auction Validator")
+                plutusScript
+
+    case result of
+      Left err  -> putStrLn $ "Error writing validator: " <> C.displayError err
+      Right ()  -> putStrLn $ "Validator written to: " <> path
+</code></pre>
+            <p>And in <code>main</code>:</p>
+<pre><code class="language-haskell">main :: IO ()
+main = do
+    let network = C.Testnet (C.NetworkMagic 1)
+
+    writeValidator "sealed-bid-commit-reveal-nft.plutus" validator
+
+    let vh      = plutusValidatorHash validator
+        onchain = plutusScriptAddress
+        bech32  = toBech32ScriptAddress network validator
+
+    ...
+</code></pre>
+            <p>This does:</p>
+            <ol>
+                <li>Serialises the compiled <code>validator</code> to CBOR.</li>
+                <li>Wraps it as <code>PlutusScriptV2</code> for <code>cardano-api</code>.</li>
+                <li>Writes a <strong>text envelope <code>.plutus</code> file</strong> with:
+                    <ul>
+                        <li><code>"type": "PlutusScriptV2"</code></li>
+                        <li><code>"description": "Sealed-Bid Commit-Reveal NFT Auction Validator"</code></li>
+                        <li><code>"cborHex": "&lt;hex-encoded script&gt;"</code>.</li>
+                    </ul>
+                </li>
+                <li>Prints:
+                    <ul>
+                        <li>Plutus validator hash,</li>
+                        <li>Plutus script address,</li>
+                        <li>Bech32 address.</li>
+                    </ul>
+                </li>
+            </ol>
+            <p>You can then use:</p>
+            <ul>
+                <li>The <strong>Bech32 address</strong> to send commit UTxOs.</li>
+                <li>The <strong><code>.plutus</code> file</strong> with <code>cardano-cli --tx-in-script-file</code> when building Reveal / Refund transactions.</li>
+            </ul>
+        </section>
+
+        <section id="testing">
+            <h2>9. Testing the Contract</h2>
+            <p>You added a test module <code>tests/SealedBidSpec.hs</code> and wired it into <code>wspace-tests</code>.</p>
+
+            <h3 id="what-sealedbidspec-test">9.1 What <code>SealedBidSpec</code> tests</h3>
+            <p>The current tests focus on the <strong>hashing/commitment</strong> logic:</p>
+            <ul>
+                <li><strong>Determinism</strong>
+                    <p><code>bidHash amount salt</code> is the same every time for the same inputs.</p>
+                </li>
+                <li><strong>Different amount → different hash</strong>
+                    <p>For a fixed salt, changing the amount should change the hash.</p>
+                </li>
+                <li><strong>Different salt → different hash</strong>
+                    <p>For a fixed amount, changing the salt should change the hash.</p>
+                </li>
+                <li><strong>Datum consistency</strong>
+                    <p>A <code>CommitDatum</code> constructed from a commitment hash stores that hash correctly in <code>cdCommitHash</code>.</p>
+                </li>
+            </ul>
+            <p>This gives confidence that:</p>
+            <ul>
+                <li>Your commit–reveal scheme is built on a correct, deterministic hash.</li>
+                <li>You won’t accidentally accept a Reveal that doesn’t match what was committed.</li>
+            </ul>
+            <p>You can extend tests in the future to:</p>
+            <ul>
+                <li>Construct mock <code>ScriptContext</code>s and:
+                    <ul>
+                        <li>Assert <code>mkValidator dat (Reveal amount salt) ctx == True</code> in valid Reveal scenarios.</li>
+                        <li>Assert failures if seller is underpaid, NFT not delivered, reveal too late, etc.</li>
+                        <li>Test Refund scenarios (before vs after deadline, refund amount too low, etc.).</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3 id="running-the-tests">9.2 Running the tests</h3>
+            <p>From project root:</p>
+<pre><code class="language-bash">nix develop          -- (if you’re using the dev shell)
+cabal test wspace-tests
+</code></pre>
+            <p>You’ll see a section like:</p>
+<pre><code class="language-plaintext">Sealed-bid commit–reveal auction
+  bidHash is deterministic for same (amount, salt):            OK
+  bidHash changes when amount changes (same salt):              OK
+  bidHash changes when salt changes (same amount):              OK
+  CommitDatum stores bidHash(amount, salt) correctly:           OK
+</code></pre>
+        </section>
+
+        <section id="glossary">
+            <h2>10. Glossary of Terms 📚</h2>
+            <dl>
+                <dt id="glossary-sealed">10.1 Sealed-bid auction</dt>
+                <dd>
+                    <p>A type of auction where bidders submit <strong>hidden bids</strong> (commitments). Bids are only revealed later, so no one can see others’ bid values ahead of time.</p>
+                </dd>
+
+                <dt id="glossary-commit">10.2 Commit–reveal</dt>
+                <dd>
+                    <p>A two-step pattern used to hide values until later:</p>
+                    <ol>
+                        <li><strong>Commit</strong> – publish a hash of the secret value (e.g. <code>(amount, salt)</code>).</li>
+                        <li><strong>Reveal</strong> – later publish the original value and let others recompute the hash to verify it matches.</li>
+                    </ol>
+                    <p>In this contract, the commit is <code>bidHash amount salt</code>, and the reveal is the <code>Reveal amount salt</code> redeemer.</p>
+                </dd>
+
+                <dt id="glossary-hash">10.3 Commitment hash</dt>
+                <dd>
+                    <p>A hash that “locks in” a value without showing it.</p>
+                    <ul>
+                        <li>Here it is: <code>sha2_256(serialiseData (amount, salt))</code></li>
+                        <li>Anyone who knows <code>(amount, salt)</code> can recompute this hash.</li>
+                        <li>From the hash alone, you <strong>cannot</strong> feasibly recover <code>(amount, salt)</code>.</li>
+                    </ul>
+                </dd>
+
+                <dt id="glossary-salt">10.4 Salt</dt>
+                <dd>
+                    <p>A secret random <code>BuiltinByteString</code> mixed with the bid amount:</p>
+                    <ul>
+                        <li>Prevents simple guess/brute-force attacks on low values.</li>
+                        <li>Ensures the <code>commitHash</code> is hard to reverse even if the search space of amounts is small.</li>
+                    </ul>
+                </dd>
+
+                <dt id="glossary-datum">10.5 Datum (<code>CommitDatum</code>)</dt>
+                <dd>
+                    <p>On-chain data attached to a script UTxO. In this contract, the datum describes:</p>
+                    <ul>
+                        <li>who the bidder is (<code>cdBidder</code>),</li>
+                        <li>who the seller is (<code>cdSeller</code>),</li>
+                        <li>which commitment hash was stored (<code>cdCommitHash</code>),</li>
+                        <li>the reveal deadline (<code>cdDeadlineReveal</code>),</li>
+                        <li>which NFT is being auctioned (<code>cdCurrency</code>, <code>cdToken</code>).</li>
+                    </ul>
+                    <p>Each committed bid UTxO carries exactly one <code>CommitDatum</code>.</p>
+                </dd>
+
+                <dt id="glossary-redeemer">10.6 Redeemer (<code>AuctionRedeemer</code>)</dt>
+                <dd>
+                    <p>The value provided <strong>when spending</strong> a script UTxO. It tells the validator which path to follow:</p>
+                    <ul>
+                        <li><code>Reveal amount salt</code> – bidder is revealing their bid and trying to settle.</li>
+                        <li><code>Refund</code> – bidder is claiming their ADA back after the reveal deadline.</li>
+                    </ul>
+                </dd>
+
+                <dt id="glossary-script-utxo">10.7 Script UTxO</dt>
+                <dd>
+                    <p>A UTxO whose address is a <strong>script address</strong> (not a normal pubkey address).</p>
+                    <ul>
+                        <li>Locked by this validator.</li>
+                        <li>Can only be spent if <code>mkValidator</code> returns <code>True</code> for the given datum, redeemer, and context.</li>
+                    </ul>
+                    <p>Each committed bid produces one script UTxO at the SealedBid script address.</p>
+                </dd>
+
+                <dt id="glossary-validator">10.8 Validator</dt>
+                <dd>
+                    <p>The Plutus on-chain function that decides if a script UTxO can be spent:</p>
+<pre><code class="language-haskell">CommitDatum -> AuctionRedeemer -> ScriptContext -> Bool
+</code></pre>
+                    <ul>
+                        <li>Returns True → the transaction is considered valid (w.r.t. this script).</li>
+                        <li>Returns False or throws an error → the transaction is invalid.</li>
+                    </ul>
+                    <p><code>mkValidator</code> is your sealed-bid auction validator.</p>
+                </dd>
+
+                <dt id="glossary-addr">10.9 Script address</dt>
+                <dd>
+                    <p>An address derived from the <strong>hash of the validator script</strong>.</p>
+                    <ul>
+                        <li>You send ADA/NFTs to this address to lock them under the control of the SealedBid contract.</li>
+                        <li>Off-chain tools (or your <code>SealedBid.hs</code> main) compute and print this address using the validator.</li>
+                    </ul>
+                </dd>
+
+                <dt id="glossary-plutus">10.10 Text envelope (<code>.plutus</code> file)</dt>
+                <dd>
+                    <p>A JSON-like wrapper format used by <code>cardano-api</code> / <code>cardano-cli</code> to store scripts and keys.</p>
+                    <p>For this contract, the <code>.plutus</code> file contains:</p>
+                    <ul>
+                        <li><code>type</code> – e.g. <code>"PlutusScriptV2"</code>,</li>
+                        <li><code>description</code> – human-readable label, like <code>"Sealed-Bid Commit-Reveal NFT Auction Validator"</code>,</li>
+                        <li><code>cborHex</code> – hex-encoded CBOR bytes of the compiled validator.</li>
+                    </ul>
+                    <p>This <code>.plutus</code> file is what you pass to <code>cardano-cli</code> with <code>--tx-in-script-file</code>.</p>
+                </dd>
+            </dl>
+
+            <h3 id="glossary-flow">10.11 How these concepts connect (Flow Diagram)</h3>
+            <p></p>
+<pre><code class="language-plaintext">Commit phase (off-chain)
+
+  Bidder wallet
+      |
+      | 1) Choose amount + salt
+      v
+  Compute commitment hash:
+      commitHash = bidHash amount salt
+      |
+      | 2) Build CommitDatum:
+      |    - cdBidder  = bidder PKH
+      |    - cdSeller  = seller PKH
+      |    - cdCommitHash = commitHash
+      |    - cdDeadlineReveal = deadline
+      |    - cdCurrency, cdToken = NFT
+      |
+      | 3) Send tx:
+      |    - Output to script address
+      |    - Value = ADA being committed
+      |    - Datum = CommitDatum
+      v
++-----------------------------+
+|  Script UTxO at SealedBid   |
+|  address, with CommitDatum  |
++-----------------------------+
+                |
+        (time passes)
+                |
+   +------------+-------------+
+   |                          |
+   | Before deadline          | After deadline
+   v                          v
+Reveal path (winner)          Refund path (no reveal / loser)
+
+  Tx spends script UTxO       Tx spends script UTxO
+  with redeemer:              with redeemer:
+
+    Reveal amount salt          Refund
+
+  Validator checks:           Validator checks:
+    - bidder signed             - bidder signed
+    - within deadline           - strictly after deadline
+    - cdCommitHash ==           - valuePaidTo(bidder) >= inputAda
+      bidHash amount salt
+    - seller is paid >= amount
+    - bidder gets NFT
+
+If all checks pass:           If all checks pass:
+  - Seller receives ADA         - Bidder gets their ADA back
+  - Bidder receives NFT         - Script UTxO is consumed
+  - Script UTxO is consumed
+</code></pre>
+        </section>
+    </main>
+
+    <script>
+        // Initialize Highlighter.js
+        hljs.highlightAll();
+
+        // Scrollspy Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.content section');
+            const navLinks = document.querySelectorAll('.sidebar ul a');
+
+            if (!sections.length || !navLinks.length) {
+                return;
+            }
+
+            const onScroll = () => {
+                let currentSection = '';
+                
+                // Find the current section
+                // We add a 100px offset to trigger the highlight a bit earlier
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (window.scrollY >= sectionTop - 100) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                // Update navigation links
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    
+                    // Check if the link's href matches the current section
+                    // We use link.getAttribute('href') to get the raw "#id"
+                    if (link.getAttribute('href') === `#${currentSection}`) {
+                        link.classList.add('active');
+                        
+                        // If it's a sub-item, also highlight its parent
+                        const parentLi = link.closest('ul').closest('li');
+                        if(parentLi) {
+                            const parentLink = parentLi.querySelector('a');
+                            if (parentLink) {
+                                parentLink.classList.add('active');
+                            }
+                        }
+                    }
+                });
+            };
+
+            // Listen for scroll events
+            window.addEventListener('scroll', onScroll);
+            
+            // Run once on load to set the initial state
+            onScroll();
+        });
+    </script>
+</body>
+</html>
