@@ -287,7 +287,7 @@ validateTransfer dat newOwner price ctx =
     -- The actual money flow must match the declared price,
     -- and that price must be <= the configured cap.
     ownerPaidCorrectly :: Bool
-    ownerPaidCorrectly = actualPaidAda == price
+    ownerPaidCorrectly = actualPaidAda >= price
 
     withinCap :: Bool
     withinCap = price <= tdMaxPrice dat
@@ -308,7 +308,7 @@ validateUseAtGate dat ctx =
     && traceIfFalse "must mint 1 USED souvenir"           mintedExactlyOne
     && traceIfFalse "unexpected extra minting"            noExtraMinting
     && traceIfFalse "USED souvenir not paid to owner"     souvenirPaidToOwner
-    && traceIfFalse "no continuing output expected"       noContinuingOutput ctx
+    && traceIfFalse "no continuing output expected"       (noContinuingOutput ctx)
   where
     ti :: TxInfo
     ti = info ctx

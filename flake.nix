@@ -18,6 +18,8 @@
           pkgs.curl
           pkgs.zlib
           pkgs.pkg-config
+          pkgs.xz
+          pkgs.xz.dev
           pkgs.libsodium
           pkgs.secp256k1
         ];

@@ -1,2 +1,2 @@
-package cardano-crypto-praos
-  flags: -external-libsodium-vrf
+extra-include-dirs: /nix/store/hayiiqzq98xppj0kz4xz4j7z3d20a1l1-xz-5.4.3-dev/include
+extra-lib-dirs: /nix/store/vs4j1fk3y6h4y775nx443dn9z6gypgzv-xz-5.4.3/lib

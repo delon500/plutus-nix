@@ -45,7 +45,12 @@ common common-all-tests
       bytestring,
       base16-bytestring,
       plutus-simple-model,
-      plutus-ledger-api
+      plutus-ledger-api,
+      plutus-contract,
+      plutus-ledger,
+      plutus-ledger-constraints,
+      plutus-chain-index,
+      plutus-chain-index-core
     default-language: Haskell2010
 
 library 
@@ -58,7 +63,6 @@ library
       Mint
       ParameterizedVesting
       Vesting
-      NFTSim
     build-depends:
       base >=4.14 && <5,      
       time,
@@ -152,6 +156,7 @@ executable sealed-bid-exe
     default-language:   Haskell2010
 
 executable sports-tickets-exe
+    import: common-all
     main-is:            SportsTickets.hs
     hs-source-dirs:     tests
     build-depends:
@@ -167,6 +172,8 @@ executable sports-tickets-exe
         cardano-ledger-core,
         cardano-ledger-shelley
     default-language:   Haskell2010
+    other-modules:
+        SportsTicketsContract
 
 executable sports-tickets-policy-exe
     main-is:            SportsTicketsPolicyPlutus.hs
@@ -204,11 +211,51 @@ executable revenue-splitter-exe
     other-modules:
       RevenueSplitterContract
 
-executable nft-sim
-    main-is:            NFTSim.hs
-    hs-source-dirs:     tests
-    other-modules:
-        NFT
+executable public-fund-release-exe
+    main-is:            PublicFundRelease.hs
+    hs-source-dirs:     src
+    build-depends:
+        base >=4.14 && <5,
+        plutus-ledger-api,
+        plutus-tx,
+        plutus-tx-plugin,
+        bytestring,
+        serialise,
+        text,
+        containers,
+        cardano-api,
+        cardano-ledger-core,
+        cardano-ledger-shelley,
+        utilities, 
+        base16-bytestring
+    default-language:   Haskell2010
+
+executable public-fund-release-endpoints-exe
+  main-is:            PublicFundReleaseEndpointsMain.hs
+  hs-source-dirs:     src
+  build-depends:
+      base,
+      wspace,
+      plutus-ledger-api,
+      plutus-tx,
+      plutus-tx-plugin,
+      containers,
+      text,
+      aeson,
+      plutus-contract,
+      plutus-ledger,
+      plutus-ledger-constraints,
+      plutus-chain-index,
+      plutus-chain-index-core
+  default-language:   Haskell2010
+  other-modules:
+      PublicFundReleaseEndpoints
+      PublicFundReleaseContract
+
+executable public-fund-release-contract-exe
+    main-is:            PublicFundReleaseContractMain.hs
+    hs-source-dirs:     src
+    other-modules:      PublicFundReleaseContract
     build-depends:
         base >=4.14 && <5,
         plutus-ledger-api,
@@ -228,11 +275,12 @@ executable nft-sim
 test-suite wspace-tests
     import:              common-all-tests
     type:                exitcode-stdio-1.0
-    hs-source-dirs:      tests
+    hs-source-dirs:      tests, src
     main-is:             Spec.hs
     build-depends:
       wspace,
-      utilities
+      utilities,
+      cardano-ledger-alonzo
     other-modules:
       CGPlutusUtilsSpec
       CGTimeSpec
@@ -248,6 +296,11 @@ test-suite wspace-tests
       SportsTicketsContract
       SportsTicketsSpec
       SportsTicketsPolicy
+      SportsTicketsPolicySpec
       RevenueSplitterContract
       RevenueSplitterSpec
+      PublicFundReleaseSpec
+      PublicFundReleaseEmulatorSpec
+      PublicFundReleaseEndpoints
+      PublicFundReleaseContract
     default-language:    Haskell2010

@@ -14,7 +14,8 @@ import SealedBidSpec          qualified as SealedBidSpec
 import SportsTicketsSpec      qualified as SportsTicketsSpec
 import RevenueSplitterSpec   qualified as RevenueSplitterSpec
 import SportsTicketsPolicySpec qualified as SportsTicketsPolicySpec
-
+import PublicFundReleaseSpec qualified as PublicFundReleaseSpec
+import PublicFundReleaseEmulatorSpec qualified as PublicFundReleaseEmulatorSpec
 
 main :: IO ()
 main = defaultMain allTests
@@ -33,5 +34,7 @@ allTests =
     , SportsTicketsSpec.tests
     , SportsTicketsPolicySpec.tests
     , RevenueSplitterSpec.revenueSplitterTests
+    , PublicFundReleaseSpec.tests
+    , PublicFundReleaseEmulatorSpec.tests
     ]
 
