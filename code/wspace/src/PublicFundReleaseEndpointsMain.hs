@@ -93,7 +93,7 @@ traceRefund = do
   void $ waitNSlots 1
 
   -- Ensure we've passed the deadline
-  void $ waitUntilSlot 1
+  void $ waitUntilSlot 12
 
   callEndpoint @"refund" hDep ()
   void $ waitNSlots 2
