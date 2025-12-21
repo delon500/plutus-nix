@@ -56,17 +56,19 @@ import PublicFundReleaseContract
   ( FundDatum(..)
   , FundRedeemer(..)
   , validator
+  , valHash
+  , scrAddress
   )
 
 --------------------------------------------------------------------------------
 -- Script identity
 --------------------------------------------------------------------------------
 
-valHash :: ValidatorHash
-valHash = validatorHash validator
+-- valHash :: ValidatorHash
+-- valHash = validatorHash validator
 
-scriptAddress :: Address
-scriptAddress = scriptHashAddress valHash
+-- scriptAddress :: Address
+-- scriptAddress = scriptHashAddress valHash
 
 --------------------------------------------------------------------------------
 -- Params + Schema
@@ -118,7 +120,7 @@ datumFromChainIndex o = do
 
 pickFundUtxo :: Contract w s Text (TxOutRef, ChainIndexTxOut, FundDatum)
 pickFundUtxo = do
-  utxos <- utxosAt scriptAddress
+  utxos <- utxosAt scrAddress
   case Map.toList utxos of
     [] -> throwError "No UTxO found at script address"
     ((oref, o):_) -> do

@@ -31,8 +31,10 @@ import Plutus.V2.Ledger.Contexts
   , txInInfoResolved, txSignedBy, valuePaidTo
   )
 
--- Off-chain helpers
+import Ledger (Address, ValidatorHash)
 
+import qualified Plutus.Script.Utils.V2.Scripts  as ScriptsV2
+import qualified Plutus.Script.Utils.V2.Address  as AddressV2
 
 --------------------------------------------------
 -- Datum / Redeemer
@@ -144,6 +146,7 @@ mkValidator dat red ctx =
       traceIfFalse "too early" (afterDeadline (fdDeadline dat) info) &&
       traceIfFalse "refund blocked (enough approvals)"
         (length (fdApprovals dat) < fdRequired dat) &&
+      traceIfFalse "depositor must sign" (txSignedBy info (fdDepositor dat)) &&
       traceIfFalse "must pay depositor" paysDepositor &&
       traceIfFalse "no continuing output allowed" (null (getContinuingOutputs ctx))
 
@@ -191,3 +194,9 @@ validator = mkValidatorScript $$(PlutusTx.compile [|| mkWrapped ||])
 --------------------------------------------------
 -- Validator hash + script address (used by tests)
 --------------------------------------------------
+
+valHash :: ValidatorHash
+valHash = ScriptsV2.validatorHash validator
+
+scrAddress :: Address
+scrAddress = AddressV2.mkValidatorAddress validator
